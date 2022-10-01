@@ -10,6 +10,10 @@ const io = new Server(http);
 
 io.on('connection', client => {
   console.log("Client Connected!");
+  client.on('createOrJoinRoom', (req) => {
+    console.log(req);
+    client.emit('hereIsYourRoom', {ta: 'da'})
+  })
   client.on("disconnect", () => {
     console.log("Client Disconnected");
   });
