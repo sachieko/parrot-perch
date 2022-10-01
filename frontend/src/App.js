@@ -7,26 +7,25 @@ function App() {
   const [socket, setSocket] = useState()
   const [newRoom, setNewRoom] = useState(false)
   const [theRoomYoureViewing, setTheRoomYoureViewing] = useState('')
+
   useEffect(() => {
     const socket = io();
     setSocket(socket);
     socket.on('connect', () => {
       console.log('connected')
     });
-    socket.on('hereIsYourRoom', (res) =>{
-      console.log(res)
-      setTheRoomYoureViewing(res.ta)
+    socket.on('hereIsYourRoom', (res) => {
+      setTheRoomYoureViewing(res.name)
       setNewRoom(true)
     });
     return () => socket.disconnect();
   }, [])
 
-  const submit = function(e){
+  const submit = function (e) {
     e.preventDefault()
-    console.log(roomName);
-    socket.emit('createOrJoinRoom', {roomName})
+    socket.emit('createOrJoinRoom', { roomName })
     setRoomName('')
-  } 
+  }
 
   return (
     <div className="App">
@@ -34,7 +33,7 @@ function App() {
       {!newRoom && <form>
         <label>
           Join Room:
-          <input type="text" name="roomName" value={roomName} onChange={e => setRoomName(e.target.value) }/>
+          <input type="text" name="roomName" value={roomName} onChange={e => setRoomName(e.target.value)} />
         </label>
         <input type="submit" value="Submit" onClick={submit} />
       </form>}
