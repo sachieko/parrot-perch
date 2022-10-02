@@ -59,13 +59,24 @@ function App() {
               <input type='submit' value="submit" />
             </form>
           </div>
-          <iframe
-            src={`https://player.twitch.tv/?channel=${enterChannel}&parent=localhost`}
-            height="480"
-            width="940"
-            allowfullscreen
-            title={theRoomYoureViewing}>
-          </iframe>
+          <div>
+            <iframe
+              display='inline'
+              src={`https://player.twitch.tv/?channel=${enterChannel}&parent=localhost`}
+              height="480"
+              width="69%"
+              allowFullScreen
+              title={theRoomYoureViewing}>
+            </iframe>
+            <iframe
+              display="inline"
+              frameBorder="0"
+              scrolling="no"
+              src={`https://www.twitch.tv/embed/${enterChannel}/chat?darkpopout&parent=localhost`}
+              height="480"
+              width="30%">
+            </iframe>
+          </div>
         </div>}
     </div>
   );
