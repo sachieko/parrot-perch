@@ -14,8 +14,14 @@ io.on('connection', client => {
   client.on('createOrJoinRoom', (req) => {
     if (!rooms[req.roomName]) {
       rooms[req.roomName] = { name: req.roomName }
+      rooms[req.roomName].channel = ''
     }
     client.emit('hereIsYourRoom', rooms[req.roomName])
+  });
+  client.on('attachChannelToRoom', (req) => {
+    console.log('reqiing ball', req);
+    rooms[req.roomName].channel = req.channel
+    client.emit('serveChannel', rooms[req.roomName])
   });
   client.on("disconnect", () => {
     console.log("Client Disconnected");
