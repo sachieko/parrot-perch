@@ -1,0 +1,43 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Source Sans Pro", sans-serif;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.streamer-channel {
+  display: flex;
+  color: black;
+  margin-bottom: 0.5rem;
+}
+
+.thumbnail {
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  max-height: 5em;
+}
+
+.display__name {
+  font-weight: 700;
+}
+
+.game_name {
+  font-size: 1.2rem;
+}
+
+.names {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 20%;
+  padding-left: 1rem;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  background: white;
+  overflow: hidden;
+}
