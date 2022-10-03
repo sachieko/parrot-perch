@@ -1,44 +1,38 @@
 import { useState } from 'react';
-import ChangeChannel from './changeChannel';
-import ToggleApis from './toggleApi';
+import ToggleButton from 'react-bootstrap/ToggleButton';
+import Twitch from './twitch';
 
 function ViewRoom(props) {
-  const [newChannel, setNewChannel] = useState('');
+  const [apis, setApis] = useState([{ name: 'twitch', selected: true }]);
 
-  const handleChannel = function (e) {
-    e.preventDefault();
-    props.socket.emit('editRoom', { room: { ...props.room, channel: newChannel } });
-    setNewChannel('');
+  const selectApi = (e, i) => {
+    setApis((oldApis) => {
+      const selectingApi = { ...oldApis[i], selected: !oldApis[i].selected };
+      const newApis = [...oldApis];
+      newApis[i] = selectingApi;
+      return newApis;
+    });
   }
+
+  const apiSwitches = apis.map((api, i) => {
+    return <ToggleButton
+      className="mb-2"
+      id="toggle-check"
+      type="checkbox"
+      variant="outline-primary"
+      checked={api.selected}
+      value="1"
+      onChange={(e) => selectApi(e, i)}
+    >
+      {api.name}
+    </ToggleButton>
+  });
 
   return (
     <div>
       Room Name: {props.room.name}
-      <ToggleApis />
-      <ChangeChannel
-        value={newChannel}
-        onClick={handleChannel}
-        onChange={(e) => setNewChannel(e.target.value)}
-      />
-      <div>
-        <iframe
-          display='inline'
-          src={`https://player.twitch.tv/?channel=${props.room.channel}&parent=localhost`}
-          height="480"
-          width="69%"
-          allowFullScreen
-          title={props.room.name}>
-        </iframe>
-        <iframe
-          display="inline"
-          frameBorder="0"
-          scrolling="no"
-          src={`https://www.twitch.tv/embed/${props.room.channel}/chat?darkpopout&parent=localhost`}
-          height="480"
-          width="30%"
-          title={props.room.name}>
-        </iframe>
-      </div>
+      {apiSwitches}
+      {apis[0].selected && <Twitch room={props.room} socket={props.socket}/>}
     </div>
   )
 }
