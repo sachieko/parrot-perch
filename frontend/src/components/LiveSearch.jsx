@@ -9,6 +9,9 @@ export default function LiveSearch(props) {
   let token = '';
 
   useEffect(() => {
+    if (term === '') {
+      setResults([])
+    }
     const testURL = `https://api.twitch.tv/helix/search/channels?query=${term}`;
     axios.post('https://id.twitch.tv/oauth2/token', {
       client_id: process.env.REACT_APP_CLIENT_ID,
@@ -47,8 +50,8 @@ export default function LiveSearch(props) {
   return (
     <Fragment>
       <main>
-        <SearchBar onSearch={setTerm} />
-        <Results results={results}  />
+        <SearchBar onSearch={term => setTerm(term)} />
+        <Results results={results} />
       </main>
     </Fragment>
   );
