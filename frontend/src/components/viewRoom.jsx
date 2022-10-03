@@ -34,7 +34,7 @@ function ViewRoom(props) {
           src={`https://www.twitch.tv/embed/${props.room.channel}/chat?darkpopout&parent=localhost`}
           height="480"
           width="30%"
-          title={props.room.name}>>
+          title={props.room.name}>
         </iframe>
       </div>
     </div>
