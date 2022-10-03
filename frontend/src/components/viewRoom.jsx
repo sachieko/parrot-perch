@@ -5,14 +5,14 @@ function ViewRoom(props) {
   const [channel, setChannel] = useState('')
 
   const handleChannel = function (e) {
-    e.preventDefault()
-    props.socket.emit('attachChannelToRoom', { roomName: props.room, channel: channel })
-    setChannel('')
+    e.preventDefault();
+    props.socket.emit('attachChannelToRoom', { roomName: props.room.name, channel: channel })
+    setChannel('');
   }
 
   return (
     <div>
-      Room Name: {props.room}
+      Room Name: {props.room.name}
       <ChangeChannel
         value={channel}
         onClick={handleChannel}
@@ -21,19 +21,20 @@ function ViewRoom(props) {
       <div>
         <iframe
           display='inline'
-          src={`https://player.twitch.tv/?channel=${props.channel}&parent=localhost`}
+          src={`https://player.twitch.tv/?channel=${props.room.channel}&parent=localhost`}
           height="480"
           width="69%"
           allowFullScreen
-          title={props.room}>
+          title={props.room.name}>
         </iframe>
         <iframe
           display="inline"
           frameBorder="0"
           scrolling="no"
-          src={`https://www.twitch.tv/embed/${props.channel}/chat?darkpopout&parent=localhost`}
+          src={`https://www.twitch.tv/embed/${props.room.channel}/chat?darkpopout&parent=localhost`}
           height="480"
-          width="30%">
+          width="30%"
+          title={props.room.name}>>
         </iframe>
       </div>
     </div>
