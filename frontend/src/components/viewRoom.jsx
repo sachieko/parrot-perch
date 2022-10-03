@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import ChangeChannel from './changeChannel';
+import ToggleApis from './toggleApi';
 
 function ViewRoom(props) {
   const [newChannel, setNewChannel] = useState('');
@@ -13,6 +14,7 @@ function ViewRoom(props) {
   return (
     <div>
       Room Name: {props.room.name}
+      <ToggleApis />
       <ChangeChannel
         value={newChannel}
         onClick={handleChannel}
