@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 
 import useDebounce from "../hooks/useDebounce";
+import "./SearchBar.scss";
 
 export default function SearchBar(props) {
   const [value, setValue] = useState("");
