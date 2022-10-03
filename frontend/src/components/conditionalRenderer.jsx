@@ -4,7 +4,6 @@ import JoinRoom from './joinRoom';
 import ViewRoom from './viewRoom';
 
 function ConditionalRenderer() {
-  const [newRoom, setNewRoom] = useState('');
   const [socket, setSocket] = useState();
   const [isVeiwing, setIsViewing] = useState(false);
   const [room, setRoom] = useState({
@@ -14,8 +13,7 @@ function ConditionalRenderer() {
 
   const handleJoin = function (e) {
     e.preventDefault();
-    socket.emit('createOrJoinRoom', { roomName: newRoom });
-    setNewRoom('');
+    socket.emit('createOrJoinRoom', { room });
   }
 
   useEffect(() => {
@@ -24,16 +22,12 @@ function ConditionalRenderer() {
     socket.on('connect', () => {
       console.log('connected');
     });
-    socket.on('hereIsYourRoom', (res) => {
+    socket.on('serveRoom', (res) => {
+      const room = res.room;
       setRoom((oldRoom) => {
-        return { ...oldRoom, name: res.name, channel: res.channel }
+        return { ...oldRoom, name: room.name, channel: room.channel };
       });
       setIsViewing(true);
-    });
-    socket.on('serveChannel', (res) => {
-      setRoom((oldRoom) => {
-        return { ...oldRoom, channel: res.channel }
-      });
     });
     return () => socket.disconnect();
   }, [])
@@ -42,14 +36,15 @@ function ConditionalRenderer() {
     <>
       {!isVeiwing &&
         <JoinRoom
-          value={newRoom}
+          value={room.name}
           onClick={handleJoin}
-          onChange={(e) => setNewRoom(e.target.value)}
+          onChange={(e) => setRoom({ ...room, name: e.target.value })}
         />
       }
       {isVeiwing &&
         <ViewRoom
           room={room}
+          setRoom={setRoom}
           socket={socket}
         />
       }

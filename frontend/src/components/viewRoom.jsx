@@ -2,21 +2,21 @@ import { useState } from 'react';
 import ChangeChannel from './changeChannel';
 
 function ViewRoom(props) {
-  const [channel, setChannel] = useState('')
+  const [newChannel, setNewChannel] = useState('');
 
   const handleChannel = function (e) {
     e.preventDefault();
-    props.socket.emit('attachChannelToRoom', { roomName: props.room.name, channel: channel })
-    setChannel('');
+    props.socket.emit('editRoom', { room: { ...props.room, channel: newChannel } });
+    setNewChannel('');
   }
 
   return (
     <div>
       Room Name: {props.room.name}
       <ChangeChannel
-        value={channel}
+        value={newChannel}
         onClick={handleChannel}
-        onChange={(e) => setChannel(e.target.value)}
+        onChange={(e) => setNewChannel(e.target.value)}
       />
       <div>
         <iframe
