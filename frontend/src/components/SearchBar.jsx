@@ -4,8 +4,8 @@ import useDebounce from "../hooks/useDebounce";
 import "./SearchBar.scss";
 
 export default function SearchBar(props) {
-  const [value, setValue] = useState("");
-  const term = useDebounce(value, 200);
+  // const [value, setValue] = useState("");
+  const term = useDebounce(props.newChannel, 200);
 
   const onSearch = useCallback(props.setNewChannel, [term]);
 
@@ -20,11 +20,11 @@ export default function SearchBar(props) {
         <input
           className="radius"
           spellCheck="false"
-          placeholder="Search Channels"
+          placeholder="Search Twitch Channels"
           name="search"
           type="text"
-          value={value}
-          onChange={event => setValue(event.target.value)}
+          value={props.newChannel}
+          onChange={event => props.setNewChannel(event.target.value)}
         />
       </form>
     </section>

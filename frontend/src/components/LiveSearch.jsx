@@ -51,6 +51,7 @@ export default function LiveSearch(props) {
       <main>
         <SearchBar
           setNewChannel={props.setNewChannel}
+          newChannel={props.newChannel}
         />
         <Results
           results={results}
