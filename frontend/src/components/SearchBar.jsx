@@ -3,7 +3,7 @@ import "./SearchBar.scss";
 import { roomContext } from '../providers/RoomProvider';
 
 export default function SearchBar(props) {
-  const { searchValue, setSearchValue } = useContext(roomContext);
+  const { newChannel, setNewChannel } = useContext(roomContext);
 
   return (
     <section className="search">
@@ -11,11 +11,11 @@ export default function SearchBar(props) {
         <input
           className="radius"
           spellCheck="false"
-          placeholder="Search Channels"
+          placeholder="Search Twitch Channels"
           name="search"
           type="text"
-          value={searchValue}
-          onChange={event => setSearchValue(event.target.value)}
+          value={newChannel}
+          onChange={event =>setNewChannel(event.target.value)}
         />
       </form>
     </section>

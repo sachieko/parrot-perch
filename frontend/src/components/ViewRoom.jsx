@@ -11,13 +11,8 @@ function View(props) {
   return (
     <div>
       Room Name: {room.name}
-      {/* <ChangeChannel
-        value={newChannel}
-        onClick={handleChannel}
-        onChange={(e) => setNewChannel(e.target.value)}
-      /> */}
-      <LiveSearch
-      />
+      <LiveSearch />
+      { room.channel && (
       <div>
         <iframe
           display='inline'
@@ -37,8 +32,9 @@ function View(props) {
           title={room.name}>
         </iframe>
       </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default View;

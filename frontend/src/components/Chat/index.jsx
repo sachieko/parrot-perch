@@ -19,7 +19,7 @@ const Chat = function(props) {
   };
   
   const messageList = messages.map((message, i) => {
-    return <ChatMessage index={i} message={message} user={'no user set'}/>;
+    return <ChatMessage key={i} message={message} user={'no user set'}/>;
   });
 
   const userList = users.map((user, i) => {

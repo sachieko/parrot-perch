@@ -23,6 +23,8 @@ export default function RoomProvider(props) {
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
+
+  // Chat and Rooms useEffect
   useEffect(() => {
     const socket = io();
     setSocket(socket);
@@ -66,6 +68,7 @@ export default function RoomProvider(props) {
     return () => socket.disconnect();
   }, []);
 
+  // API use
   useEffect(() => {
     let token = '';
     if (newChannel === '') {
@@ -107,14 +110,16 @@ export default function RoomProvider(props) {
       });
   }, [newChannel]);
 
-  const term = useDebounce(searchValue, 200);
+  const term = useDebounce(newChannel, 200);
 
   const onSearch = useCallback(setNewChannel, [term]);
 
+  // on search use effect
   useEffect(() => {
     onSearch(term);
     setNewChannel(term);
   }, [term, onSearch]);
+
 
   // Export any usable state or state setters (or custom functions to set state) by declaring them here.
   const roomData = { 

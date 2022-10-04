@@ -2,6 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 .search__form {
@@ -12,4 +14,13 @@
   border-radius: 0.5rem;
   width: 20em;
   height: 2.3em;
+  text-align: center;
+}
+
+::placeholder {
+  text-align: center;
+}
+
+input:placeholder-shown {
+  text-align: center;
 }

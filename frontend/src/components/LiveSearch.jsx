@@ -5,8 +5,6 @@ import Results from "./Results";
 
 export default function LiveSearch(props) {
 
-  
-
   return (
     <>
       <main>
