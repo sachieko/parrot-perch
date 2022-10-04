@@ -7,10 +7,11 @@ export default function SearchBar(props) {
   const [value, setValue] = useState("");
   const term = useDebounce(value, 200);
 
-  const onSearch = useCallback(props.onSearch, [term]);
+  const onSearch = useCallback(props.setNewChannel, [term]);
 
   useEffect(() => {
     onSearch(term);
+    props.setNewChannel(term);
   }, [term, onSearch]);
 
   return (
