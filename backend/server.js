@@ -1,16 +1,17 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const { Server } = require('socket.io');
 const express = require('express');
 const app = express();
 const { uniqueNamesGenerator, starWars } = require('unique-names-generator');
 
-const http = app.listen(8080, () => {
-  console.log(`Server running at port: 8080`);
+const http = app.listen(process.env.PORT, () => {
+  console.log(`Server running at port: ${process.env.PORT}`);
 });
 
 const clients = {};
 const io = new Server(http);
 const rooms = {};
-<<<<<<< HEAD
 
 io.on('connection', client => {
   const name = uniqueNamesGenerator({
@@ -23,57 +24,44 @@ io.on('connection', client => {
   };
 
   const color = random_rgba();
-  // console.log('Client Connected!', name, ':', client.id);
+  console.log('Client Connected!', name, ':', client.id);
   
-  clients[name] = {id: client.id};  // Add client to lookup object. This is server information only.
-  // console.log('Clients: ', clients);
-=======
-io.on('connection', client => {
-  console.log("Client Connected!");
->>>>>>> main
+  clients[name] = {id: client.id, rooms: [], color};  // Add client to lookup object. This is for server use.
 
   client.on('createOrJoinRoom', (req) => {
     const room = req.room;
     client.join(room.name);
     if (!rooms[room.name]) {
       rooms[room.name] = room; // new room
-<<<<<<< HEAD
       rooms[room.name].users = []; // new user array
     }
     const user = { 
       name,
-      color
+      color,
     };
     rooms[room.name].users.push(user);
-    client.emit('serveRoom', { room: rooms[room.name], users: rooms[room.name].users });
-=======
-    }
+    clients[name].rooms.push(room.name);
     client.emit('serveRoom', { room: rooms[room.name] });
->>>>>>> main
+    client.to(room.name).emit('system', {message: `Arr, ye've been boarded by ${name}!`, room: rooms[room.name] });
   });
 
   client.on('editRoom', (req) => {
     //possible to sanitize data here.
     const room = req.room;
     rooms[room.name].channel = room.channel;
-<<<<<<< HEAD
-    rooms[room.name].users = room.users;
-    client.to(room.name).emit('serveRoom', { room: rooms[room.name], users: rooms[room.name].users });
-    client.emit('serveRoom', { room: rooms[room.name], users: rooms[room.name].users });
+    client.to(room.name).emit('serveRoom', { room: rooms[room.name] });
+    client.emit('serveRoom', { room: rooms[room.name] });
   });
-
-
-  client.broadcast.emit('system', {message: `Arr, ye've been boarded by ${name}!`, roomUsers});
-  client.emit('system', {message: `Arr, welcome to the room ${name}!`, roomUsers});
-
 
   client.on('message', data => {
     // console.log('Data received:', data);
-    const {msg, to} = data
+    const {msg, room, to} = data
+    if (!msg) {
+      return;
+    }
     const username = name;
     if (!to) {
-      client.emit('public', {msg, username});
-      client.broadcast.emit('public', {msg, username});
+      io.to(room.name).emit('public', {msg, username});
       return;
     }
     const id = clients[to].id;
@@ -83,16 +71,14 @@ io.on('connection', client => {
 
   client.on('disconnect', () => {
     console.log('Client Disconnected', name, ':', client.id);
-    client.broadcast.emit('system', `${name} has just walked the plank!`);
-    rooms[room.name].users.filter(user => user.name !== name);
+    clients[name].rooms.forEach(roomname => {
+      rooms[roomname].users = rooms[roomname].users.filter(user => user.name !== name);
+      if (rooms[roomname].users.length === 0) {
+        delete rooms[roomname];
+        return;
+      }
+      client.to(roomname).emit('system', { message: `${name} has just walked the plank!`, room: rooms[roomname] });
+    });
     delete clients[name];
-=======
-    client.to(room.name).emit('serveRoom', { room: rooms[room.name] });
-    client.emit('serveRoom', { room: rooms[room.name] });
-  });
-
-  client.on("disconnect", () => {
-    console.log("Client Disconnected");
->>>>>>> main
   });
 });
