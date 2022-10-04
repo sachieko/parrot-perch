@@ -10,7 +10,7 @@ function ViewRoom(props) {
     props.socket.emit('editRoom', { room: { ...props.room, channel: streamerName } });
     setNewChannel('');
     console.log("handleChannel was triggered")
-    console.log(streamerName);
+    // console.log(streamerName);
   }
 
   return (
