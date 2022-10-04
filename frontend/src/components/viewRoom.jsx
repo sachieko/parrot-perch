@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ChangeChannel from './changeChannel';
+import ChangeChannel from './ChangeChannel';
 import LiveSearch from './LiveSearch';
 
 function ViewRoom(props) {
