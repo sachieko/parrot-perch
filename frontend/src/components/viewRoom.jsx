@@ -3,12 +3,12 @@ import ToggleButton from 'react-bootstrap/ToggleButton';
 import Twitch from './apis/Twitch';
 import Spotify from './apis/spotify/Spotify';
 
-const code = new URLSearchParams(window.location.search).get('code')
-
 function ViewRoom(props) {
   const [apis, setApis] = useState(
-    [{ name: 'twitch', selected: true },
+    [{ name: 'twitch', selected: false },
     { name: 'spotify', selected: true }]);
+
+  const code = new URLSearchParams(window.location.search).get("code");
 
   const selectApi = (i) => {
     setApis((oldApis) => {

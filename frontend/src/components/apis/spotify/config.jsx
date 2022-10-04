@@ -6,6 +6,10 @@ const scopes = [
   "streaming",
   "user-read-email",
   "user-read-private",
+  "user-library-read",
+  "user-library-modify",
+  "user-read-playback-state",
+  "user-modify-playback-state"
 ];
 const url = `${authEndpoint}?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}`;
 
