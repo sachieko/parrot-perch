@@ -1,6 +1,7 @@
 const authEndpoint = "https://accounts.spotify.com/authorize";
 const redirectUri = "http://localhost:3000/";
-const clientId = "deae5d0e24684efda2fd5ccf605f4029";
+const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
+console.log(clientId, 'sldnslk');
 const scopes = [
   "streaming",
   "user-read-email",

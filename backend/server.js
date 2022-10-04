@@ -3,9 +3,11 @@ const express = require('express');
 const app = express();
 const spotifyWebApi = require('spotify-web-api-node');
 
+require('dotenv').config();
+
 const credentials = {
-  clientId: 'deae5d0e24684efda2fd5ccf605f4029',
-  clientSecret: '87b4b8fc0eaf44e689c009ca2ebd8c4b',
+  clientId: process.env.SPOTIFY_CLIENT_ID,
+  clientSecret: process.env.SPOTIFY_SECRET,
   redirectUri: 'http://localhost:3000/',
 };
 
