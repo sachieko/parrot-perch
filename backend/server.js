@@ -14,18 +14,15 @@ const credentials = {
 
 app.use(express.json());
 
-app.post('/login', (req,res) => {
+app.post('/spotify/login', (req,res) => {
       let spotifyApi = new spotifyWebApi(credentials);  
-      const code = req.body.code
-      console.log(code);
+      const code = req.body.code;
       spotifyApi.authorizationCodeGrant(code).then((data) => {
-          res.json({
-              accessToken : data.body.access_token,
-          }) 
+          res.json({ accessToken : data.body.access_token});
       })
       .catch((err) => {
           console.log(err);
-          res.sendStatus(400)
+          res.sendStatus(400);
       })
   
   })

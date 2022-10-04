@@ -15,21 +15,24 @@ const Dashboard = ({ code }) => {
   const [playingTrack, setPlayingTrack] = useState();
 
   function chooseTrack(track) {
-    setPlayingTrack(track)
-    setSearch("")
+    setPlayingTrack(track);
+    setSearch("");
   }
 
   useEffect(() => {
-    if (!accessToken) return;
+    if (!accessToken){
+      return;
+    }
     spotifyApi.setAccessToken(accessToken);
-    spotifyApi.getMe().then(data => {
-      console.log(data);
-    })
   }, [accessToken]);
 
   useEffect(() => {
-    if (!search) return setSearchResults([])
-    if (!accessToken) return
+    if (!search) {
+      return setSearchResults([]);
+    }
+    if (!accessToken){
+      return;
+    }
 
     let cancel = false
       ; (async () => {
@@ -55,7 +58,7 @@ const Dashboard = ({ code }) => {
         )
       })()
 
-    return () => (cancel = true)
+    return () => (cancel = true);
   }, [search, accessToken])
 
   return (

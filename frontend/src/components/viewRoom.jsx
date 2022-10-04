@@ -8,7 +8,7 @@ function ViewRoom(props) {
     [{ name: 'twitch', selected: false },
     { name: 'spotify', selected: true }]);
 
-  const code = new URLSearchParams(window.location.search).get("code");
+  const [code, setCode] = useState(new URLSearchParams(window.location.search).get("code"));
 
   const selectApi = (i) => {
     setApis((oldApis) => {
@@ -39,7 +39,7 @@ function ViewRoom(props) {
       Room Name: {props.room.name}
       {apiSwitches}
       {apis[0].selected && <Twitch room={props.room} socket={props.socket} />}
-      {apis[1].selected && <Spotify code={code} />}
+      {apis[1].selected && <Spotify code={code} socket={props.socket} />}
     </div>
   )
 }

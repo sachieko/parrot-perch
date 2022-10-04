@@ -6,17 +6,15 @@ export default function useAuth(code) {
 
   useEffect(() => {
     axios
-      .post("/login", { code })
+      .post("/spotify/login", { code })
       .then((response) => {
-        console.log(response, 'pppppppppppppass');
         setAccessToken(response.data.accessToken);
         window.history.pushState({}, null, "/");
       })
       .catch((err) => {
-        console.log(err, 'EEEEEEEEEEEEEEEEEEE');
         window.location = "/";
       });
   }, [code]);
 
-  return accessToken
+  return accessToken;
 }
