@@ -2,7 +2,7 @@ import React, { useContext} from 'react';
 import './Chat.scss'
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
-import { roomContext } from '../providers/RoomProvider';
+import { roomContext } from '../../providers/RoomProvider';
 
 
 const Chat = function(props) {
