@@ -1,12 +1,17 @@
 import './App.css';
-import ConditionalRenderer from './components/ConditionalRenderer'
+import Room from './components/Room'
+import RoomProvider from './providers/RoomProvider';
 
-function App() {
+const App = function() {
+
   return (
-    <div className="App">
+    <div className="Parrot-perch">
       <h1>Hello World!</h1>
-      <ConditionalRenderer />
+      <RoomProvider>
+        <Room />
+      </RoomProvider>
     </div>
+
   );
 }
 

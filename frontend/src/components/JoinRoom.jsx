@@ -1,4 +1,4 @@
-function JoinRoom (props) {
+function Join (props) {
   return (
     <form>
       <label>
@@ -10,4 +10,4 @@ function JoinRoom (props) {
   )
 }
 
-export default JoinRoom;
+export default Join;

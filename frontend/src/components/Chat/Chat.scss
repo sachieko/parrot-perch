@@ -1,0 +1,9 @@
+
+.chat {
+  background-color: #424242;
+  color: #FFFFFF;
+  #message-list {
+    display: flexbox;
+    flex-direction: column;
+  }
+}

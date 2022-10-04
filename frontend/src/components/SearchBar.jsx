@@ -1,18 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
-
-import useDebounce from "../hooks/useDebounce";
+import { useContext } from "react";
 import "./SearchBar.scss";
+import { roomContext } from '../providers/RoomProvider';
 
 export default function SearchBar(props) {
-  // const [value, setValue] = useState("");
-  const term = useDebounce(props.newChannel, 200);
-
-  const onSearch = useCallback(props.setNewChannel, [term]);
-
-  useEffect(() => {
-    onSearch(term);
-    props.setNewChannel(term);
-  }, [term, onSearch]);
+  const { newChannel, setNewChannel } = useContext(roomContext);
 
   return (
     <section className="search">
@@ -23,8 +14,8 @@ export default function SearchBar(props) {
           placeholder="Search Twitch Channels"
           name="search"
           type="text"
-          value={props.newChannel}
-          onChange={event => props.setNewChannel(event.target.value)}
+          value={newChannel}
+          onChange={event =>setNewChannel(event.target.value)}
         />
       </form>
     </section>
