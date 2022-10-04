@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ChangeChannel from './ChangeChannel';
+// import ChangeChannel from './ChangeChannel';
 import LiveSearch from './LiveSearch';
 
 function View(props) {
@@ -9,10 +9,10 @@ function View(props) {
     e.preventDefault();
     props.socket.emit('editRoom', { room: { ...props.room, channel: streamerName } });
     setNewChannel('');
-    console.log("handleChannel was triggered")
+    // console.log("handleChannel was triggered");
     // console.log(streamerName);
-  }
-
+  };
+  const hostURL = 'localhost' // Update this when deployed
   return (
     <div>
       Room Name: {props.room.name}
@@ -29,7 +29,7 @@ function View(props) {
       <div>
         <iframe
           display='inline'
-          src={`https://player.twitch.tv/?channel=${props.room.channel}&parent=localhost`}
+          src={`https://player.twitch.tv/?channel=${props.room.channel}&parent=${hostURL}`}
           height="480"
           width="69%"
           allowFullScreen
@@ -39,7 +39,7 @@ function View(props) {
           display="inline"
           frameBorder="0"
           scrolling="no"
-          src={`https://www.twitch.tv/embed/${props.room.channel}/chat?darkpopout&parent=localhost`}
+          src={`https://www.twitch.tv/embed/${props.room.channel}/chat?darkpopout&parent=${hostURL}`}
           height="480"
           width="30%"
           title={props.room.name}>

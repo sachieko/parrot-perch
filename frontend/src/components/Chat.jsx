@@ -1,48 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import io from 'socket.io-client';
+import React, { useContext} from 'react';
 import './Chat.scss'
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
+import { roomContext } from '../providers/RoomProvider';
 
 
 const Chat = function(props) {
-  const [messages, setMessages] = useState([]);
-  const [socket, setSocket] = useState();
-  const [msg, setMsg] = useState('');
-  const [to, setTo] = useState('');
-  const [users, setUsers] = useState({});
-
-  useEffect(() => {
-    const socket = io();
-    setSocket(socket);
-
-    socket.on('connect', () => {
-      console.log('Connected.');
-      setUsers(props.users);
-    });
-
-    socket.on('system', data => {
-      // console.log(data);
-      setMessages(prev => [data.message, ...prev]);
-      setUsers(data.roomUsers);
-    });
-
-    socket.on('public', data => {
-      const message = `${data.username}: ${data.msg}`;
-      setMessages(prev => [message, ...prev]); // Keeps all messages in history right now
-    });
-
-    socket.on('private', data => {
-      const message = `PM from ${data.username}: ${data.msg}`;
-      setMessages(prev => [message, ...prev]); // Same as public. DRY later
-    });
-
-    socket.on('serveRoom', data => {
-      setUsers(data.users);
-    });
-
-    return () => socket.disconnect();
-  }, [props.users]);
+  const { messages, setMessages, socket, to, setTo, msg, setMsg } = useContext(roomContext);
 
   const send = function() {
     socket.emit('message', {msg, to});
@@ -52,9 +16,9 @@ const Chat = function(props) {
     };
     setMsg('');
   };
-
+  
   const messageList = messages.map((message, i) => {
-    return <ChatMessage index={i} message={message} color={'no color set'}/>;
+    return <ChatMessage index={i} message={message} user={'no user set'}/>;
   });
 
   return (
@@ -72,7 +36,5 @@ const Chat = function(props) {
     </section>
   );
 };
-
-
 
 export default Chat;

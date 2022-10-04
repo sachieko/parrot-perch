@@ -5,9 +5,9 @@ import Results from "./Results";
 
 export default function LiveSearch(props) {
   const [results, setResults] = useState([]);
-  let token = '';
-
+  
   useEffect(() => {
+    let token = '';
     if (props.newChannel === '') {
       setResults([])
     }
@@ -35,7 +35,7 @@ export default function LiveSearch(props) {
         })
           .then(response => {
             setResults([...response.data.data])
-            console.log(results);
+            // console.log(results);
           })
           .catch((e) => {
             console.log(e);

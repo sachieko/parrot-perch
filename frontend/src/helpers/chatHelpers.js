@@ -9,6 +9,7 @@ const random_rgba = function() {
 exports.random_rgba = random_rgba;
 
 // This function takes in a message and a userColors object, and returns the style property for that particular user.
+// NOT FULLY IMPLEMENTED YET
 const getUserColor = function(message, userColors) {
   console.log(message.split(':'));
 };
