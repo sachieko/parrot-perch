@@ -9,19 +9,51 @@ const http = app.listen(8080, () => {
 
 const clients = {};
 const io = new Server(http);
+const rooms = {};
 
 io.on('connection', client => {
   const name = uniqueNamesGenerator({
     dictionaries: [starWars]
   });
 
-  console.log('Client Connected!', name, ':', client.id);
+  const random_rgba = function() {
+    const o = Math.round, r = Math.random, s = 255;
+    return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+  };
 
-  client.emit('system', `Arr, welcome to the room ${name}!`);
-  client.broadcast.emit('system', `Arr, ye've been boarded by ${name}!`);
-
-  clients[name] = client.id;  // Add client to lookup object. We will need to do more work to implement private rooms.
+  const color = random_rgba();
+  // console.log('Client Connected!', name, ':', client.id);
+  
+  clients[name] = {id: client.id};  // Add client to lookup object. This is server information only.
   // console.log('Clients: ', clients);
+
+  client.on('createOrJoinRoom', (req) => {
+    const room = req.room;
+    client.join(room.name);
+    if (!rooms[room.name]) {
+      rooms[room.name] = room; // new room
+      rooms[room.name].users = []; // new user array
+    }
+    const user = { 
+      name,
+      color
+    };
+    rooms[room.name].users.push(user);
+    client.emit('serveRoom', { room: rooms[room.name], users: rooms[room.name].users });
+  });
+
+  client.on('editRoom', (req) => {
+    //possible to sanitize data here.
+    const room = req.room;
+    rooms[room.name].channel = room.channel;
+    rooms[room.name].users = room.users;
+    client.to(room.name).emit('serveRoom', { room: rooms[room.name], users: rooms[room.name].users });
+    client.emit('serveRoom', { room: rooms[room.name], users: rooms[room.name].users });
+  });
+
+
+  client.broadcast.emit('system', {message: `Arr, ye've been boarded by ${name}!`, roomUsers});
+  client.emit('system', {message: `Arr, welcome to the room ${name}!`, roomUsers});
 
 
   client.on('message', data => {
@@ -33,7 +65,7 @@ io.on('connection', client => {
       client.broadcast.emit('public', {msg, username});
       return;
     }
-    const id = clients[to];
+    const id = clients[to].id;
     // console.log(`Sending message to ${to}:${id}`);
     io.to(id).emit('private', {msg, username});
   })
@@ -41,6 +73,7 @@ io.on('connection', client => {
   client.on('disconnect', () => {
     console.log('Client Disconnected', name, ':', client.id);
     client.broadcast.emit('system', `${name} has just walked the plank!`);
+    rooms[room.name].users.filter(user => user.name !== name);
     delete clients[name];
   });
 });

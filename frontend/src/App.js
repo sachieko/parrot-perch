@@ -1,20 +1,15 @@
 import './App.css';
-import io from 'socket.io-client'
-import { useEffect } from 'react';
+import Chat from './components/Chat';
 
-function App() {
+const App = function() {
 
-  useEffect(() => {
-    const socket = io();
-    socket.on('connect', () => {
-      console.log('connected')
-    })
-    return () => socket.disconnect(); // prevents memory leaks
-  }, [])
   return (
-    <div className="App">
+    <div className="Parrot-perch">
       <h1>Hello World!</h1>
+
+      <Chat />
     </div>
+
   );
 }
 
