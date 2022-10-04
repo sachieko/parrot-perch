@@ -21,6 +21,7 @@ export default function RoomProvider(props) {
 
     socket.on('connect', () => {
       console.log('connected');
+      
     });
 
     socket.on('serveRoom', (res) => {
@@ -28,12 +29,18 @@ export default function RoomProvider(props) {
       setRoom((oldRoom) => {
         return { ...oldRoom, name: room.name, channel: room.channel, users: room.users };
       });
+      const message = `Welcome aboard ${room.users.slice(-1)[0].name}!`; // Get the most recently joined user and welcome them.
+      setMessages(prev => [message, ...prev]);
       setIsViewing(true);
     });
 
     socket.on('system', data => {
       // console.log(data);
-      setMessages(prev => [data.message, ...prev]);
+      const { message, room } = data
+      setRoom((oldRoom) => {
+        return { ...oldRoom, name: room.name, channel: room.channel, users: room.users };
+      });
+      setMessages(prev => [message, ...prev]);
     });
 
     socket.on('public', data => {
@@ -43,14 +50,13 @@ export default function RoomProvider(props) {
 
     socket.on('private', data => {
       const message = `PM from ${data.username}: ${data.msg}`;
-      setMessages(prev => [message, ...prev]); // Same as public. DRY later
+      setMessages(prev => [message, ...prev]); // Same as public. 
     });
 
     return () => socket.disconnect();
   }, []);
 
   const roomData = { to, setTo, messages, setMessages, msg, setMsg, socket, setSocket, isViewing, setIsViewing, room, setRoom };
-
   return (
     <roomContext.Provider value={roomData}>
       {props.children}

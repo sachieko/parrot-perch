@@ -8,19 +8,22 @@ import { roomContext } from '../providers/RoomProvider';
 const Chat = function(props) {
   const { messages, setMessages, socket, to, setTo, msg, setMsg, room } = useContext(roomContext);
   const users = room.users;
-
   const send = function() {
     socket.emit('message', {msg, room, to});
     if (to) {
       const message = `PM to ${to}:${msg}`;
       setMessages(prev => [message, ...prev]);
     };
-    
+
     setMsg('');
   };
   
   const messageList = messages.map((message, i) => {
     return <ChatMessage index={i} message={message} user={'no user set'}/>;
+  });
+
+  const userList = users.map((user, i) => {
+    return <li key={i}>{user.name}</li>;
   });
 
   return (
@@ -35,6 +38,9 @@ const Chat = function(props) {
       <div id='message-list'> 
         {messageList}
       </div>
+      <ul>
+        {userList}
+      </ul>
     </section>
   );
 };
