@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ChangeChannel from './ChangeChannel';
+// import ChangeChannel from './ChangeChannel';
 import LiveSearch from './LiveSearch';
 
 function ViewRoom(props) {
@@ -9,9 +9,9 @@ function ViewRoom(props) {
     e.preventDefault();
     props.socket.emit('editRoom', { room: { ...props.room, channel: streamerName } });
     setNewChannel('');
-    console.log("handleChannel was triggered")
-    // console.log(streamerName);
-  }
+    // console.log("handleChannel was triggered")
+    // console.log(newChannel);
+  };
 
   if (props.room.channel) {
     return (
