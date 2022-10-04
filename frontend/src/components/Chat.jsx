@@ -6,14 +6,16 @@ import { roomContext } from '../providers/RoomProvider';
 
 
 const Chat = function(props) {
-  const { messages, setMessages, socket, to, setTo, msg, setMsg } = useContext(roomContext);
+  const { messages, setMessages, socket, to, setTo, msg, setMsg, room } = useContext(roomContext);
+  const users = room.users;
 
   const send = function() {
-    socket.emit('message', {msg, to});
+    socket.emit('message', {msg, room, to});
     if (to) {
       const message = `PM to ${to}:${msg}`;
       setMessages(prev => [message, ...prev]);
     };
+    
     setMsg('');
   };
   
