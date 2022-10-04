@@ -18,6 +18,7 @@ const Chat = function(props) {
 
     socket.on('connect', () => {
       console.log('Connected.');
+      setUsers(props.users);
     });
 
     socket.on('system', data => {
@@ -28,7 +29,7 @@ const Chat = function(props) {
 
     socket.on('public', data => {
       const message = `${data.username}: ${data.msg}`;
-      setMessages(prev => [message, ...prev]); // Change this socket event for keeping only X amount of messages in history. Right now it keeps all.
+      setMessages(prev => [message, ...prev]); // Keeps all messages in history right now
     });
 
     socket.on('private', data => {
@@ -41,7 +42,7 @@ const Chat = function(props) {
     });
 
     return () => socket.disconnect();
-  }, []);
+  }, [props.users]);
 
   const send = function() {
     socket.emit('message', {msg, to});

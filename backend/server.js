@@ -10,6 +10,7 @@ const http = app.listen(8080, () => {
 const clients = {};
 const io = new Server(http);
 const rooms = {};
+<<<<<<< HEAD
 
 io.on('connection', client => {
   const name = uniqueNamesGenerator({
@@ -26,12 +27,17 @@ io.on('connection', client => {
   
   clients[name] = {id: client.id};  // Add client to lookup object. This is server information only.
   // console.log('Clients: ', clients);
+=======
+io.on('connection', client => {
+  console.log("Client Connected!");
+>>>>>>> main
 
   client.on('createOrJoinRoom', (req) => {
     const room = req.room;
     client.join(room.name);
     if (!rooms[room.name]) {
       rooms[room.name] = room; // new room
+<<<<<<< HEAD
       rooms[room.name].users = []; // new user array
     }
     const user = { 
@@ -40,12 +46,17 @@ io.on('connection', client => {
     };
     rooms[room.name].users.push(user);
     client.emit('serveRoom', { room: rooms[room.name], users: rooms[room.name].users });
+=======
+    }
+    client.emit('serveRoom', { room: rooms[room.name] });
+>>>>>>> main
   });
 
   client.on('editRoom', (req) => {
     //possible to sanitize data here.
     const room = req.room;
     rooms[room.name].channel = room.channel;
+<<<<<<< HEAD
     rooms[room.name].users = room.users;
     client.to(room.name).emit('serveRoom', { room: rooms[room.name], users: rooms[room.name].users });
     client.emit('serveRoom', { room: rooms[room.name], users: rooms[room.name].users });
@@ -75,5 +86,13 @@ io.on('connection', client => {
     client.broadcast.emit('system', `${name} has just walked the plank!`);
     rooms[room.name].users.filter(user => user.name !== name);
     delete clients[name];
+=======
+    client.to(room.name).emit('serveRoom', { room: rooms[room.name] });
+    client.emit('serveRoom', { room: rooms[room.name] });
+  });
+
+  client.on("disconnect", () => {
+    console.log("Client Disconnected");
+>>>>>>> main
   });
 });
