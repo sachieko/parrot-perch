@@ -1,5 +1,5 @@
 import './App.css';
-import ConditionalRenderer from './components/conditionalRenderer'
+import ConditionalRenderer from './components/ConditionalRenderer'
 
 function App() {
   return (

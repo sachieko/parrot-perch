@@ -1,6 +1,32 @@
 const { Server } = require('socket.io');
 const express = require('express');
 const app = express();
+const spotifyWebApi = require('spotify-web-api-node');
+
+const credentials = {
+  clientId: 'deae5d0e24684efda2fd5ccf605f4029',
+  clientSecret: '87b4b8fc0eaf44e689c009ca2ebd8c4b',
+  redirectUri: 'http://localhost:3000/',
+};
+
+
+app.use(express.json());
+
+app.post('/login', (req,res) => {
+      let spotifyApi = new spotifyWebApi(credentials);  
+      const code = req.body.code
+      console.log(code);
+      spotifyApi.authorizationCodeGrant(code).then((data) => {
+          res.json({
+              accessToken : data.body.access_token,
+          }) 
+      })
+      .catch((err) => {
+          console.log(err);
+          res.sendStatus(400)
+      })
+  
+  })
 
 const http = app.listen(8080, () => {
   console.log(`Server running at port: 8080`);

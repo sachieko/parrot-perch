@@ -1,4 +1,4 @@
-import ChangeChannel from '../changeChannel';
+import ChangeChannel from '../ChangeChannel';
 import { useState } from 'react';
 function Twitch(props) {
   const [newChannel, setNewChannel] = useState('');

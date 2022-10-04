@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import ToggleButton from 'react-bootstrap/ToggleButton';
-import Twitch from './apis/twitch';
-import Spotify from './apis/spotify';
+import Twitch from './apis/Twitch';
+import Spotify from './apis/spotify/Spotify';
+
+const code = new URLSearchParams(window.location.search).get('code')
 
 function ViewRoom(props) {
   const [apis, setApis] = useState(
     [{ name: 'twitch', selected: true },
-     { name: 'spotify', selected: true }]);
+    { name: 'spotify', selected: true }]);
 
   const selectApi = (i) => {
-    console.log(i);
     setApis((oldApis) => {
       const selectingApi = { ...oldApis[i], selected: !oldApis[i].selected };
       const newApis = [...oldApis];
@@ -27,6 +28,7 @@ function ViewRoom(props) {
       checked={api.selected}
       value="1"
       onClick={() => selectApi(i)}
+      key={i}
     >
       {api.name}
     </ToggleButton>
@@ -37,7 +39,7 @@ function ViewRoom(props) {
       Room Name: {props.room.name}
       {apiSwitches}
       {apis[0].selected && <Twitch room={props.room} socket={props.socket} />}
-      {apis[1].selected && <Spotify />}
+      {apis[1].selected && <Spotify code={code} />}
     </div>
   )
 }
