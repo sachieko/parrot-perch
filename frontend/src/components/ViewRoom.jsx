@@ -1,48 +1,40 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 // import ChangeChannel from './ChangeChannel';
 import LiveSearch from './LiveSearch';
+import { roomContext } from '../providers/RoomProvider';
 
 function View(props) {
-  const [newChannel, setNewChannel] = useState('');
+  const { room } = useContext(roomContext)
 
-  const handleChannel = function (e, streamerName) {
-    e.preventDefault();
-    props.socket.emit('editRoom', { room: { ...props.room, channel: streamerName } });
-    setNewChannel('');
-    // console.log("handleChannel was triggered");
-    // console.log(streamerName);
-  };
+  
   const hostURL = 'localhost' // Update this when deployed
   return (
     <div>
-      Room Name: {props.room.name}
+      Room Name: {room.name}
       {/* <ChangeChannel
         value={newChannel}
         onClick={handleChannel}
         onChange={(e) => setNewChannel(e.target.value)}
       /> */}
       <LiveSearch
-        setNewChannel={setNewChannel}
-        handleChannel={handleChannel}
-        newChannel={newChannel}
       />
       <div>
         <iframe
           display='inline'
-          src={`https://player.twitch.tv/?channel=${props.room.channel}&parent=${hostURL}`}
+          src={`https://player.twitch.tv/?channel=${room.channel}&parent=${hostURL}`}
           height="480"
           width="69%"
           allowFullScreen
-          title={props.room.name}>
+          title={room.name}>
         </iframe>
         <iframe
           display="inline"
           frameBorder="0"
           scrolling="no"
-          src={`https://www.twitch.tv/embed/${props.room.channel}/chat?darkpopout&parent=${hostURL}`}
+          src={`https://www.twitch.tv/embed/${room.channel}/chat?darkpopout&parent=${hostURL}`}
           height="480"
           width="30%"
-          title={props.room.name}>
+          title={room.name}>
         </iframe>
       </div>
     </div>

@@ -1,19 +1,27 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useCallback } from "react";
+import axios from "axios";
 import io from "socket.io-client";
+import useDebounce from "../hooks/useDebounce";
 
 export const roomContext = createContext();
 
 export default function RoomProvider(props) {
-  const [to, setTo] = useState('');
-  const [messages, setMessages] = useState([]);
-  const [msg, setMsg] = useState('');
+  // room and socket state for a client
   const [socket, setSocket] = useState();
-  const [isViewing, setIsViewing] = useState(false);
   const [room, setRoom] = useState({
     name: '',
     channel: '',
     users: []
   });
+  const [isViewing, setIsViewing] = useState(false);
+  // Chat only state
+  const [to, setTo] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [msg, setMsg] = useState('');
+  // Channel changing state
+  const [newChannel, setNewChannel] = useState('');
+  const [searchValue, setSearchValue] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     const socket = io();
@@ -29,8 +37,10 @@ export default function RoomProvider(props) {
       setRoom((oldRoom) => {
         return { ...oldRoom, name: room.name, channel: room.channel, users: room.users };
       });
-      const message = `Welcome aboard ${room.users.slice(-1)[0].name}!`; // Get the most recently joined user and welcome them.
-      setMessages(prev => [message, ...prev]);
+      const message = res.message;
+      if (message) {
+        setMessages(prev => [message, ...prev]);
+      }
       setIsViewing(true);
     });
 
@@ -56,7 +66,69 @@ export default function RoomProvider(props) {
     return () => socket.disconnect();
   }, []);
 
-  const roomData = { to, setTo, messages, setMessages, msg, setMsg, socket, setSocket, isViewing, setIsViewing, room, setRoom };
+  useEffect(() => {
+    let token = '';
+    if (newChannel === '') {
+      setSearchResults([])
+      return;
+    }
+    const searchURL = `https://api.twitch.tv/helix/search/channels?query=${newChannel}`;
+    axios.post('https://id.twitch.tv/oauth2/token', {
+      client_id: process.env.REACT_APP_CLIENT_ID,
+      client_secret: process.env.REACT_APP_CLIENT_SECRET,
+      grant_type: process.env.REACT_APP_GRANT_TYPE
+    })
+      .then(response => {
+        token = response.data.access_token
+
+        axios.get('https://id.twitch.tv/oauth2/validate', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+      })
+      .then(response => {
+        axios.get(searchURL, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Client-Id': process.env.REACT_APP_CLIENT_ID
+          }
+        })
+          .then(response => {
+            setSearchResults([...response.data.data])
+            // console.log(results);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, [newChannel]);
+
+  const term = useDebounce(searchValue, 200);
+
+  const onSearch = useCallback(setNewChannel, [term]);
+
+  useEffect(() => {
+    onSearch(term);
+    setNewChannel(term);
+  }, [term, onSearch]);
+
+  // Export any usable state or state setters (or custom functions to set state) by declaring them here.
+  const roomData = { 
+    to, setTo, 
+    messages, setMessages, 
+    msg, setMsg, 
+    socket, setSocket, 
+    isViewing, setIsViewing, 
+    room, setRoom,
+    newChannel, setNewChannel,
+    searchResults, setSearchResults,
+    searchValue, setSearchValue
+   };
+
   return (
     <roomContext.Provider value={roomData}>
       {props.children}

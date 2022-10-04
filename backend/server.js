@@ -41,8 +41,10 @@ io.on('connection', client => {
     };
     rooms[room.name].users.push(user);
     clients[name].rooms.push(room.name);
+    const id = clients[name].id
     client.emit('serveRoom', { room: rooms[room.name] });
     client.to(room.name).emit('system', {message: `Arr, ye've been boarded by ${name}!`, room: rooms[room.name] });
+    io.to(id).emit('system', {message: `Welcome to the room, ${name}!`, room: rooms[room.name] })
   });
 
   client.on('editRoom', (req) => {
