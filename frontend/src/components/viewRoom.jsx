@@ -1,22 +1,30 @@
 import { useState } from 'react';
 import ChangeChannel from './changeChannel';
+import LiveSearch from './LiveSearch';
 
 function ViewRoom(props) {
   const [newChannel, setNewChannel] = useState('');
 
-  const handleChannel = function (e) {
+  const handleChannel = function (e, streamerName) {
     e.preventDefault();
-    props.socket.emit('editRoom', { room: { ...props.room, channel: newChannel } });
+    props.socket.emit('editRoom', { room: { ...props.room, channel: streamerName } });
     setNewChannel('');
+    console.log("handleChannel was triggered")
+    console.log(streamerName);
   }
 
   return (
     <div>
       Room Name: {props.room.name}
-      <ChangeChannel
+      {/* <ChangeChannel
         value={newChannel}
         onClick={handleChannel}
         onChange={(e) => setNewChannel(e.target.value)}
+      /> */}
+      <LiveSearch
+        setNewChannel={setNewChannel}
+        handleChannel={handleChannel}
+        newChannel={newChannel}
       />
       <div>
         <iframe
