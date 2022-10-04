@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import { useState, useEffect } from 'react';
-import JoinRoom from './joinRoom';
-import ViewRoom from './viewRoom';
+import JoinRoom from './JoinRoom';
+import ViewRoom from './ViewRoom';
 
 function ConditionalRenderer() {
   const [socket, setSocket] = useState();

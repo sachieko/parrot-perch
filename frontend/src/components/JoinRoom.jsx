@@ -1,4 +1,4 @@
-function JoinRoom(props) {
+function JoinRoom (props) {
   return (
     <form>
       <label>

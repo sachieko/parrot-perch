@@ -1,4 +1,4 @@
-function ChangeChannel(props) {
+function ChangeChannel (props) {
   return (
     <div>
       <form onSubmit={props.onClick}>
