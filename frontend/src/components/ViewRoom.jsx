@@ -13,40 +13,53 @@ function ViewRoom(props) {
     // console.log(streamerName);
   }
 
-  return (
-    <div>
-      Room Name: {props.room.name}
-      {/* <ChangeChannel
+  if (props.room.channel) {
+    return (
+      <div>
+        Room Name: {props.room.name}
+        {/* <ChangeChannel
         value={newChannel}
         onClick={handleChannel}
         onChange={(e) => setNewChannel(e.target.value)}
       /> */}
-      <LiveSearch
-        setNewChannel={setNewChannel}
-        handleChannel={handleChannel}
-        newChannel={newChannel}
-      />
-      <div>
-        <iframe
-          display='inline'
-          src={`https://player.twitch.tv/?channel=${props.room.channel}&parent=localhost`}
-          height="480"
-          width="69%"
-          allowFullScreen
-          title={props.room.name}>
-        </iframe>
-        <iframe
-          display="inline"
-          frameBorder="0"
-          scrolling="no"
-          src={`https://www.twitch.tv/embed/${props.room.channel}/chat?darkpopout&parent=localhost`}
-          height="480"
-          width="30%"
-          title={props.room.name}>
-        </iframe>
+        <LiveSearch
+          setNewChannel={setNewChannel}
+          handleChannel={handleChannel}
+          newChannel={newChannel}
+        />
+        <div>
+          <iframe
+            display='inline'
+            src={`https://player.twitch.tv/?channel=${props.room.channel}&parent=localhost`}
+            height="480"
+            width="69%"
+            allowFullScreen
+            title={props.room.name}>
+          </iframe>
+          <iframe
+            display="inline"
+            frameBorder="0"
+            scrolling="no"
+            src={`https://www.twitch.tv/embed/${props.room.channel}/chat?darkpopout&parent=localhost`}
+            height="480"
+            width="30%"
+            title={props.room.name}>
+          </iframe>
+        </div>
       </div>
-    </div>
-  )
+    )
+  } else {
+    return (
+      <div>
+        Room Name: {props.room.name}
+        <LiveSearch
+          setNewChannel={setNewChannel}
+          handleChannel={handleChannel}
+          newChannel={newChannel}
+        />
+      </div>
+    )
+  }
 }
 
 export default ViewRoom;
