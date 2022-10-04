@@ -4,15 +4,14 @@ import SearchBar from "./SearchBar";
 import Results from "./Results";
 
 export default function LiveSearch(props) {
-  const [term, setTerm] = useState("");
   const [results, setResults] = useState([]);
   let token = '';
 
   useEffect(() => {
-    if (term === '') {
+    if (props.newChannel === '') {
       setResults([])
     }
-    const testURL = `https://api.twitch.tv/helix/search/channels?query=${term}`;
+    const testURL = `https://api.twitch.tv/helix/search/channels?query=${props.newChannel}`;
     axios.post('https://id.twitch.tv/oauth2/token', {
       client_id: process.env.REACT_APP_CLIENT_ID,
       client_secret: process.env.REACT_APP_CLIENT_SECRET,
@@ -45,13 +44,18 @@ export default function LiveSearch(props) {
       .catch((e) => {
         console.log(e);
       });
-  }, [term]);
+  }, [props.newChannel]);
 
   return (
     <Fragment>
       <main>
-        <SearchBar onSearch={term => setTerm(term)} />
-        <Results results={results} />
+        <SearchBar
+          setNewChannel={props.setNewChannel}
+        />
+        <Results
+          results={results}
+          handleChannel={props.handleChannel}
+        />
       </main>
     </Fragment>
   );
