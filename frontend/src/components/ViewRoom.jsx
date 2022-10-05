@@ -1,48 +1,51 @@
 import { useContext } from 'react';
 // import ChangeChannel from './ChangeChannel';
 import Youtube from './apis/Youtube';
-import Twitch from './apis/twitch/Twitch'
+import Twitch from './apis/Twitch/'
 import { roomContext } from '../providers/RoomProvider';
 import { useState } from 'react';
 import ToggleButton from 'react-bootstrap/ToggleButton';
+import Chat from './Chat';
 
 
 function View(props) {
   const { room } = useContext(roomContext);
-  const [apis, setApis] = useState(
+  const [widgetSwitches, setWidgetSwitches] = useState(
     [{ name: 'twitch', selected: false },
-    { name: 'youtube', selected: true }]);
+    { name: 'youtube', selected: true },
+    { name: 'chat', selected: true }]);
 
-  const selectApi = (i) => {
-    setApis((oldApis) => {
-      const selectingApi = { ...oldApis[i], selected: !oldApis[i].selected };
-      const newApis = [...oldApis];
-      newApis[i] = selectingApi;
-      return newApis;
+  const selectSwitch = (i) => {
+    setWidgetSwitches((oldSwitches) => {
+      const selectingSwitch = { ...oldSwitches[i], selected: !oldSwitches[i].selected };
+      const newSwitches = [...oldSwitches];
+      newSwitches[i] = selectingSwitch;
+      return newSwitches;
     });
   }
 
-  const apiSwitches = apis.map((api, i) => {
+  const showSwitches = widgetSwitches.map((switcher, i) => {
     return <ToggleButton
       className="mb-2"
       id="toggle-check"
       type="checkbox"
       variant="outline-primary"
-      checked={api.selected}
+      checked={switcher.selected}
       value="1"
-      onClick={() => selectApi(i)}
+      onClick={() => selectSwitch(i)}
       key={i}
     >
-      {api.name}
+      {switcher.name}
     </ToggleButton>
   });
 
   return (
     <div>
       Room Name: {room.name}
-      {apiSwitches}
-      {apis[0].selected && <Twitch />}
-      {apis[1].selected && <Youtube />}
+      {showSwitches}
+      {widgetSwitches[0].selected && <Twitch />}
+      {widgetSwitches[1].selected && <Youtube />}
+      {widgetSwitches[2].selected && <Chat />}
     </div>
   );
 };

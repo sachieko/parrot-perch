@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import Join from './JoinRoom';
 import View from './ViewRoom';
-import Chat from './Chat';
 import { roomContext } from '../providers/RoomProvider';
 
 function Room() {
@@ -22,14 +21,11 @@ function Room() {
         />
       }
       {isViewing &&
-        <>
         <View
           room={room}
           setRoom={setRoom}
           socket={socket}
         />
-        <Chat />
-        </>
       }
     </>
   )
