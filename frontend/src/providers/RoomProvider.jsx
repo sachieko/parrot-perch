@@ -75,7 +75,7 @@ export default function RoomProvider(props) {
       setSearchResults([])
       return;
     }
-    const searchURL = `https://api.twitch.tv/helix/search/channels?query=${newChannel}`;
+    const searchURL = `https://api.twitch.tv/helix/search/channels?query=${newChannel}&live_only=true`;
     axios.post('https://id.twitch.tv/oauth2/token', {
       client_id: process.env.REACT_APP_CLIENT_ID,
       client_secret: process.env.REACT_APP_CLIENT_SECRET,
