@@ -1,6 +1,7 @@
 import './App.css';
 import Room from './components/Room'
 import RoomProvider from './providers/RoomProvider';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = function() {
 

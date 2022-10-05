@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import "./SearchBar.scss";
-import { roomContext } from '../providers/RoomProvider';
+import { roomContext } from '../../../providers/RoomProvider';
 
 export default function SearchBar(props) {
   const { newChannel, setNewChannel } = useContext(roomContext);
