@@ -51,6 +51,7 @@ io.on('connection', client => {
     //possible to sanitize data here.
     const room = req.room;
     rooms[room.name].channel = room.channel;
+    rooms[room.name].youtubeVideo = room.youtubeVideo;
     client.to(room.name).emit('serveRoom', { room: rooms[room.name] });
     client.emit('serveRoom', { room: rooms[room.name] });
   });

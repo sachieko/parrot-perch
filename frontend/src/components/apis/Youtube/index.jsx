@@ -2,9 +2,12 @@ import axios from 'axios';
 import he from 'he';
 import YoutubePlayer from 'react-youtube';
 import { useState } from 'react';
+import { roomContext } from '../../../providers/RoomProvider';
+import { useContext } from 'react';
 
 const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY
 function Youtube() {
+  const { socket, room } = useContext(roomContext);
   const [player, setPlayer] = useState();
   const [term, setTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
@@ -37,7 +40,7 @@ function Youtube() {
       .then((res) => {
         const list = [];
         for (const i of res.data.items) {
-          let ply = {}
+          let ply = {};
           ply.id = i.id.videoId;
           ply.thumb = i.snippet.thumbnails.default.url;
           ply.title = he.decode(i.snippet.title, "text/html");
@@ -51,9 +54,14 @@ function Youtube() {
     setTerm(e.target.value);
   }
 
+  const enterURL = (e, vid) => {
+    socket.emit('editRoom', { room: { ...room, youtubeVideo: vid } });
+    setVideoId(vid);
+  }
+
   const displaySuggestions = suggestions.map((r, i) => {
     return (
-      <article key={i} onClick={() => setVideoId(r.id)}>
+      <article key={i} onClick={(e) => enterURL(e, r.id)}>
         <img alt='thumbnail' style={{ height: '4em' }} src={r.thumb} />
         {r.title}
       </article>
@@ -64,7 +72,7 @@ function Youtube() {
     <div>
       <input type='text' value={term} placeholder='Search Youtube' onChange={typing} />
       {displaySuggestions}
-      <YoutubePlayer videoId={videoId} opts={opts} onReady={onReady} onStateChange={printChange} />
+      <YoutubePlayer videoId={room.youtubeVideo} opts={opts} onReady={onReady} onStateChange={printChange} />
       <button onClick={seek}>seek</button>
     </div>
   );

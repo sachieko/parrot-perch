@@ -11,6 +11,8 @@ function Room() {
     socket.emit('createOrJoinRoom', { room });
   };
 
+  console.log(room);
+  
   return (
     <>
       {!isViewing &&

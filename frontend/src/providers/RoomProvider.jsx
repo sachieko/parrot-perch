@@ -11,6 +11,7 @@ export default function RoomProvider(props) {
   const [room, setRoom] = useState({
     name: '',
     channel: '',
+    youtubeVideo: '',
     users: []
   });
   const [isViewing, setIsViewing] = useState(false);
@@ -37,7 +38,7 @@ export default function RoomProvider(props) {
     socket.on('serveRoom', (res) => {
       const room = res.room;
       setRoom((oldRoom) => {
-        return { ...oldRoom, name: room.name, channel: room.channel, users: room.users };
+        return { ...oldRoom, name: room.name, channel: room.channel, youtubeVideo: room.youtubeVideo, users: room.users };
       });
       const message = res.message;
       if (message) {
