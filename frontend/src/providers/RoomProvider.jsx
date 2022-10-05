@@ -38,6 +38,7 @@ export default function RoomProvider(props) {
     socket.on('serveRoom', (res) => {
       const room = res.room;
       setRoom((oldRoom) => {
+        // Possibly store hashed user identifier in local storage?
         return { ...oldRoom, name: room.name, channel: room.channel, users: room.users };
       });
       const message = res.message;
