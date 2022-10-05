@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 // import ChangeChannel from './ChangeChannel';
 import Youtube from './apis/Youtube';
-import Twitch from './apis/twitch'
+import Twitch from './apis/Twitch';
 import { roomContext } from '../providers/RoomProvider';
 import { useState } from 'react';
 import ToggleButton from 'react-bootstrap/ToggleButton';
