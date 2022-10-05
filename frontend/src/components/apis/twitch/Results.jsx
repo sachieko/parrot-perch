@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { roomContext } from "../../providers/RoomProvider";
+import { roomContext } from "../../../providers/RoomProvider";
 import Channel from "./Channel";
 
 
