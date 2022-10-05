@@ -10,10 +10,10 @@ export default function RoomProvider(props) {
   const [socket, setSocket] = useState();
   const [room, setRoom] = useState({
     name: '',
+    password: '',
     channel: '',
     users: []
   });
-  const [password, setPassword] = useState('');
   const [isViewing, setIsViewing] = useState(false);
   // Chat only state
   const [to, setTo] = useState('');
