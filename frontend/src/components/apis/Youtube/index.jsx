@@ -11,7 +11,6 @@ function Youtube() {
   const [player, setPlayer] = useState();
   const [term, setTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const [videoId, setVideoId] = useState('');
 
   const opts = useState({
     height: '390',
@@ -19,7 +18,7 @@ function Youtube() {
     playerVars: {
       autoplay: 1,
       mute: 1,
-      start: 0
+      start: room.youtubeVideo.duration
     }
   })[0];
 
@@ -55,8 +54,10 @@ function Youtube() {
   }
 
   const enterURL = (e, vid) => {
-    socket.emit('editRoom', { room: { ...room, youtubeVideo: vid } });
-    setVideoId(vid);
+    const ytvideo = {...room.youtubeVideo }
+    ytvideo.channel = vid;
+    ytvideo.duration = 10;
+    socket.emit('editRoom', { room: { ...room,  youtubeVideo: ytvideo } });
   }
 
   const displaySuggestions = suggestions.map((r, i) => {
@@ -72,7 +73,7 @@ function Youtube() {
     <div>
       <input type='text' value={term} placeholder='Search Youtube' onChange={typing} />
       {displaySuggestions}
-      <YoutubePlayer videoId={room.youtubeVideo} opts={opts} onReady={onReady} onStateChange={printChange} />
+      <YoutubePlayer videoId={room.youtubeVideo.channel} opts={opts} onReady={onReady} onStateChange={printChange} />
       <button onClick={seek}>seek</button>
     </div>
   );

@@ -32,13 +32,22 @@ export default function RoomProvider(props) {
 
     socket.on('connect', () => {
       console.log('connected');
-      
+
     });
 
     socket.on('serveRoom', (res) => {
       const room = res.room;
       setRoom((oldRoom) => {
-        return { ...oldRoom, name: room.name, channel: room.channel, youtubeVideo: room.youtubeVideo, users: room.users };
+        return {
+          ...oldRoom,
+          name: room.name,
+          channel: room.channel,
+          youtubeVideo: {
+            channel: room.youtubeVideo,
+            duration: 0
+          },
+          users: room.users
+        };
       });
       const message = res.message;
       if (message) {
@@ -123,17 +132,17 @@ export default function RoomProvider(props) {
 
 
   // Export any usable state or state setters (or custom functions to set state) by declaring them here.
-  const roomData = { 
-    to, setTo, 
-    messages, setMessages, 
-    msg, setMsg, 
-    socket, setSocket, 
-    isViewing, setIsViewing, 
+  const roomData = {
+    to, setTo,
+    messages, setMessages,
+    msg, setMsg,
+    socket, setSocket,
+    isViewing, setIsViewing,
     room, setRoom,
     newChannel, setNewChannel,
     searchResults, setSearchResults,
     searchValue, setSearchValue
-   };
+  };
 
   return (
     <roomContext.Provider value={roomData}>
