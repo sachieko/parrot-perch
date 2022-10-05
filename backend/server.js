@@ -12,32 +12,44 @@ const http = app.listen(process.env.PORT, () => {
 const clients = {};
 const io = new Server(http);
 const rooms = {};
-const roomPassword = '';
 
 io.on('connection', client => {
   const name = uniqueNamesGenerator({
     dictionaries: [starWars]
   });
 
-  const random_rgba = function() {
+  const random_rgba = function () {
     const o = Math.round, r = Math.random, s = 255;
-    return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+    return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
   };
 
   const color = random_rgba();
   // console.log('Client Connected!', name, ':', client.id);
-  
-  clients[name] = {id: client.id, rooms: [], color};  // Add client to lookup object. This is for server use.
+
+  clients[name] = { id: client.id, rooms: [], color };  // Add client to lookup object. This is for server use.
 
   client.on('createOrJoinRoom', (req) => {
-    console.log(req)
+    
     const room = req.room;
+
     client.join(room.name);
+
     if (!rooms[room.name]) {
       rooms[room.name] = room; // new room
       rooms[room.name].users = []; // new user array
+      console.log('new room')
+    } else {
+      // password check happens here
+      for (let key in rooms) {
+        // console.log('for..in says hello', rooms[key]);
+        if (room.password !== rooms[key].password) {
+          console.log('not the same pass')
+          return;
+        }
+      }
+
     }
-    const user = { 
+    const user = {
       name,
       color,
     };
@@ -45,8 +57,9 @@ io.on('connection', client => {
     clients[name].rooms.push(room.name);
     const id = clients[name].id
     client.emit('serveRoom', { room: rooms[room.name] });
-    client.to(room.name).emit('system', {message: `Arr, ye've been boarded by ${name}!`, room: rooms[room.name] });
-    io.to(id).emit('system', {message: `Welcome to the room, ${name}!`, room: rooms[room.name] })
+    client.to(room.name).emit('system', { message: `Arr, ye've been boarded by ${name}!`, room: rooms[room.name] });
+    io.to(id).emit('system', { message: `Welcome to the room, ${name}!`, room: rooms[room.name] })
+    console.log('you are in')
   });
 
   client.on('editRoom', (req) => {
@@ -59,18 +72,18 @@ io.on('connection', client => {
 
   client.on('message', data => {
     // console.log('Data received:', data);
-    const {msg, room, to} = data
+    const { msg, room, to } = data
     if (!msg) {
       return;
     }
     const username = name;
     if (!to) {
-      io.to(room.name).emit('public', {msg, username});
+      io.to(room.name).emit('public', { msg, username });
       return;
     }
     const id = clients[to].id;
     // console.log(`Sending message to ${to}:${id}`);
-    io.to(id).emit('private', {msg, username});
+    io.to(id).emit('private', { msg, username });
   })
 
   client.on('disconnect', () => {
