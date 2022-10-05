@@ -1,14 +1,12 @@
 import axios from 'axios';
-import YTSearch from 'youtube-search-api';
+import he from 'he';
 import YoutubePlayer from 'react-youtube';
 import { useState } from 'react';
-
 
 const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY
 function Youtube() {
   const [player, setPlayer] = useState();
   const [term, setTerm] = useState('');
-  const [results, setResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [videoId, setVideoId] = useState('');
 
@@ -35,75 +33,37 @@ function Youtube() {
   }
 
   const typing = (e) => {
+    axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${e.target.value}&key=${API_KEY}`)
+      .then((res) => {
+        const list = [];
+        for (const i of res.data.items) {
+          let ply = {}
+          ply.id = i.id.videoId;
+          ply.thumb = i.snippet.thumbnails.default.url;
+          ply.title = he.decode(i.snippet.title, "text/html");
+          list.push(ply);
+        }
+        setSuggestions(list);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     setTerm(e.target.value);
-    axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${term}&key=${API_KEY}`)
-    .then((res) => {
-      console.log(res);
-      console.log(res.data);
-      const list = [];
-      for (const i of res.data.items){
-        console.log(i.id.videoId);
-        console.log(i.snippet.thumbnails.default);
-        console.log(i.snippet.title);
-        let ply = {}
-        ply.id = i.id.videoId;
-        ply.thumb = i.snippet.thumbnails.default;
-        ply.title = i.snippet.title;
-        list.push(ply);
-      }
-      console.log(list);
-      console.log('pushing');
-      setResults(list);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
   }
 
-  const submitSearch = (event) => {
-    console.log(term);
-    console.log(API_KEY);
-    event.preventDefault();
-    axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${term}&key=${API_KEY}`)
-    .then((res)=>{
-      console.log(res);
-      console.log(res.data);
-      const list = [];
-      for (const i of res.data.items){
-        console.log(i.id.videoId);
-        console.log(i.snippet.thumbnails.default);
-        console.log(i.snippet.title);
-        let ply = {}
-        ply.id = i.id.videoId;
-        ply.thumb = i.snippet.thumbnails.default;
-        ply.title = i.snippet.title;
-        list.push(ply);
-      }
-      console.log(list);
-      console.log('pushing');
-      setResults(list);
-    })
-    .catch((err)=>{
-      console.log(err);
-    });
-  }
-
-  const displayResults = results.map((r, i)=>{
+  const displaySuggestions = suggestions.map((r, i) => {
     return (
-        <article key={i} onClick={() => setVideoId(r.id)}>
-          <img src={r.thumb} />
-          { r.title }
-        </article>
+      <article key={i} onClick={() => setVideoId(r.id)}>
+        <img alt='thumbnail' style={{ height: '4em' }} src={r.thumb} />
+        {r.title}
+      </article>
     )
   })
 
   return (
     <div>
-      <form onSubmit={submitSearch}>
-        <input type='text' value={term} placeholder='Search Youtube' onChange={typing} />
-        <input type='submit'></input>
-      </form>
-      {displayResults}
+      <input type='text' value={term} placeholder='Search Youtube' onChange={typing} />
+      {displaySuggestions}
       <YoutubePlayer videoId={videoId} opts={opts} onReady={onReady} onStateChange={printChange} />
       <button onClick={seek}>seek</button>
     </div>
