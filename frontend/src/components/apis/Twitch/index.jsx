@@ -9,6 +9,7 @@ function Twitch() {
   return (
     <div>
       <LiveSearch />
+      { room.channel && (
       <div>
         <iframe
           display='inline'
@@ -28,6 +29,7 @@ function Twitch() {
           title={room.name}>
         </iframe>
       </div>
+      )}
     </div>
   )
 }
