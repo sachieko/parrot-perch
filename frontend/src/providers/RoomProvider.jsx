@@ -11,7 +11,10 @@ export default function RoomProvider(props) {
   const [room, setRoom] = useState({
     name: '',
     channel: '',
-    youtubeVideo: '',
+    youtubeVideo: {
+      channel: '',
+      duration: 10
+    },
     users: []
   });
   const [isViewing, setIsViewing] = useState(false);
@@ -43,8 +46,8 @@ export default function RoomProvider(props) {
           name: room.name,
           channel: room.channel,
           youtubeVideo: {
-            channel: room.youtubeVideo,
-            duration: 0
+            channel: room.youtubeVideo.channel,
+            duration: room.youtubeVideo.duration,
           },
           users: room.users
         };
