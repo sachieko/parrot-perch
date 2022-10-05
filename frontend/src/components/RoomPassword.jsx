@@ -1,20 +1,17 @@
 import { useState } from "react";
 
-// Input Password Component
-export default function RoomPassword() {
-  // Initialize a boolean state
+export default function RoomPassword(props) {
+
   const [passwordShown, setPasswordShown] = useState(false);
 
-  // Password toggle handler
   const togglePassword = () => {
-    // When the handler is invoked
-    // inverse the boolean state of passwordShown
+
     setPasswordShown(!passwordShown);
   };
 
   return (
     <div>
-      <input type={passwordShown ? "text" : "password"} />
+      <input type={passwordShown ? "text" : "password"} onSubmit={props.onSubmit} />
       <button onClick={togglePassword}>Show Password</button>
     </div>
   );
