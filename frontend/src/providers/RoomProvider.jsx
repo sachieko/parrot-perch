@@ -13,6 +13,7 @@ export default function RoomProvider(props) {
     channel: '',
     users: []
   });
+  const [password, setPassword] = useState('');
   const [isViewing, setIsViewing] = useState(false);
   // Chat only state
   const [to, setTo] = useState('');
@@ -75,7 +76,7 @@ export default function RoomProvider(props) {
       setSearchResults([])
       return;
     }
-    const searchURL = `https://api.twitch.tv/helix/search/channels?query=${newChannel}`;
+    const searchURL = `https://api.twitch.tv/helix/search/channels?query=${newChannel}&live_only=true`;
     axios.post('https://id.twitch.tv/oauth2/token', {
       client_id: process.env.REACT_APP_CLIENT_ID,
       client_secret: process.env.REACT_APP_CLIENT_SECRET,
@@ -112,6 +113,7 @@ export default function RoomProvider(props) {
 
   const term = useDebounce(newChannel, 200);
 
+  // eslint-disable-next-line
   const onSearch = useCallback(setNewChannel, [term]);
 
   // on search use effect

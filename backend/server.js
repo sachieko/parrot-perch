@@ -12,6 +12,7 @@ const http = app.listen(process.env.PORT, () => {
 const clients = {};
 const io = new Server(http);
 const rooms = {};
+const roomPassword = '';
 
 io.on('connection', client => {
   const name = uniqueNamesGenerator({
@@ -24,11 +25,12 @@ io.on('connection', client => {
   };
 
   const color = random_rgba();
-  console.log('Client Connected!', name, ':', client.id);
+  // console.log('Client Connected!', name, ':', client.id);
   
   clients[name] = {id: client.id, rooms: [], color};  // Add client to lookup object. This is for server use.
 
   client.on('createOrJoinRoom', (req) => {
+    console.log(req)
     const room = req.room;
     client.join(room.name);
     if (!rooms[room.name]) {
@@ -72,7 +74,7 @@ io.on('connection', client => {
   })
 
   client.on('disconnect', () => {
-    console.log('Client Disconnected', name, ':', client.id);
+    // console.log('Client Disconnected', name, ':', client.id);
     clients[name].rooms.forEach(roomname => {
       rooms[roomname].users = rooms[roomname].users.filter(user => user.name !== name);
       if (rooms[roomname].users.length === 0) {
