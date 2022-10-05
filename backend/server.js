@@ -11,7 +11,16 @@ const http = app.listen(process.env.PORT, () => {
 
 const clients = {};
 const io = new Server(http);
+
 const rooms = {};
+// rooms object shape = {
+//  name: {
+//    name: 'room name',
+//    password: 'password',
+//    channel: '',
+//    users: [array]
+//  } 
+// }
 
 io.on('connection', client => {
   const name = uniqueNamesGenerator({
@@ -29,37 +38,36 @@ io.on('connection', client => {
   clients[name] = { id: client.id, rooms: [], color };  // Add client to lookup object. This is for server use.
 
   client.on('createOrJoinRoom', (req) => {
-    
+
     const room = req.room;
 
     client.join(room.name);
 
+    
     if (!rooms[room.name]) {
       rooms[room.name] = room; // new room
       rooms[room.name].users = []; // new user array
-      console.log('new room')
-    } else {
-      // password check happens here
-      for (let key in rooms) {
-        // console.log('for..in says hello', rooms[key]);
-        if (room.password !== rooms[key].password) {
-          console.log('not the same pass')
-          return;
-        }
-      }
+      console.log(`New room ${room.name} created`)
+    } 
 
+    // password check happens here
+    if (rooms[room.name].password && room.password !== rooms[room.name].password) {
+      console.log('Incorrect password');
+      return;
     }
+
     const user = {
       name,
       color,
     };
+    console.log(rooms);
     rooms[room.name].users.push(user);
     clients[name].rooms.push(room.name);
     const id = clients[name].id
     client.emit('serveRoom', { room: rooms[room.name] });
     client.to(room.name).emit('system', { message: `Arr, ye've been boarded by ${name}!`, room: rooms[room.name] });
-    io.to(id).emit('system', { message: `Welcome to the room, ${name}!`, room: rooms[room.name] })
-    console.log('you are in')
+    io.to(id).emit('system', { message: `Welcome to the room, ${name}!`, room: rooms[room.name] });
+    console.log(`Welcome to ${room.name}`);
   });
 
   client.on('editRoom', (req) => {
