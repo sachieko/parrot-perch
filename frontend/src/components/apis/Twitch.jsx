@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import LiveSearch from "../LiveSearch";
+import LiveSearch from "./LiveSearch";
 import { roomContext } from '../../providers/RoomProvider';
 
 function Twitch() {
