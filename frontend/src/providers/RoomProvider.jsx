@@ -10,6 +10,7 @@ export default function RoomProvider(props) {
   const [socket, setSocket] = useState();
   const [room, setRoom] = useState({
     name: '',
+    password: '',
     channel: '',
     users: []
   });
@@ -37,6 +38,7 @@ export default function RoomProvider(props) {
     socket.on('serveRoom', (res) => {
       const room = res.room;
       setRoom((oldRoom) => {
+        // Possibly store hashed user identifier in local storage?
         return { ...oldRoom, name: room.name, channel: room.channel, users: room.users };
       });
       const message = res.message;
@@ -112,6 +114,7 @@ export default function RoomProvider(props) {
 
   const term = useDebounce(newChannel, 200);
 
+  // eslint-disable-next-line
   const onSearch = useCallback(setNewChannel, [term]);
 
   // on search use effect
