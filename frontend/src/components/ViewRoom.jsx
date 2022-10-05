@@ -1,38 +1,48 @@
 import { useContext } from 'react';
 // import ChangeChannel from './ChangeChannel';
-import LiveSearch from './LiveSearch';
+import Youtube from './apis/Youtube';
+import Twitch from './apis/Twitch'
 import { roomContext } from '../providers/RoomProvider';
+import { useState } from 'react';
+import ToggleButton from 'react-bootstrap/ToggleButton';
+
 
 function View(props) {
-  const { room } = useContext(roomContext)
+  const { room } = useContext(roomContext);
+  const [apis, setApis] = useState(
+    [{ name: 'twitch', selected: false },
+    { name: 'youtube', selected: true }]);
 
-  
-  const hostURL = 'localhost' // Update this when deployed
+  const selectApi = (i) => {
+    setApis((oldApis) => {
+      const selectingApi = { ...oldApis[i], selected: !oldApis[i].selected };
+      const newApis = [...oldApis];
+      newApis[i] = selectingApi;
+      return newApis;
+    });
+  }
+
+  const apiSwitches = apis.map((api, i) => {
+    return <ToggleButton
+      className="mb-2"
+      id="toggle-check"
+      type="checkbox"
+      variant="outline-primary"
+      checked={api.selected}
+      value="1"
+      onClick={() => selectApi(i)}
+      key={i}
+    >
+      {api.name}
+    </ToggleButton>
+  });
+
   return (
     <div>
       Room Name: {room.name}
-      <LiveSearch />
-      { room.channel && (
-      <div>
-        <iframe
-          display='inline'
-          src={`https://player.twitch.tv/?channel=${room.channel}&parent=${hostURL}`}
-          height="480"
-          width="69%"
-          allowFullScreen
-          title={room.name}>
-        </iframe>
-        <iframe
-          display="inline"
-          frameBorder="0"
-          scrolling="no"
-          src={`https://www.twitch.tv/embed/${room.channel}/chat?darkpopout&parent=${hostURL}`}
-          height="480"
-          width="30%"
-          title={room.name}>
-        </iframe>
-      </div>
-      )}
+      {apiSwitches}
+      {apis[0].selected && <Twitch />}
+      {apis[1].selected && <Youtube />}
     </div>
   );
 };
