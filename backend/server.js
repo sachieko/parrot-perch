@@ -73,8 +73,8 @@ io.on('connection', client => {
     clients[name].rooms.push(room.name);
     const id = clients[name].id
     client.emit('serveRoom', { room: rooms[room.name] });
-    client.to(room.name).emit('system', { message: `Arr, ye've been boarded by ${name}!`, room: rooms[room.name] });
-    io.to(id).emit('system', { message: `Welcome to the room, ${name}!`, room: rooms[room.name] });
+    client.to(room.name).emit('system', { message: `Arr, ye've been boarded by ${name}!`, room: rooms[room.name], color });
+    io.to(id).emit('system', { message: `Welcome to the room, ${name}!`, room: rooms[room.name], color });
     console.log(`Welcome to ${room.name}`);
   });
 
@@ -91,7 +91,7 @@ io.on('connection', client => {
     if (!msg) {
       return;
     }
-    const username = name;
+    const username = clients[name].displayname;
     if (!to) {
       io.to(room.name).emit('public', { message, username, color });
       return;

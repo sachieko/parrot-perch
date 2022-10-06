@@ -48,23 +48,24 @@ export default function RoomProvider(props) {
     });
 
     socket.on('system', data => {
-      // console.log(data);
-      const room = data.room
+      const { room, message, color } = data;
       setRoom((oldRoom) => {
         return { ...oldRoom, name: room.name, channel: room.channel, users: room.users };
       });
-      const message = { username: 'System', message: data.message, color: data.color }
-      setChatMessages(prev => [message, ...prev]);
+      const chatMessage = { username: 'System', message, color };
+      setChatMessages(prev => [chatMessage, ...prev]);
     });
 
     socket.on('public', data => {
-      const message = { username: data.username, color: data.color, message: data.msg};
-      setChatMessages(prev => [message, ...prev]); // Keeps all messages in history right now
+      const { username, color, message } = data;
+      const chatMessage = { username, color, message };
+      setChatMessages(prev => [chatMessage, ...prev]); // Keeps all messages in history right now
     });
 
     socket.on('private', data => {
-      const message = { username: data.username, color: data.color, message: data.msg, pm: data.pm };
-      setChatMessages(prev => [message, ...prev]); // Same as public. 
+      const { username, color, message, pm } = data;
+      const chatMessage = { username, color, message, pm };
+      setChatMessages(prev => [chatMessage, ...prev]); // Same as public. 
     });
 
     return () => socket.disconnect();
