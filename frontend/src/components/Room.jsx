@@ -14,11 +14,15 @@ function Room() {
   return (
     <>
       {!isViewing &&
+      <div>
         <Join
           value={room.name}
+          value2={room.password}
           onClick={handleJoin}
           onChange={(e) => setRoom({ ...room, name: e.target.value })}
+          onChange2={(e) => setRoom({ ...room, password: e.target.value })} 
         />
+        </div>
       }
       {isViewing &&
         <View />

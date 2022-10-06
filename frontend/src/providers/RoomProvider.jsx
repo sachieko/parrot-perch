@@ -11,6 +11,7 @@ export default function RoomProvider(props) {
   const [room, setRoom] = useState({
     name: '',
     host: '',
+    password: '',
     channel: '',
     youtubeVideo: {
       channel: '',
@@ -44,7 +45,6 @@ export default function RoomProvider(props) {
 
     socket.on('serveRoom', (res) => {
       const room = res.room;
-      console.log(res.room);
       setRoom((oldRoom) => {
         return {
           ...oldRoom,
@@ -69,7 +69,6 @@ export default function RoomProvider(props) {
     socket.on('system', data => {
       // console.log(data);
       const { message, room } = data
-      console.log(room.host);
       setRoom((oldRoom) => {
         return { ...oldRoom, name: room.name, channel: room.channel, users: room.users, host: room.host };
       });
@@ -173,6 +172,7 @@ export default function RoomProvider(props) {
 
   const term = useDebounce(newChannel, 200);
 
+  // eslint-disable-next-line
   const onSearch = useCallback(setNewChannel, [term]);
 
   // on search use effect

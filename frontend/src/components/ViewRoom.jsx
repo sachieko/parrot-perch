@@ -11,9 +11,9 @@ import Chat from './Chat';
 function View() {
   const { room } = useContext(roomContext);
   const [widgetSwitches, setWidgetSwitches] = useState(
-    [{ name: 'twitch', selected: false },
-    { name: 'youtube', selected: true },
-    { name: 'chat', selected: false }]);
+    [{ name: 'twitch', selected: true },
+    { name: 'youtube', selected: false },
+    { name: 'chat', selected: true }]);
 
   const selectSwitch = (i) => {
     setWidgetSwitches((oldSwitches) => {

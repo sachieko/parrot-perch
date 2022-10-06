@@ -11,7 +11,16 @@ const http = app.listen(process.env.PORT, () => {
 
 const clients = {};
 const io = new Server(http);
+
 const rooms = {};
+// rooms object shape = {
+//  name: {
+//    name: 'room name',
+//    password: 'password',
+//    channel: '',
+//    users: [array]
+//  } 
+// }
 
 io.on('connection', client => {
   const name = uniqueNamesGenerator({
@@ -24,18 +33,30 @@ io.on('connection', client => {
   };
 
   const color = random_rgba();
-  console.log('Client Connected!', name, ':', client.id);
+  // console.log('Client Connected!', name, ':', client.id);
 
   clients[name] = { id: client.id, rooms: [], color };  // Add client to lookup object. This is for server use.
 
   client.on('createOrJoinRoom', (req) => {
+
     const room = req.room;
+
     client.join(room.name);
+
+    
     if (!rooms[room.name]) {
       rooms[room.name] = room; // new room
       rooms[room.name].users = []; // new user array
       rooms[room.name].host = name;
+      console.log(`New room ${room.name} created`)
+    } 
+
+    // password check happens here
+    if (rooms[room.name].password && room.password !== rooms[room.name].password) {
+      console.log('Incorrect password');
+      return;
     }
+
     const user = {
       name,
       color,
@@ -50,7 +71,8 @@ io.on('connection', client => {
     }
     client.emit('serveRoom', { room: rooms[room.name] });
     client.to(room.name).emit('system', { message: `Arr, ye've been boarded by ${name}!`, room: rooms[room.name] });
-    io.to(id).emit('system', { message: `Welcome to the room, ${name}!`, room: rooms[room.name] })
+    io.to(id).emit('system', { message: `Welcome to the room, ${name}!`, room: rooms[room.name] });
+    console.log(`Welcome to ${room.name}`);
   });
 
   client.on('editRoom', (req) => {
@@ -92,7 +114,7 @@ io.on('connection', client => {
   });
 
   client.on('disconnect', () => {
-    console.log('Client Disconnected', name, ':', client.id);
+    // console.log('Client Disconnected', name, ':', client.id);
     clients[name].rooms.forEach(roomname => {
       rooms[roomname].users = rooms[roomname].users.filter(user => user.name !== name);
       if (rooms[roomname].users.length === 0) {
