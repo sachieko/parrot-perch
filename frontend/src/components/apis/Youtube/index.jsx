@@ -7,8 +7,7 @@ import { useContext } from 'react';
 
 const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY
 function Youtube() {
-  const { socket, room } = useContext(roomContext);
-  const [player, setPlayer] = useState();
+  const { socket, room, player, setPlayer } = useContext(roomContext);
   const [term, setTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
 
@@ -23,15 +22,14 @@ function Youtube() {
   })[0];
 
   const onReady = (event) => {
+    console.log('setting player');
     setPlayer(event.target);
+    event.target.seekTo(room.youtubeVideo.duration);
+    console.log(event.target);
   }
 
   const seek = (event) => {
     player.seekTo(9);
-  }
-
-  const printChange = (event) => {
-    console.log(event.target);
   }
 
   const typing = (e) => {
@@ -56,7 +54,6 @@ function Youtube() {
   const enterURL = (e, vid) => {
     const ytvideo = {...room.youtubeVideo }
     ytvideo.channel = vid;
-    ytvideo.duration = 10;
     socket.emit('editRoom', { room: { ...room,  youtubeVideo: ytvideo } });
   }
 
@@ -73,7 +70,7 @@ function Youtube() {
     <div>
       <input type='text' value={term} placeholder='Search Youtube' onChange={typing} />
       {displaySuggestions}
-      <YoutubePlayer videoId={room.youtubeVideo.channel} opts={opts} onReady={onReady} onStateChange={printChange} />
+      <YoutubePlayer videoId={room.youtubeVideo.channel} opts={opts} onReady={onReady} />
       <button onClick={seek}>seek</button>
     </div>
   );

@@ -34,6 +34,7 @@ io.on('connection', client => {
     if (!rooms[room.name]) {
       rooms[room.name] = room; // new room
       rooms[room.name].users = []; // new user array
+      rooms[room.name].host = client.id;
     }
     const user = { 
       name,
@@ -41,7 +42,12 @@ io.on('connection', client => {
     };
     rooms[room.name].users.push(user);
     clients[name].rooms.push(room.name);
-    const id = clients[name].id
+    const id = clients[name].id;
+    console.log('emitting', rooms[room.name].host, client.id);
+    if (client.id !==  rooms[room.name].host){
+      io.to(rooms[room.name].host).emit('getCurrentYoutubeTime', {for: client.id});
+    }
+    console.log('emitted');
     client.emit('serveRoom', { room: rooms[room.name] });
     client.to(room.name).emit('system', {message: `Arr, ye've been boarded by ${name}!`, room: rooms[room.name] });
     io.to(id).emit('system', {message: `Welcome to the room, ${name}!`, room: rooms[room.name] })
@@ -71,6 +77,11 @@ io.on('connection', client => {
     // console.log(`Sending message to ${to}:${id}`);
     io.to(id).emit('private', {msg, username});
   })
+
+  client.on('setJoiningYoutubeTime', (req) => {
+    console.log('setJoiningYoutibeTime', req);
+    io.to(req.for).emit('hereIsTheRoomTime', {time: req.time});
+  });
 
   client.on('disconnect', () => {
     console.log('Client Disconnected', name, ':', client.id);

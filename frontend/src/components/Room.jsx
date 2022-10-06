@@ -10,8 +10,6 @@ function Room() {
     e.preventDefault();
     socket.emit('createOrJoinRoom', { room });
   };
-
-  console.log(room);
   
   return (
     <>
@@ -23,11 +21,7 @@ function Room() {
         />
       }
       {isViewing &&
-        <View
-          room={room}
-          setRoom={setRoom}
-          socket={socket}
-        />
+        <View />
       }
     </>
   )

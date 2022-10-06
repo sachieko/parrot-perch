@@ -8,7 +8,7 @@ import ToggleButton from 'react-bootstrap/ToggleButton';
 import Chat from './Chat';
 
 
-function View(props) {
+function View() {
   const { room } = useContext(roomContext);
   const [widgetSwitches, setWidgetSwitches] = useState(
     [{ name: 'twitch', selected: false },

@@ -13,7 +13,7 @@ export default function RoomProvider(props) {
     channel: '',
     youtubeVideo: {
       channel: '',
-      duration: 10
+      duration: 0
     },
     users: []
   });
@@ -26,6 +26,8 @@ export default function RoomProvider(props) {
   const [newChannel, setNewChannel] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  //youtube changing state
+  const [player, setPlayer] = useState();
 
 
   // Chat and Rooms useEffect
@@ -76,6 +78,27 @@ export default function RoomProvider(props) {
     socket.on('private', data => {
       const message = `PM from ${data.username}: ${data.msg}`;
       setMessages(prev => [message, ...prev]); // Same as public. 
+    });
+
+    socket.on('hereIsTheRoomTime', (res) => {
+      console.log('OUNFEWROIFNEWOIJF');
+      console.log('hereIsTheRoomTime', res);
+      setRoom((oldRoom) => {
+        return { ...oldRoom, youtubeVideo: { ...oldRoom.youtubeVideo, duration: res.time } }
+      });
+    });
+
+    socket.on('getCurrentYoutubeTime', (res) => {
+      //get current player time
+      console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>', res);
+      console.log('player', player);
+      setPlayer(oldPlayer => {
+        const duration = oldPlayer.getCurrentTime();
+        res.time = duration;
+        console.log('==================', res);
+        socket.emit('setJoiningYoutubeTime', res);
+        return oldPlayer;
+      });
     });
 
     return () => socket.disconnect();
@@ -144,7 +167,8 @@ export default function RoomProvider(props) {
     room, setRoom,
     newChannel, setNewChannel,
     searchResults, setSearchResults,
-    searchValue, setSearchValue
+    searchValue, setSearchValue,
+    player, setPlayer
   };
 
   return (
