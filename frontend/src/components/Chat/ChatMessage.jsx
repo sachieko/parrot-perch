@@ -1,21 +1,21 @@
 import React from 'react';
+import SystemMessage from './SystemMessage';
+import PrivateMessage from './PrivateMessage';
+import PublicMessage from './PublicMessage';
 
 const  ChatMessage = props => {
-  const { username, color, message, pm } = props;
-
+  const { username, color, message, pm, system } = props;
+  console.log(props);
   return (
     <>
-     {!pm && ( 
-      <div className='chat-list-item'>
-      <span className='chat-username-item' style={`color:${color}`}>{username}</span>
-      <span className='message-item'>{message}</span>
-    </div>
+      {system && ( 
+      <SystemMessage username={username} system={system} color={color} />
       )}
-     {pm && ( 
-      <div className='chat-list-item'>
-      <span className='chat-username-item' style={`color:${color}`}>[PM From {username}]</span>
-      <span className='message-item'>: {message}</span>
-    </div>
+      {pm && ( 
+      <PrivateMessage username={username} color={color} message={message} pm={pm} />
+      )}
+      {!pm && !system && ( 
+      <PublicMessage username={username} color={color} message={message} />
       )}
     </>
   );

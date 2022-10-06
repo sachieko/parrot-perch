@@ -1,9 +1,13 @@
 
 .chat {
-  background-color: #424242;
+  background-color: #0c0c10;
   color: #FFFFFF;
   #message-list {
     display: flexbox;
     flex-direction: column;
+  }
+  #chat-submit {
+    background-color: hsla(0,0%,100%,.2);
+    border-color: #a970ff;
   }
 }

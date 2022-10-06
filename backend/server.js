@@ -15,7 +15,7 @@ const clients = {};
     id: client id from the socket as a string, 
     rooms: [arr],  
     color: 'rgba(x,x,x)',
-    displayname: 'string' // same as name by default
+    username: 'string' // same as name by default
   }
 */ 
 const io = new Server(http);
@@ -43,7 +43,7 @@ io.on('connection', client => {
   const color = random_rgba();
   // console.log('Client Connected!', name, ':', client.id);
   // Add client to lookup object. This is for server use. Ensures if names are the same it does not overwrite the old.
-  !clients[name] && (clients[name] = { id: client.id, rooms: [], color, displayname: name });  
+  !clients[name] && (clients[name] = { id: client.id, rooms: [], color, username: name });  
 
   client.on('createOrJoinRoom', (req) => {
 
@@ -55,12 +55,12 @@ io.on('connection', client => {
     if (!rooms[room.name]) {
       rooms[room.name] = room; // new room
       rooms[room.name].users = []; // new user array
-      console.log(`New room ${room.name} created`)
+      // console.log(`New room ${room.name} created`)
     } 
 
     // password check happens here
     if (rooms[room.name].password && room.password !== rooms[room.name].password) {
-      console.log('Incorrect password');
+      // console.log('Incorrect password');
       return;
     }
 
@@ -68,14 +68,12 @@ io.on('connection', client => {
       name,
       color,
     };
-    console.log(rooms);
     rooms[room.name].users.push(user);
     clients[name].rooms.push(room.name);
     const id = clients[name].id
     client.emit('serveRoom', { room: rooms[room.name] });
-    client.to(room.name).emit('system', { message: `Arr, ye've been boarded by ${name}!`, room: rooms[room.name], color });
-    io.to(id).emit('system', { message: `Welcome to the room, ${name}!`, room: rooms[room.name], color });
-    console.log(`Welcome to ${room.name}`);
+    client.to(room.name).emit('system', { system: 'announce', username: clients[name].username, room: rooms[room.name], color });
+    io.to(id).emit('system', { system: 'welcome', username: clients[name].username, room: rooms[room.name], color });
   });
 
   client.on('editRoom', (req) => {
@@ -87,17 +85,19 @@ io.on('connection', client => {
   });
 
   client.on('message', data => {
-    const { msg, room, to } = data
-    if (!msg) {
+    const { msg: message, room, to } = data;
+    if (!message) {
       return;
     }
-    const username = clients[name].displayname;
+    const username = clients[name].username;
     if (!to) {
       io.to(room.name).emit('public', { message, username, color });
       return;
     }
-    const id = clients[to].id;
-    io.to(id).emit('private', { message, username, pm: true });
+    const { id: idTo, color: colorTo, username: userTo } = clients[to];
+    const { id: idFrom, color: colorFrom } = clients[name];
+    io.to(idTo).emit('private', { message, username: username, pm: 'receive', color: colorFrom }); // Receiver gets sender's color/name
+    io.to(idFrom).emit('private', { message, username: userTo, pm: 'send', color: colorTo }); // Sender receives other's color
   })
 
   client.on('disconnect', () => {
@@ -108,7 +108,7 @@ io.on('connection', client => {
         delete rooms[roomname];
         return;
       }
-      client.to(roomname).emit('system', { message: `${name} has just walked the plank!`, room: rooms[roomname] });
+      client.to(roomname).emit('system', { system: 'exit', username: clients[name].username, room: rooms[roomname], color });
     });
     delete clients[name];
   });

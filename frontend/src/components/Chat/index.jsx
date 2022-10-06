@@ -11,17 +11,13 @@ const Chat = function(props) {
   const users = room.users;
   const send = function() {
     socket.emit('message', {msg, room, to});
-    if (to) {
-      const chatMessage = `PM to ${to}:${msg}`;
-      setChatMessages(prev => [chatMessage, ...prev]);
-    };
     clearChatInput();
 
   };
   
   const chatMessageList = chatMessages.map((messageObj, i) => {
-    const { message, username, color, pm } = messageObj;
-    return <ChatMessage key={i} message={message} displayName={username} color={color} pm={pm} />;
+    const { username, color, message, pm, system } = messageObj;
+    return <ChatMessage key={i} message={message} username={username} color={color} pm={pm} system={system} />;
   });
 
   const userList = users.map((user, i) => { // Use room users to return the list of people you can PM by clicking the button

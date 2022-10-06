@@ -1,6 +1,5 @@
 function Join (props) {
 
-  console.log(props)
   return (
     <main>
     <form>

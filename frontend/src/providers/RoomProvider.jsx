@@ -48,11 +48,11 @@ export default function RoomProvider(props) {
     });
 
     socket.on('system', data => {
-      const { room, message, color } = data;
+      const { room, username, color, system } = data;
       setRoom((oldRoom) => {
         return { ...oldRoom, name: room.name, channel: room.channel, users: room.users };
       });
-      const chatMessage = { username: 'System', message, color };
+      const chatMessage = { username, color, system };
       setChatMessages(prev => [chatMessage, ...prev]);
     });
 
