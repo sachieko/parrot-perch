@@ -1,0 +1,12 @@
+@import '../../../styles/variables.scss';
+
+.twitch-live-search {
+  display: flex;
+  position: fixed;
+  left: 30vw;
+  height: 35vh;
+  width: 40vw;
+  overflow-y: scroll;
+  flex-direction: column;
+  background-color: $channel-bg-color;
+}
