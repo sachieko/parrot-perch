@@ -11,15 +11,16 @@ const Chat = function(props) {
   const send = function() {
     socket.emit('message', {msg, room, to});
     if (to) {
-      const message = `PM to ${to}:${msg}`;
-      setChatMessages(prev => [message, ...prev]);
+      const chatMessage = `PM to ${to}:${msg}`;
+      setChatMessages(prev => [chatMessage, ...prev]);
     };
 
     setMsg('');
   };
   
-  const chatMessageList = chatMessages.map((message, i) => {
-    return <ChatMessage key={i} message={message} user={'no user set'}/>;
+  const chatMessageList = chatMessages.map((messageObj, i) => {
+    const { message, username, color, pm } = messageObj;
+    return <ChatMessage key={i} message={message} displayName={username} color={color} pm={pm} />;
   });
 
   const userList = users.map((user, i) => {
