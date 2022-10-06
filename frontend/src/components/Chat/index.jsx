@@ -7,7 +7,7 @@ import { roomContext } from '../../providers/RoomProvider';
 
 
 const Chat = function(props) {
-  const { chatMessages, setChatMessages, socket, to, setTo, msg, setMsg, clearChatInput, room } = useContext(roomContext);
+  const { chatMessages, setChatMessages, socket, to, msg, setMsg, clearChatInput, room } = useContext(roomContext);
   const users = room.users;
   const send = function() {
     socket.emit('message', {msg, room, to});
@@ -26,12 +26,6 @@ const Chat = function(props) {
 
   return (
     <section className="chat">
-      <div className="chat-pm">
-        <input 
-          onChange={event => setTo(event.target.value)}
-          value={to}
-          placeholder="Username" />
-      </div>
       <ChatInput onChange={setMsg} value={msg} send={send} clear={setChatMessages} />
       <div id='message-list'> 
         {chatMessageList}
