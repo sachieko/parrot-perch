@@ -1,0 +1,18 @@
+@import './styles/variables.scss';
+
+#root {
+  background-color: $app-bg-color;
+  width: 100vw;
+  margin: 0;
+  top: 0;
+  height: 100vh;
+  position: absolute;
+  .parrot-perch {
+    display: flex;
+    align-content: center;
+  }
+}
+
+.parrot-perch {
+  justify-content: center;
+}
