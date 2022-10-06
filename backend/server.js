@@ -85,9 +85,6 @@ io.on('connection', client => {
   client.on('editVideo', (req) => {
     const host = rooms[req.room.name].host;
     const roomName = req.room.name;
-    console.log('here');
-    console.log(name);
-    console.log(host);
     if (name === host){
       console.log(rooms[roomName]);
       rooms[roomName] = req.room;
@@ -103,6 +100,11 @@ io.on('connection', client => {
       if (rooms[roomname].users.length === 0) {
         delete rooms[roomname];
         return;
+      } else if (rooms[roomname].host === name){
+        const newHost = rooms[roomname].users[0].name;
+        console.log(rooms[roomname].users[0]);
+        rooms[roomname].host = newHost;
+        client.to(roomname).emit('system', { message: `Host ${name} died. New host: ${newHost} `, room: rooms[roomname] });
       }
       client.to(roomname).emit('system', { message: `${name} has just walked the plank!`, room: rooms[roomname] });
     });

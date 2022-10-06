@@ -69,8 +69,9 @@ export default function RoomProvider(props) {
     socket.on('system', data => {
       // console.log(data);
       const { message, room } = data
+      console.log(room.host);
       setRoom((oldRoom) => {
-        return { ...oldRoom, name: room.name, channel: room.channel, users: room.users };
+        return { ...oldRoom, name: room.name, channel: room.channel, users: room.users, host: room.host };
       });
       setMessages(prev => [message, ...prev]);
     });
