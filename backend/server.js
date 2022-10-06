@@ -13,6 +13,14 @@ const clients = {};
 const io = new Server(http);
 
 const rooms = {};
+// rooms object shape = {
+//  name: {
+//    name: 'room name',
+//    password: 'password',
+//    channel: '',
+//    users: [array]
+//  } 
+// }
 
 io.on('connection', client => {
   const name = uniqueNamesGenerator({
