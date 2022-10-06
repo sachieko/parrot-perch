@@ -59,20 +59,6 @@ export default function RoomProvider(props) {
           users: room.users
         };
       });
-      setPlayer(oldPlayer => {
-        if (oldPlayer) {
-          console.log(oldPlayer);
-          const state = room.youtubeVideo.state;
-          if (state === 1) {
-            oldPlayer.seekTo(room.youtubeVideo.duration);
-          }
-          if (state === 2 || state === 3) {
-            oldPlayer.seekTo(room.youtubeVideo.duration);
-            oldPlayer.pauseVideo();
-          }
-          return oldPlayer;
-        }
-      });
       const message = res.message;
       if (message) {
         setMessages(prev => [message, ...prev]);
@@ -118,6 +104,26 @@ export default function RoomProvider(props) {
         return oldPlayer;
       });
     });
+
+    socket.on('serveVideo', (res) => {
+      const room = res.room;
+      setPlayer(oldPlayer => {
+        if (oldPlayer) {
+          const s = oldPlayer.getPlayerState();
+          if (s === 1 || s === 2 || s === 3) {
+            const state = room.youtubeVideo.state;
+            if (state === 1) {
+              oldPlayer.seekTo(room.youtubeVideo.duration);
+            }
+            if (state === 2 || state === 3) {
+              oldPlayer.seekTo(room.youtubeVideo.duration);
+              oldPlayer.pauseVideo();
+            }
+          }
+          return oldPlayer;
+        }
+      });
+    })
 
     return () => socket.disconnect();
   }, []);

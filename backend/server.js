@@ -92,7 +92,7 @@ io.on('connection', client => {
       console.log(rooms[roomName]);
       rooms[roomName] = req.room;
       console.log(rooms[roomName]);
-      client.to(roomName).emit('serveRoom', { room: rooms[roomName] });
+      client.to(roomName).emit('serveVideo', { room: rooms[roomName] });
     }
   });
 
