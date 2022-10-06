@@ -86,9 +86,7 @@ io.on('connection', client => {
     const host = rooms[req.room.name].host;
     const roomName = req.room.name;
     if (name === host){
-      console.log(rooms[roomName]);
       rooms[roomName] = req.room;
-      console.log(rooms[roomName]);
       client.to(roomName).emit('serveVideo', { room: rooms[roomName] });
     }
   });
@@ -102,9 +100,8 @@ io.on('connection', client => {
         return;
       } else if (rooms[roomname].host === name){
         const newHost = rooms[roomname].users[0].name;
-        console.log(rooms[roomname].users[0]);
         rooms[roomname].host = newHost;
-        client.to(roomname).emit('system', { message: `Host ${name} died. New host: ${newHost} `, room: rooms[roomname] });
+        //client.to(roomname).emit('system', { message: `Host ${name} died. New host: ${newHost} `, room: rooms[roomname] });
       }
       client.to(roomname).emit('system', { message: `${name} has just walked the plank!`, room: rooms[roomname] });
     });

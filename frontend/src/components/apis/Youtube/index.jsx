@@ -16,8 +16,7 @@ function Youtube() {
     width: '640',
     playerVars: {
       autoplay: 1,
-      mute: 1,
-      start: room.youtubeVideo.duration
+      mute: 1
     }
   })[0];
 
@@ -30,7 +29,7 @@ function Youtube() {
 
   const emitStateChange = (e) => {
     const state = e.target.getPlayerState();
-    if (state !== 1 && state !== 2 && state !== 3){
+    if (state !== 1 && state !== 2 && state !== 3) {
       return;
     }
     const currentTime = e.target.getCurrentTime();
@@ -47,8 +46,9 @@ function Youtube() {
     }
   }
 
-  const typing = (e) => {
-    axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${e.target.value}&key=${API_KEY}`)
+  const submit = (e) => {
+    e.preventDefault();
+    axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${term}&key=${API_KEY}`)
       .then((res) => {
         const list = [];
         for (const i of res.data.items) {
@@ -63,13 +63,14 @@ function Youtube() {
       .catch((err) => {
         console.log(err);
       });
-    setTerm(e.target.value);
+    setTerm('');
   }
 
   const enterURL = (e, vid) => {
     const ytvideo = { ...room.youtubeVideo }
     ytvideo.channel = vid;
     socket.emit('editRoom', { room: { ...room, youtubeVideo: ytvideo } });
+    setSuggestions([]);
   }
 
   const displaySuggestions = suggestions.map((r, i) => {
@@ -83,7 +84,10 @@ function Youtube() {
 
   return (
     <div>
-      <input type='text' value={term} placeholder='Search Youtube' onChange={typing} />
+      <form onSubmit={submit}>
+        <input type='text' value={term} placeholder='Search Youtube' onChange={(e) => setTerm(e.target.value)} />
+        <input type='submit'></input>
+      </form>
       {displaySuggestions}
       <YoutubePlayer
         videoId={room.youtubeVideo.channel}
