@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 dotenv.config();
-const { Server } = require('socket.io');
+const { Server, Socket } = require('socket.io');
 const express = require('express');
 const app = express();
 const { uniqueNamesGenerator, starWars } = require('unique-names-generator');
@@ -18,15 +18,15 @@ io.on('connection', client => {
     dictionaries: [starWars]
   });
 
-  const random_rgba = function() {
+  const random_rgba = function () {
     const o = Math.round, r = Math.random, s = 255;
-    return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+    return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
   };
 
   const color = random_rgba();
   console.log('Client Connected!', name, ':', client.id);
-  
-  clients[name] = {id: client.id, rooms: [], color};  // Add client to lookup object. This is for server use.
+
+  clients[name] = { id: client.id, rooms: [], color };  // Add client to lookup object. This is for server use.
 
   client.on('createOrJoinRoom', (req) => {
     const room = req.room;
@@ -34,23 +34,23 @@ io.on('connection', client => {
     if (!rooms[room.name]) {
       rooms[room.name] = room; // new room
       rooms[room.name].users = []; // new user array
-      rooms[room.name].host = client.id;
+      rooms[room.name].host = name;
     }
-    const user = { 
+    const user = {
       name,
       color,
     };
     rooms[room.name].users.push(user);
     clients[name].rooms.push(room.name);
     const id = clients[name].id;
-    console.log('emitting', rooms[room.name].host, client.id);
-    if (client.id !==  rooms[room.name].host){
-      io.to(rooms[room.name].host).emit('getCurrentYoutubeTime', {for: client.id});
+    const hostName = rooms[room.name].host;
+    if (name !== hostName) {
+      const hostId = clients[hostName].id;
+      io.to(hostId).emit('getHostYoutubeTime', { for: id });
     }
-    console.log('emitted');
     client.emit('serveRoom', { room: rooms[room.name] });
-    client.to(room.name).emit('system', {message: `Arr, ye've been boarded by ${name}!`, room: rooms[room.name] });
-    io.to(id).emit('system', {message: `Welcome to the room, ${name}!`, room: rooms[room.name] })
+    client.to(room.name).emit('system', { message: `Arr, ye've been boarded by ${name}!`, room: rooms[room.name] });
+    io.to(id).emit('system', { message: `Welcome to the room, ${name}!`, room: rooms[room.name] })
   });
 
   client.on('editRoom', (req) => {
@@ -64,23 +64,36 @@ io.on('connection', client => {
 
   client.on('message', data => {
     // console.log('Data received:', data);
-    const {msg, room, to} = data
+    const { msg, room, to } = data
     if (!msg) {
       return;
     }
     const username = name;
     if (!to) {
-      io.to(room.name).emit('public', {msg, username});
+      io.to(room.name).emit('public', { msg, username });
       return;
     }
     const id = clients[to].id;
     // console.log(`Sending message to ${to}:${id}`);
-    io.to(id).emit('private', {msg, username});
+    io.to(id).emit('private', { msg, username });
   })
 
-  client.on('setJoiningYoutubeTime', (req) => {
-    console.log('setJoiningYoutibeTime', req);
-    io.to(req.for).emit('hereIsTheRoomTime', {time: req.time});
+  client.on('sendJoinerYoutubeTime', (req) => {
+    io.to(req.for).emit('setJoinerYoutubeTime', { time: req.time });
+  });
+
+  client.on('editVideo', (req) => {
+    const host = rooms[req.room.name].host;
+    const roomName = req.room.name;
+    console.log('here');
+    console.log(name);
+    console.log(host);
+    if (name === host){
+      console.log(rooms[roomName]);
+      rooms[roomName] = req.room;
+      console.log(rooms[roomName]);
+      client.to(roomName).emit('serveRoom', { room: rooms[roomName] });
+    }
   });
 
   client.on('disconnect', () => {

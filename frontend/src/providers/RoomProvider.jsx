@@ -10,10 +10,12 @@ export default function RoomProvider(props) {
   const [socket, setSocket] = useState();
   const [room, setRoom] = useState({
     name: '',
+    host: '',
     channel: '',
     youtubeVideo: {
       channel: '',
-      duration: 0
+      duration: 0,
+      state: 2 // 1 => play, 2 => pause, 3 => buffer 
     },
     users: []
   });
@@ -42,17 +44,34 @@ export default function RoomProvider(props) {
 
     socket.on('serveRoom', (res) => {
       const room = res.room;
+      console.log(res.room);
       setRoom((oldRoom) => {
         return {
           ...oldRoom,
           name: room.name,
+          host: room.host,
           channel: room.channel,
           youtubeVideo: {
             channel: room.youtubeVideo.channel,
             duration: room.youtubeVideo.duration,
+            state: room.youtubeVideo.state
           },
           users: room.users
         };
+      });
+      setPlayer(oldPlayer => {
+        if (oldPlayer) {
+          console.log(oldPlayer);
+          const state = room.youtubeVideo.state;
+          if (state === 1) {
+            oldPlayer.seekTo(room.youtubeVideo.duration);
+          }
+          if (state === 2 || state === 3) {
+            oldPlayer.seekTo(room.youtubeVideo.duration);
+            oldPlayer.pauseVideo();
+          }
+          return oldPlayer;
+        }
       });
       const message = res.message;
       if (message) {
@@ -80,23 +99,22 @@ export default function RoomProvider(props) {
       setMessages(prev => [message, ...prev]); // Same as public. 
     });
 
-    socket.on('hereIsTheRoomTime', (res) => {
-      console.log('OUNFEWROIFNEWOIJF');
-      console.log('hereIsTheRoomTime', res);
+    socket.on('setJoinerYoutubeTime', (res) => {
       setRoom((oldRoom) => {
-        return { ...oldRoom, youtubeVideo: { ...oldRoom.youtubeVideo, duration: res.time } }
+        return {
+          ...oldRoom,
+          youtubeVideo: {
+            ...oldRoom.youtubeVideo,
+            duration: res.time
+          }
+        }
       });
     });
 
-    socket.on('getCurrentYoutubeTime', (res) => {
-      //get current player time
-      console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>', res);
-      console.log('player', player);
+    socket.on('getHostYoutubeTime', (res) => {
       setPlayer(oldPlayer => {
-        const duration = oldPlayer.getCurrentTime();
-        res.time = duration;
-        console.log('==================', res);
-        socket.emit('setJoiningYoutubeTime', res);
+        res.time = oldPlayer.getCurrentTime();
+        socket.emit('sendJoinerYoutubeTime', res);
         return oldPlayer;
       });
     });

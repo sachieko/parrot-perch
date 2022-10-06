@@ -1,7 +1,7 @@
 import axios from 'axios';
 import he from 'he';
 import YoutubePlayer from 'react-youtube';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { roomContext } from '../../../providers/RoomProvider';
 import { useContext } from 'react';
 
@@ -22,14 +22,29 @@ function Youtube() {
   })[0];
 
   const onReady = (event) => {
-    console.log('setting player');
     setPlayer(event.target);
-    event.target.seekTo(room.youtubeVideo.duration);
-    console.log(event.target);
+    if (room.youtubeVideo.channel) {
+      event.target.seekTo(room.youtubeVideo.duration);
+    }
   }
 
-  const seek = (event) => {
-    player.seekTo(9);
+  const emitStateChange = (e) => {
+    const state = e.target.getPlayerState();
+    if (state !== 1 && state !== 2 && state !== 3){
+      return;
+    }
+    const currentTime = e.target.getCurrentTime();
+    const changedRoom = {
+      ...room,
+      youtubeVideo: {
+        ...room.youtubeVideo,
+        duration: currentTime,
+        state: state
+      }
+    }
+    if (state === 1) {
+      socket.emit('editVideo', { room: changedRoom });
+    }
   }
 
   const typing = (e) => {
@@ -52,9 +67,9 @@ function Youtube() {
   }
 
   const enterURL = (e, vid) => {
-    const ytvideo = {...room.youtubeVideo }
+    const ytvideo = { ...room.youtubeVideo }
     ytvideo.channel = vid;
-    socket.emit('editRoom', { room: { ...room,  youtubeVideo: ytvideo } });
+    socket.emit('editRoom', { room: { ...room, youtubeVideo: ytvideo } });
   }
 
   const displaySuggestions = suggestions.map((r, i) => {
@@ -70,8 +85,11 @@ function Youtube() {
     <div>
       <input type='text' value={term} placeholder='Search Youtube' onChange={typing} />
       {displaySuggestions}
-      <YoutubePlayer videoId={room.youtubeVideo.channel} opts={opts} onReady={onReady} />
-      <button onClick={seek}>seek</button>
+      <YoutubePlayer
+        videoId={room.youtubeVideo.channel}
+        opts={opts}
+        onReady={onReady}
+        onStateChange={emitStateChange} />
     </div>
   );
 }
