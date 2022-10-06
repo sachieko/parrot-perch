@@ -32,6 +32,8 @@ export default function RoomProvider(props) {
   //youtube changing state
   const [player, setPlayer] = useState();
 
+  // term is state
+  const term = useDebounce(newChannel, 500);
 
   // Chat and Rooms useEffect
   useEffect(() => {
@@ -99,8 +101,10 @@ export default function RoomProvider(props) {
 
     socket.on('getHostYoutubeTime', (res) => {
       setPlayer(oldPlayer => {
-        res.time = oldPlayer.getCurrentTime();
-        socket.emit('sendJoinerYoutubeTime', res);
+        if (oldPlayer) {
+          res.time = oldPlayer.getCurrentTime();
+          socket.emit('sendJoinerYoutubeTime', res);
+        }
         return oldPlayer;
       });
     });
@@ -128,14 +132,15 @@ export default function RoomProvider(props) {
     return () => socket.disconnect();
   }, []);
 
+
   // API use
   useEffect(() => {
     let token = '';
-    if (newChannel === '') {
+    if (term === '') {
       setSearchResults([])
       return;
     }
-    const searchURL = `https://api.twitch.tv/helix/search/channels?query=${newChannel}&live_only=true`;
+    const searchURL = `https://api.twitch.tv/helix/search/channels?query=${term}&live_only=true`;
     axios.post('https://id.twitch.tv/oauth2/token', {
       client_id: process.env.REACT_APP_CLIENT_ID,
       client_secret: process.env.REACT_APP_CLIENT_SECRET,
@@ -149,38 +154,22 @@ export default function RoomProvider(props) {
             'Authorization': `Bearer ${token}`
           }
         })
-      })
-      .then(response => {
-        axios.get(searchURL, {
+
+        return axios.get(searchURL, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Client-Id': process.env.REACT_APP_CLIENT_ID
           }
         })
-          .then(response => {
-            setSearchResults([...response.data.data])
-            // console.log(results);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
+
+      })
+      .then(response => {
+        setSearchResults([...response.data.data])
       })
       .catch((e) => {
         console.log(e);
       });
-  }, [newChannel]);
-
-  const term = useDebounce(newChannel, 200);
-
-  // eslint-disable-next-line
-  const onSearch = useCallback(setNewChannel, [term]);
-
-  // on search use effect
-  useEffect(() => {
-    onSearch(term);
-    setNewChannel(term);
-  }, [term, onSearch]);
-
+  }, [term]);
 
   // Export any usable state or state setters (or custom functions to set state) by declaring them here.
   const roomData = {

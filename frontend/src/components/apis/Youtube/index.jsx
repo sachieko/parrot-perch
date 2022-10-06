@@ -1,13 +1,13 @@
 import axios from 'axios';
 import he from 'he';
 import YoutubePlayer from 'react-youtube';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { roomContext } from '../../../providers/RoomProvider';
 import { useContext } from 'react';
 
 const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY
 function Youtube() {
-  const { socket, room, player, setPlayer } = useContext(roomContext);
+  const { socket, room, setPlayer } = useContext(roomContext);
   const [term, setTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
 

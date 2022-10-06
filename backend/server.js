@@ -48,12 +48,10 @@ io.on('connection', client => {
       rooms[room.name] = room; // new room
       rooms[room.name].users = []; // new user array
       rooms[room.name].host = name;
-      console.log(`New room ${room.name} created`)
     } 
 
     // password check happens here
     if (rooms[room.name].password && room.password !== rooms[room.name].password) {
-      console.log('Incorrect password');
       return;
     }
 
@@ -72,7 +70,6 @@ io.on('connection', client => {
     client.emit('serveRoom', { room: rooms[room.name] });
     client.to(room.name).emit('system', { message: `Arr, ye've been boarded by ${name}!`, room: rooms[room.name] });
     io.to(id).emit('system', { message: `Welcome to the room, ${name}!`, room: rooms[room.name] });
-    console.log(`Welcome to ${room.name}`);
   });
 
   client.on('editRoom', (req) => {
