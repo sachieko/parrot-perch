@@ -6,13 +6,11 @@ import Results from "./Results";
 export default function LiveSearch(props) {
 
   return (
-    <>
-      <main>
+    <div className='twitch-live-search'>  
         <SearchBar
         />
         <Results
         />
-      </main>
-    </>
+    </div>
   );
 }

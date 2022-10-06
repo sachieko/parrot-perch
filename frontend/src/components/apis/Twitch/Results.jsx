@@ -14,8 +14,12 @@ export default function Results(props) {
     // console.log(streamerName);
   };
   return searchResults.map(stream => {
-    return <Channel key={stream.id} {...stream} 
+    return (
+    <div className='result-list'> 
+    <Channel key={stream.id} {...stream} 
       handleChannel={handleChannel}
-    />;
+    />
+    </div>
+    );
   });
 }

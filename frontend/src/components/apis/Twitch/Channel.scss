@@ -1,3 +1,4 @@
+@import '../../../styles/variables.scss';
 * {
   box-sizing: border-box;
 }
@@ -12,8 +13,10 @@ body {
 
 .streamer-channel {
   display: flex;
-  color: black;
+  color: $chat-button-color;
   margin-top: 0.5rem;
+  border: 1px solid $channel-text-color;
+  border-radius: 0.4em;
 }
 
 .thumbnail {
@@ -38,6 +41,7 @@ body {
   padding-left: 1rem;
   border-top-right-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
-  background: white;
+  background-color: $channel-bg-color;
+  color: $channel-text-color;
   overflow: hidden;
 }
