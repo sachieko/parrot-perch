@@ -13,13 +13,18 @@ export default function Results(props) {
     // console.log("handleChannel was triggered");
     // console.log(streamerName);
   };
-  return searchResults.map(stream => {
+  const channelList = searchResults.map(stream => {
     return (
-    <div className='result-list'> 
+    
     <Channel key={stream.id} {...stream} 
       handleChannel={handleChannel}
     />
-    </div>
     );
   });
-}
+
+  return (
+    <div className='result-list'> 
+    {channelList}
+    </div>
+  )
+};

@@ -1,12 +1,15 @@
 @import '../../../styles/variables.scss';
 
-.twitch-live-search {
+.result-list {
+  background-color: $channel-bg-color;
   display: flex;
-  position: fixed;
+  position: absolute;
   left: 30vw;
   height: 35vh;
   width: 40vw;
   overflow-y: scroll;
   flex-direction: column;
-  background-color: $channel-bg-color;
+  .twitch-search-results {
+    overflow-x: hidden;
+  }
 }

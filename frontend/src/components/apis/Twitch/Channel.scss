@@ -13,10 +13,14 @@ body {
 
 .streamer-channel {
   display: flex;
-  color: $chat-button-color;
+  color: $channel-text-color;
+  margin: 0.2rem;
   margin-top: 0.5rem;
   border: 1px solid $channel-text-color;
   border-radius: 0.4em;
+  &:hover {
+    background: $channel-bg-color--hover;
+  }
 }
 
 .thumbnail {
@@ -41,7 +45,5 @@ body {
   padding-left: 1rem;
   border-top-right-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
-  background-color: $channel-bg-color;
-  color: $channel-text-color;
   overflow: hidden;
 }

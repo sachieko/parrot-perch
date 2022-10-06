@@ -8,6 +8,7 @@
   left: 0;
   width: 100vw;
   overflow-y: scroll;
+  overflow-x: hidden;
   position: fixed;
   padding: 0.5em;
   padding-top: 6vh;
@@ -16,6 +17,7 @@
     top: 0;
     left: 0;
     width: 100vw;
+    overflow-y: scroll;
     flex-direction: column;
     color: $chat-message-color;
     padding-top: 6vh;
@@ -33,6 +35,8 @@
     width: 100vw;
     height: 12vh;
     border: 1px solid $chat-input-border-color;
+    border-left: 0;
+    border-right: 0;
   }
 
   #chat-submit {
