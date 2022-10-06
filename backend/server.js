@@ -10,6 +10,14 @@ const http = app.listen(process.env.PORT, () => {
 });
 
 const clients = {};
+/* Clients Object
+    name: {
+    id: client id from the socket as a string, 
+    rooms: [arr],  
+    color: 'rgba(x,x,x)',
+    displayname: 'string' // same as name by default
+  }
+*/ 
 const io = new Server(http);
 
 const rooms = {};
@@ -34,8 +42,8 @@ io.on('connection', client => {
 
   const color = random_rgba();
   // console.log('Client Connected!', name, ':', client.id);
-
-  clients[name] = { id: client.id, rooms: [], color };  // Add client to lookup object. This is for server use.
+  // Add client to lookup object. This is for server use. Ensures if names are the same it does not overwrite the old.
+  !clients[name] && (clients[name] = { id: client.id, rooms: [], color, displayname: name });  
 
   client.on('createOrJoinRoom', (req) => {
 
@@ -79,19 +87,17 @@ io.on('connection', client => {
   });
 
   client.on('message', data => {
-    // console.log('Data received:', data);
     const { msg, room, to } = data
     if (!msg) {
       return;
     }
     const username = name;
     if (!to) {
-      io.to(room.name).emit('public', { msg, username });
+      io.to(room.name).emit('public', { message, username, color });
       return;
     }
     const id = clients[to].id;
-    // console.log(`Sending message to ${to}:${id}`);
-    io.to(id).emit('private', { msg, username });
+    io.to(id).emit('private', { message, username, pm: true });
   })
 
   client.on('disconnect', () => {

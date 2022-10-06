@@ -6,19 +6,19 @@ import { roomContext } from '../../providers/RoomProvider';
 
 
 const Chat = function(props) {
-  const { messages, setMessages, socket, to, setTo, msg, setMsg, room } = useContext(roomContext);
+  const { chatMessages, setChatMessages, socket, to, setTo, msg, setMsg, room } = useContext(roomContext);
   const users = room.users;
   const send = function() {
     socket.emit('message', {msg, room, to});
     if (to) {
       const message = `PM to ${to}:${msg}`;
-      setMessages(prev => [message, ...prev]);
+      setChatMessages(prev => [message, ...prev]);
     };
 
     setMsg('');
   };
   
-  const messageList = messages.map((message, i) => {
+  const chatMessageList = chatMessages.map((message, i) => {
     return <ChatMessage key={i} message={message} user={'no user set'}/>;
   });
 
@@ -34,9 +34,9 @@ const Chat = function(props) {
           value={to}
           placeholder="Username" />
       </div>
-      <ChatInput onChange={setMsg} value={msg} send={send} clear={setMessages} />
+      <ChatInput onChange={setMsg} value={msg} send={send} clear={setChatMessages} />
       <div id='message-list'> 
-        {messageList}
+        {chatMessageList}
       </div>
       <ul>
         {userList}

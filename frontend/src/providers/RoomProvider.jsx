@@ -16,9 +16,9 @@ export default function RoomProvider(props) {
   });
   const [isViewing, setIsViewing] = useState(false);
   // Chat only state
-  const [to, setTo] = useState('');
-  const [messages, setMessages] = useState([]);
-  const [msg, setMsg] = useState('');
+  const [to, setTo] = useState(''); // This is the state of who a user is sending a PM to.
+  const [chatMessages, setChatMessages] = useState([]); // These messages are displayed on the chat window
+  const [msg, setMsg] = useState(''); // This is the message before it's sent to our server
   // Channel changing state
   const [newChannel, setNewChannel] = useState('');
   const [searchValue, setSearchValue] = useState('');
@@ -31,8 +31,7 @@ export default function RoomProvider(props) {
     setSocket(socket);
 
     socket.on('connect', () => {
-      console.log('connected');
-      
+      console.log('A parrot has perched! 🦜');
     });
 
     socket.on('serveRoom', (res) => {
@@ -43,28 +42,29 @@ export default function RoomProvider(props) {
       });
       const message = res.message;
       if (message) {
-        setMessages(prev => [message, ...prev]);
+        setChatMessages(prev => [message, ...prev]);
       }
       setIsViewing(true);
     });
 
     socket.on('system', data => {
       // console.log(data);
-      const { message, room } = data
+      const room = data.room
       setRoom((oldRoom) => {
         return { ...oldRoom, name: room.name, channel: room.channel, users: room.users };
       });
-      setMessages(prev => [message, ...prev]);
+      const message = { username: 'System', message: data.message, color: data.color }
+      setChatMessages(prev => [message, ...prev]);
     });
 
     socket.on('public', data => {
-      const message = `${data.username}: ${data.msg}`;
-      setMessages(prev => [message, ...prev]); // Keeps all messages in history right now
+      const message = { username: data.username, color: data.color, message: data.msg};
+      setChatMessages(prev => [message, ...prev]); // Keeps all messages in history right now
     });
 
     socket.on('private', data => {
-      const message = `PM from ${data.username}: ${data.msg}`;
-      setMessages(prev => [message, ...prev]); // Same as public. 
+      const message = { username: data.username, color: data.color, message: data.msg, pm: data.pm };
+      setChatMessages(prev => [message, ...prev]); // Same as public. 
     });
 
     return () => socket.disconnect();
@@ -127,7 +127,7 @@ export default function RoomProvider(props) {
   // Export any usable state or state setters (or custom functions to set state) by declaring them here.
   const roomData = { 
     to, setTo, 
-    messages, setMessages, 
+    chatMessages, setChatMessages, 
     msg, setMsg, 
     socket, setSocket, 
     isViewing, setIsViewing, 
