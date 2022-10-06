@@ -25,7 +25,7 @@ export default function RoomProvider(props) {
   const [searchResults, setSearchResults] = useState([]);
 
 
-  // Chat and Rooms useEffect
+  // Chat and Rooms useEffect with sockets
   useEffect(() => {
     const socket = io();
     setSocket(socket);
@@ -70,6 +70,11 @@ export default function RoomProvider(props) {
 
     return () => socket.disconnect();
   }, []);
+
+  // Chat Functions
+  const clearChatInput = () => {
+    setMsg('');
+  };
 
   // API use
   useEffect(() => {
@@ -127,15 +132,15 @@ export default function RoomProvider(props) {
 
   // Export any usable state or state setters (or custom functions to set state) by declaring them here.
   const roomData = { 
-    to, setTo, 
-    chatMessages, setChatMessages, 
-    msg, setMsg, 
-    socket, setSocket, 
-    isViewing, setIsViewing, 
-    room, setRoom,
-    newChannel, setNewChannel,
-    searchResults, setSearchResults,
-    searchValue, setSearchValue
+    to, setTo, // user to send a direct message to
+    chatMessages, setChatMessages, // Chat messages that are showing for a user in the chat
+    msg, setMsg, clearChatInput, // The message a user types in before sending
+    socket, setSocket, // The socket their connection is on
+    isViewing, setIsViewing, // Whether they are viewing a channel or not
+    room, setRoom, // Which room the user is in, including userlist
+    newChannel, setNewChannel, // When a user sets a channel
+    searchResults, setSearchResults, // Results from the user's channel search
+    searchValue, setSearchValue // The term of the user's search value
    };
 
   return (
