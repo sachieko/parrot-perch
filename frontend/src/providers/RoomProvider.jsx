@@ -103,22 +103,6 @@ export default function RoomProvider(props) {
         })
 
       })
-      // .then(response => {
-      //   console.log(response);
-        // return axios.get(searchURL, {
-        //   headers: {
-        //     'Authorization': `Bearer ${token}`,
-        //     'Client-Id': process.env.REACT_APP_CLIENT_ID
-        //   }
-        // })
-        // .then(response => {
-        //   setSearchResults([...response.data.data])
-        //   // console.log(results);
-        // })
-        // .catch((e) => {
-        //   console.log(e);
-        // });
-      // })
       .then(response => {
         setSearchResults([...response.data.data])
       })
@@ -126,16 +110,6 @@ export default function RoomProvider(props) {
         console.log(e);
       });
   }, [term]);
-
-  // eslint-disable-next-line
-  // const onSearch = useCallback(setNewChannel, [term]);
-
-  // on search use effect
-  // useEffect(() => {
-  //   onSearch(term);
-  //   setNewChannel(term);
-  // }, [term, onSearch]);
-
 
   // Export any usable state or state setters (or custom functions to set state) by declaring them here.
   const roomData = {
