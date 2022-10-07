@@ -13,6 +13,7 @@ export default function RoomProvider(props) {
     host: '',
     password: '',
     channel: '',
+    paths: [],
     youtubeVideo: {
       channel: '',
       duration: 0,
@@ -53,6 +54,7 @@ export default function RoomProvider(props) {
           name: room.name,
           host: room.host,
           channel: room.channel,
+          paths: room.paths,
           youtubeVideo: {
             channel: room.youtubeVideo.channel,
             duration: room.youtubeVideo.duration,
@@ -128,6 +130,12 @@ export default function RoomProvider(props) {
         }
       });
     })
+
+    socket.on('broadcastPath', (res) => {
+      setRoom(oldRoom => {
+        return { ...oldRoom, paths: [...res.room.paths] };
+      });
+    });
 
     return () => socket.disconnect();
   }, []);
