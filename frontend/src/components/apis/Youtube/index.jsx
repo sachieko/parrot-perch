@@ -101,17 +101,16 @@ function Youtube() {
       <div className='search'>
         <form  className='search_form' onSubmit={e => e.preventDefault()}>
           <input className='radius' type='text' value={term} placeholder='Search Youtube' onChange={(e) => setTerm(e.target.value)} />
-          {/* <input type='submit'></input> */}
         </form>
       </div>
       {displaySuggestions}
-      {/* {room.youtubeVideo.channel && ( */}
+      { room.youtubeVideo && room.youtubeVideo.channel && ( 
         <YoutubePlayer
           videoId={room.youtubeVideo.channel}
           opts={opts}
           onReady={onReady}
           onStateChange={emitStateChange} />
-      {/* )} */}
+       )}
     </div>
   );
 }
