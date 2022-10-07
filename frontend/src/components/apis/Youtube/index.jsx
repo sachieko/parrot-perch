@@ -52,13 +52,13 @@ function Youtube() {
     }
   }
 
-  // useEffect(() => {
-  //   if (terms === '') {
-  //     setSuggestions([])
-  //     return;
-  //   }
-    const submit = (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    if (terms === '') {
+      setSuggestions([])
+      return;
+    }
+    // const submit = (e) => {
+    // e.preventDefault();
     axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${terms}&key=${API_KEY}`)
       .then((res) => {
         // console.log(res.data.items)
@@ -75,15 +75,16 @@ function Youtube() {
       .catch((err) => {
         console.log(err);
       });
-    setTerm('');
-    }
-  // }, [terms])
+    // setTerm('');
+    // }
+  }, [terms])
 
   const enterURL = (e, vid) => {
     const ytvideo = { ...room.youtubeVideo }
     ytvideo.channel = vid;
     socket.emit('editRoom', { room: { ...room, youtubeVideo: ytvideo } });
     setSuggestions([]);
+    setTerm('');
   }
 
   const displaySuggestions = suggestions.map((r, i) => {
@@ -98,19 +99,19 @@ function Youtube() {
   return (
     <div>
       <div className='search'>
-        <form className='search_form' onSubmit={submit}>
+        <form  className='search_form' onSubmit={e => e.preventDefault()}>
           <input className='radius' type='text' value={term} placeholder='Search Youtube' onChange={(e) => setTerm(e.target.value)} />
-          <input type='submit'></input>
+          {/* <input type='submit'></input> */}
         </form>
       </div>
       {displaySuggestions}
-      {room.youtubeVideo.channel && (
+      {/* {room.youtubeVideo.channel && ( */}
         <YoutubePlayer
           videoId={room.youtubeVideo.channel}
           opts={opts}
           onReady={onReady}
           onStateChange={emitStateChange} />
-      )}
+      {/* )} */}
     </div>
   );
 }
