@@ -10,9 +10,9 @@ import Whiteboard from './Whiteboard';
 function View() {
   const { room } = useContext(roomContext);
   const [widgetSwitches, setWidgetSwitches] = useState(
-    [{ name: 'twitch', selected: false },
-    { name: 'youtube', selected: false },
-    { name: 'chat', selected: false },
+    [{ name: 'twitch', selected: true },
+    { name: 'youtube', selected: true },
+    { name: 'chat', selected: true },
     { name: 'whiteboard', selected: true }]);
 
   const selectSwitch = (i) => {
