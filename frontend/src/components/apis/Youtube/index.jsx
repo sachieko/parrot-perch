@@ -52,14 +52,14 @@ function Youtube() {
     }
   }
 
-  useEffect(() => {
-    if (term === '') {
-      setSuggestions([])
-      return;
-    }
-    // const submit = (e) => {
-    // e.preventDefault();
-    axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${term}&key=${API_KEY}`)
+  // useEffect(() => {
+  //   if (terms === '') {
+  //     setSuggestions([])
+  //     return;
+  //   }
+    const submit = (e) => {
+    e.preventDefault();
+    axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${terms}&key=${API_KEY}`)
       .then((res) => {
         // console.log(res.data.items)
         const list = [];
@@ -75,9 +75,9 @@ function Youtube() {
       .catch((err) => {
         console.log(err);
       });
-    // setTerm('');
-    // }
-  }, [terms])
+    setTerm('');
+    }
+  // }, [terms])
 
   const enterURL = (e, vid) => {
     const ytvideo = { ...room.youtubeVideo }
@@ -98,9 +98,9 @@ function Youtube() {
   return (
     <div>
       <div className='search'>
-        <form className='search_form' onSubmit={event => event.preventDefault()}>
+        <form className='search_form' onSubmit={submit}>
           <input className='radius' type='text' value={term} placeholder='Search Youtube' onChange={(e) => setTerm(e.target.value)} />
-          {/* <input type='submit'></input> */}
+          <input type='submit'></input>
         </form>
       </div>
       {displaySuggestions}

@@ -4,6 +4,22 @@ const { Server, Socket } = require('socket.io');
 const express = require('express');
 const app = express();
 const { uniqueNamesGenerator, starWars } = require('unique-names-generator');
+const axios = require('axios').default;
+
+app.get('/api/twitch_token', (req, res) => {
+  axios.post('https://id.twitch.tv/oauth2/token', {
+    client_id: process.env.CLIENT_ID,
+    client_secret: process.env.CLIENT_SECRET,
+    grant_type: process.env.GRANT_TYPE
+  })
+    .then(response => {
+      console.log(response);
+      res.json({
+        token: response.access_token,
+        expires: 0
+      })
+    });
+});
 
 const http = app.listen(process.env.PORT, () => {
   console.log(`Server running at port: ${process.env.PORT}`);
@@ -21,6 +37,8 @@ const rooms = {};
 //    users: [array]
 //  } 
 // }
+
+
 
 io.on('connection', client => {
   const name = uniqueNamesGenerator({
@@ -43,12 +61,12 @@ io.on('connection', client => {
 
     client.join(room.name);
 
-    
+
     if (!rooms[room.name]) {
       rooms[room.name] = room; // new room
       rooms[room.name].users = []; // new user array
       rooms[room.name].host = name;
-    } 
+    }
 
     // password check happens here
     if (rooms[room.name].password && room.password !== rooms[room.name].password) {
@@ -104,7 +122,7 @@ io.on('connection', client => {
   client.on('editVideo', (req) => {
     const host = rooms[req.room.name].host;
     const roomName = req.room.name;
-    if (name === host){
+    if (name === host) {
       rooms[roomName] = req.room;
       client.to(roomName).emit('serveVideo', { room: rooms[roomName] });
     }
@@ -117,7 +135,7 @@ io.on('connection', client => {
       if (rooms[roomname].users.length === 0) {
         delete rooms[roomname];
         return;
-      } else if (rooms[roomname].host === name){
+      } else if (rooms[roomname].host === name) {
         const newHost = rooms[roomname].users[0].name;
         rooms[roomname].host = newHost;
         //client.to(roomname).emit('system', { message: `Host ${name} died. New host: ${newHost} `, room: rooms[roomname] });
@@ -127,3 +145,26 @@ io.on('connection', client => {
     delete clients[name];
   });
 });
+
+// axios.post('https://id.twitch.tv/oauth2/token', {
+//   client_id: process.env.CLIENT_ID,
+//   client_secret: process.env.CLIENT_SECRET,
+//   grant_type: process.env.GRANT_TYPE
+// })
+//   .then(response => {
+//     console.log(response);
+//   })
+//   .catch((e) => {
+//     console.log(e);
+//   });
+
+// axios.get('https://id.twitch.tv/oauth2/validate', {
+//   headers: {
+//     'Authorization': `Bearer ${token}`
+//   }
+// })
+// .then(response => {
+//   console.log(response);
+// })
+
+// axios.get('https://www.google.com').then(response => {console.log(response)});
