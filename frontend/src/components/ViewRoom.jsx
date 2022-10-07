@@ -1,19 +1,20 @@
-import { useContext } from 'react';
-// import ChangeChannel from './ChangeChannel';
+import { useContext, useRef, useState } from 'react';
+import ToggleButton from 'react-bootstrap/ToggleButton';
+import { roomContext } from '../providers/RoomProvider';
 import Youtube from './apis/Youtube';
 import Twitch from './apis/Twitch';
-import { roomContext } from '../providers/RoomProvider';
-import { useState } from 'react';
-import ToggleButton from 'react-bootstrap/ToggleButton';
 import Chat from './Chat';
+import Whiteboard from './whiteboard';
 
 
 function View() {
   const { room } = useContext(roomContext);
+  const canvasRef = useRef(null);
   const [widgetSwitches, setWidgetSwitches] = useState(
-    [{ name: 'twitch', selected: true },
-    { name: 'youtube', selected: true },
-    { name: 'chat', selected: true }]);
+    [{ name: 'twitch', selected: false },
+    { name: 'youtube', selected: false },
+    { name: 'chat', selected: false },
+    { name: 'whiteboard', selected: true }]);
 
   const selectSwitch = (i) => {
     setWidgetSwitches((oldSwitches) => {
@@ -42,6 +43,7 @@ function View() {
   return (
     <div>
       Room Name: {room.name}
+      {widgetSwitches[3].selected && <Whiteboard canvasRef={canvasRef} />}
       {showSwitches}
       {widgetSwitches[0].selected && <Twitch />}
       {widgetSwitches[1].selected && <Youtube />}
