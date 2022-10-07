@@ -5,30 +5,29 @@ function Whiteboard() {
   const [mouseDown, setMouseDown] = useState(false);
   const [path, setPath] = useState([]);
   const canvasRef = useRef(null);
-  const { socket, room } = useContext(roomContext);
+  const { socket, room, incomingPath } = useContext(roomContext);
+
+  useEffect(() => {
+    for (const path of room.paths) {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext('2d');
+      drawPath(ctx, path);
+    }
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    if (ctx.canvas.width !== 1000) {
-      ctx.canvas.width = 1000;
-    }
-    for (const path of room.paths) {
-      for (let i = 0; i < path.length; i++) {
-        const p = path[i];
-        const { x, y } = p;
-        if (i === 0) {
-          ctx.moveTo(x, y);
-        }
-        if (i === path.length - 1) {
-          ctx.lineTo(x, y);
-          ctx.stroke();
-        }
-        if (i > 0 && i < path.length) {
-          ctx.lineTo(x, y);
-        }
-      }
-    }
+    drawPath(ctx, incomingPath);
+  }, [incomingPath]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    drawPath(ctx, path);
+  }, [path]);
+
+  const drawPath = (ctx, path) => {
     for (let i = 0; i < path.length; i++) {
       const p = path[i];
       const { x, y } = p;
@@ -43,27 +42,30 @@ function Whiteboard() {
         ctx.lineTo(x, y);
       }
     }
-  }, [path, room]);
+  }
 
   const handleMouseDown = (e) => {
-    const x = e.clientX - canvasRef.current.offsetLeft;
-    const y = e.clientY - canvasRef.current.offsetTop;
+    const BB = canvasRef.current.getBoundingClientRect();
+    const x = e.clientX - BB.left;
+    const y = e.clientY - BB.top;
     setPath([{ x, y }]);
     setMouseDown(true);
   }
 
   const handleMouseMove = (e) => {
-    const x = e.clientX - canvasRef.current.offsetLeft;
-    const y = e.clientY - canvasRef.current.offsetTop;
+    const BB = canvasRef.current.getBoundingClientRect();
+    const x = e.clientX - BB.left;
+    const y = e.clientY - BB.top;
     if (mouseDown) {
       setPath(oldPath => [...oldPath, { x, y }]);
-      socket.emit('savePath', { room: { ...room, paths: [...room.paths, path] } });
+      socket.emit('savePath', { room: room, path: path });
     }
   }
 
   const handleMouseUp = (e) => {
-    const x = e.clientX - canvasRef.current.offsetLeft;
-    const y = e.clientY - canvasRef.current.offsetTop;
+    const BB = canvasRef.current.getBoundingClientRect();
+    const x = e.clientX - BB.left;
+    const y = e.clientY - BB.top;
     setPath(oldPath => [...oldPath, { x, y }]);
     setMouseDown(false);
   }

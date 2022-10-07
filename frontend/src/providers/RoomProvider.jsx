@@ -32,6 +32,7 @@ export default function RoomProvider(props) {
   const [searchResults, setSearchResults] = useState([]);
   //youtube changing state
   const [player, setPlayer] = useState();
+  const [incomingPath, setIncomingPath] = useState([]);
 
   // term is state
   const term = useDebounce(newChannel, 500);
@@ -132,9 +133,7 @@ export default function RoomProvider(props) {
     })
 
     socket.on('broadcastPath', (res) => {
-      setRoom(oldRoom => {
-        return { ...oldRoom, paths: [...res.room.paths] };
-      });
+      setIncomingPath(res.path);
     });
 
     return () => socket.disconnect();
@@ -190,7 +189,8 @@ export default function RoomProvider(props) {
     newChannel, setNewChannel,
     searchResults, setSearchResults,
     searchValue, setSearchValue,
-    player, setPlayer
+    player, setPlayer,
+    incomingPath, setIncomingPath
   };
 
   return (
