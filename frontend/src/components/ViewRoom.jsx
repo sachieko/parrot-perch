@@ -40,13 +40,13 @@ function View(props) {
   });
 
   return (
-    <div>
+    <section className='widget-container'>
       Room Name: {room.name}
       {showSwitches}
       {widgetSwitches[0].selected && <Twitch />}
       {widgetSwitches[1].selected && <Youtube />}
       {widgetSwitches[2].selected && <Chat />}
-    </div>
+    </section>
   );
 };
 
