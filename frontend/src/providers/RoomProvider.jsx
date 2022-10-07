@@ -10,8 +10,14 @@ export default function RoomProvider(props) {
   const [socket, setSocket] = useState();
   const [room, setRoom] = useState({
     name: '',
+    host: '',
     password: '',
     channel: '',
+    youtubeVideo: {
+      channel: '',
+      duration: 0,
+      state: 2 // 1 => play, 2 => pause, 3 => buffer 
+    },
     users: []
   });
   const [isViewing, setIsViewing] = useState(false);
@@ -23,6 +29,8 @@ export default function RoomProvider(props) {
   const [newChannel, setNewChannel] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  //youtube changing state
+  const [player, setPlayer] = useState();
 
   // term is state
   const term = useDebounce(newChannel, 500);
@@ -40,8 +48,18 @@ export default function RoomProvider(props) {
     socket.on('serveRoom', (res) => {
       const room = res.room;
       setRoom((oldRoom) => {
-        // Possibly store hashed user identifier in local storage?
-        return { ...oldRoom, name: room.name, channel: room.channel, users: room.users };
+        return {
+          ...oldRoom,
+          name: room.name,
+          host: room.host,
+          channel: room.channel,
+          youtubeVideo: {
+            channel: room.youtubeVideo.channel,
+            duration: room.youtubeVideo.duration,
+            state: room.youtubeVideo.state
+          },
+          users: room.users
+        };
       });
       const message = res.message;
       if (message) {
@@ -54,7 +72,7 @@ export default function RoomProvider(props) {
       // console.log(data);
       const { message, room } = data
       setRoom((oldRoom) => {
-        return { ...oldRoom, name: room.name, channel: room.channel, users: room.users };
+        return { ...oldRoom, name: room.name, channel: room.channel, users: room.users, host: room.host };
       });
       setMessages(prev => [message, ...prev]);
     });
@@ -68,6 +86,48 @@ export default function RoomProvider(props) {
       const message = `PM from ${data.username}: ${data.msg}`;
       setMessages(prev => [message, ...prev]); // Same as public. 
     });
+
+    socket.on('setJoinerYoutubeTime', (res) => {
+      setRoom((oldRoom) => {
+        return {
+          ...oldRoom,
+          youtubeVideo: {
+            ...oldRoom.youtubeVideo,
+            duration: res.time
+          }
+        }
+      });
+    });
+
+    socket.on('getHostYoutubeTime', (res) => {
+      setPlayer(oldPlayer => {
+        if (oldPlayer) {
+          res.time = oldPlayer.getCurrentTime();
+          socket.emit('sendJoinerYoutubeTime', res);
+        }
+        return oldPlayer;
+      });
+    });
+
+    socket.on('serveVideo', (res) => {
+      const room = res.room;
+      setPlayer(oldPlayer => {
+        if (oldPlayer) {
+          const s = oldPlayer.getPlayerState();
+          if (s === 1 || s === 2 || s === 3) {
+            const state = room.youtubeVideo.state;
+            if (state === 1) {
+              oldPlayer.seekTo(room.youtubeVideo.duration);
+            }
+            if (state === 2 || state === 3) {
+              oldPlayer.seekTo(room.youtubeVideo.duration);
+              oldPlayer.pauseVideo();
+            }
+          }
+          return oldPlayer;
+        }
+      });
+    })
 
     return () => socket.disconnect();
   }, []);
@@ -121,7 +181,8 @@ export default function RoomProvider(props) {
     room, setRoom,
     newChannel, setNewChannel,
     searchResults, setSearchResults,
-    searchValue, setSearchValue
+    searchValue, setSearchValue,
+    player, setPlayer
   };
 
   return (

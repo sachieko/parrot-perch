@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 dotenv.config();
-const { Server } = require('socket.io');
+const { Server, Socket } = require('socket.io');
 const express = require('express');
 const app = express();
 const { uniqueNamesGenerator, starWars } = require('unique-names-generator');
@@ -47,6 +47,7 @@ io.on('connection', client => {
     if (!rooms[room.name]) {
       rooms[room.name] = room; // new room
       rooms[room.name].users = []; // new user array
+      rooms[room.name].host = name;
     } 
 
     // password check happens here
@@ -58,10 +59,14 @@ io.on('connection', client => {
       name,
       color,
     };
-    console.log(rooms);
     rooms[room.name].users.push(user);
     clients[name].rooms.push(room.name);
-    const id = clients[name].id
+    const id = clients[name].id;
+    const hostName = rooms[room.name].host;
+    if (name !== hostName) {
+      const hostId = clients[hostName].id;
+      io.to(hostId).emit('getHostYoutubeTime', { for: id });
+    }
     client.emit('serveRoom', { room: rooms[room.name] });
     client.to(room.name).emit('system', { message: `Arr, ye've been boarded by ${name}!`, room: rooms[room.name] });
     io.to(id).emit('system', { message: `Welcome to the room, ${name}!`, room: rooms[room.name] });
@@ -71,6 +76,7 @@ io.on('connection', client => {
     //possible to sanitize data here.
     const room = req.room;
     rooms[room.name].channel = room.channel;
+    rooms[room.name].youtubeVideo = room.youtubeVideo;
     client.to(room.name).emit('serveRoom', { room: rooms[room.name] });
     client.emit('serveRoom', { room: rooms[room.name] });
   });
@@ -91,6 +97,19 @@ io.on('connection', client => {
     io.to(id).emit('private', { msg, username });
   })
 
+  client.on('sendJoinerYoutubeTime', (req) => {
+    io.to(req.for).emit('setJoinerYoutubeTime', { time: req.time });
+  });
+
+  client.on('editVideo', (req) => {
+    const host = rooms[req.room.name].host;
+    const roomName = req.room.name;
+    if (name === host){
+      rooms[roomName] = req.room;
+      client.to(roomName).emit('serveVideo', { room: rooms[roomName] });
+    }
+  });
+
   client.on('disconnect', () => {
     // console.log('Client Disconnected', name, ':', client.id);
     clients[name].rooms.forEach(roomname => {
@@ -98,6 +117,10 @@ io.on('connection', client => {
       if (rooms[roomname].users.length === 0) {
         delete rooms[roomname];
         return;
+      } else if (rooms[roomname].host === name){
+        const newHost = rooms[roomname].users[0].name;
+        rooms[roomname].host = newHost;
+        //client.to(roomname).emit('system', { message: `Host ${name} died. New host: ${newHost} `, room: rooms[roomname] });
       }
       client.to(roomname).emit('system', { message: `${name} has just walked the plank!`, room: rooms[roomname] });
     });
