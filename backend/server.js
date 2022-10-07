@@ -3,7 +3,8 @@ dotenv.config();
 const { Server } = require('socket.io');
 const express = require('express');
 const app = express();
-const { uniqueNamesGenerator, starWars } = require('unique-names-generator');
+const { uniqueNamesGenerator, adjectives } = require('unique-names-generator');
+const { random_color } = require('./helpers/userColors');
 
 const http = app.listen(process.env.PORT, () => {
   console.log(`Server running at port: ${process.env.PORT}`);
@@ -31,16 +32,13 @@ const rooms = {};
 // }
 
 io.on('connection', client => {
-  const name = uniqueNamesGenerator({
-    dictionaries: [starWars]
-  });
+  const name = `${uniqueNamesGenerator({
+    dictionaries: [adjectives],
+    separator: ' ',
+    style: 'capital'
+  })}  Parrot`;
 
-  const random_rgba = function () {
-    const o = Math.round, r = Math.random, s = 255;
-    return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
-  };
-
-  const color = random_rgba();
+  const color = random_color();
   // console.log('Client Connected!', name, ':', client.id);
   // Add client to lookup object. This is for server use. Ensures if names are the same it does not overwrite the old.
   !clients[name] && (clients[name] = { id: client.id, rooms: [], color, username: name });  
