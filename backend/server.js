@@ -6,7 +6,7 @@ const app = express();
 const { uniqueNamesGenerator, starWars } = require('unique-names-generator');
 const axios = require('axios').default;
 
-app.get('/api/twitch_token', (req, res) => {
+// app.get('/api/twitch_token', (req, res) => {
   axios.post('https://id.twitch.tv/oauth2/token', {
     client_id: process.env.CLIENT_ID,
     client_secret: process.env.CLIENT_SECRET,
@@ -14,12 +14,12 @@ app.get('/api/twitch_token', (req, res) => {
   })
     .then(response => {
       console.log(response);
-      res.json({
-        token: response.access_token,
-        expires: 0
-      })
+      // res.json({
+      //   token: response.access_token,
+      //   expires: 0
+      // })
     });
-});
+// });
 
 const http = app.listen(process.env.PORT, () => {
   console.log(`Server running at port: ${process.env.PORT}`);
