@@ -6,20 +6,54 @@ const app = express();
 const { uniqueNamesGenerator, starWars } = require('unique-names-generator');
 const axios = require('axios').default;
 
-// app.get('/api/twitch_token', (req, res) => {
-  axios.post('https://id.twitch.tv/oauth2/token', {
-    client_id: process.env.CLIENT_ID,
-    client_secret: process.env.CLIENT_SECRET,
-    grant_type: process.env.GRANT_TYPE
-  })
-    .then(response => {
-      console.log(response);
-      // res.json({
-      //   token: response.access_token,
-      //   expires: 0
-      // })
-    });
-// });
+let token = '';
+
+
+app.get('/api/twitch_token', (req, res) => {
+
+  if (token) {
+    axios.get('https://id.twitch.tv/oauth2/validate', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        
+        if (response.data.expires_in < 3600) {
+
+          axios.post('https://id.twitch.tv/oauth2/token', {
+            client_id: process.env.CLIENT_ID,
+            client_secret: process.env.CLIENT_SECRET,
+            grant_type: process.env.GRANT_TYPE
+          })
+            .then(response => {
+              token = response.data.access_token
+              res.send(token);
+              console.log('token was out of time, created new token')
+              return token;
+            })
+        } else {
+          console.log('token still has time left');
+          res.send(token);
+        }
+      })
+  }
+
+  if (!token) {
+    axios.post('https://id.twitch.tv/oauth2/token', {
+      client_id: process.env.CLIENT_ID,
+      client_secret: process.env.CLIENT_SECRET,
+      grant_type: process.env.GRANT_TYPE
+    })
+      .then(response => {
+        token = response.data.access_token
+        res.send(token);
+        console.log('created new token')
+        return token;
+      })
+  }
+});
+
 
 const http = app.listen(process.env.PORT, () => {
   console.log(`Server running at port: ${process.env.PORT}`);
