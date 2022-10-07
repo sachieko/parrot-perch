@@ -4,13 +4,19 @@ import YoutubePlayer from 'react-youtube';
 import { useState } from 'react';
 import { roomContext } from '../../../providers/RoomProvider';
 import { useContext } from 'react';
+import { useEffect } from 'react';
+import useDebounce from '../../../hooks/useDebounce';
+import './index.scss';
 
 const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY
+
+
+
 function Youtube() {
   const { socket, room, setPlayer } = useContext(roomContext);
   const [term, setTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-
+  const terms = useDebounce(term, 500);
   const opts = useState({
     height: '390',
     width: '640',
@@ -46,10 +52,16 @@ function Youtube() {
     }
   }
 
-  const submit = (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    if (term === '') {
+      setSuggestions([])
+      return;
+    }
+    // const submit = (e) => {
+    // e.preventDefault();
     axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${term}&key=${API_KEY}`)
       .then((res) => {
+        // console.log(res.data.items)
         const list = [];
         for (const i of res.data.items) {
           let ply = {};
@@ -63,8 +75,9 @@ function Youtube() {
       .catch((err) => {
         console.log(err);
       });
-    setTerm('');
-  }
+    // setTerm('');
+    // }
+  }, [terms])
 
   const enterURL = (e, vid) => {
     const ytvideo = { ...room.youtubeVideo }
@@ -84,16 +97,20 @@ function Youtube() {
 
   return (
     <div>
-      <form onSubmit={submit}>
-        <input type='text' value={term} placeholder='Search Youtube' onChange={(e) => setTerm(e.target.value)} />
-        <input type='submit'></input>
-      </form>
+      <div className='search'>
+        <form className='search_form' onSubmit={event => event.preventDefault()}>
+          <input className='radius' type='text' value={term} placeholder='Search Youtube' onChange={(e) => setTerm(e.target.value)} />
+          {/* <input type='submit'></input> */}
+        </form>
+      </div>
       {displaySuggestions}
-      <YoutubePlayer
-        videoId={room.youtubeVideo.channel}
-        opts={opts}
-        onReady={onReady}
-        onStateChange={emitStateChange} />
+      {room.youtubeVideo.channel && (
+        <YoutubePlayer
+          videoId={room.youtubeVideo.channel}
+          opts={opts}
+          onReady={onReady}
+          onStateChange={emitStateChange} />
+      )}
     </div>
   );
 }
