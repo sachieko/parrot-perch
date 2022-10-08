@@ -128,35 +128,22 @@ export default function RoomProvider(props) {
         }
       });
     })
-
     return () => socket.disconnect();
   }, []);
 
-
-  // API use
+  // twitch API use
   useEffect(() => {
-    const searchURL = `https://api.twitch.tv/helix/search/channels?query=${term}&live_only=true`;
-    let token = '';
-
     if (term === '') {
       setSearchResults([])
       return;
     }
-
-    axios.get('/api/twitch_token').then(response => {
-      token = response.data
-      return token;
+    axios.get('/api/twitch_search', {
+      params: {
+        term: term
+      }
     })
       .then(response => {
-        axios.get(searchURL, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Client-Id': process.env.REACT_APP_CLIENT_ID
-          }
-        })
-          .then(response => {
-            setSearchResults([...response.data.data])
-          })
+        setSearchResults([...response.data.data])
       })
   }, [term]);
 
