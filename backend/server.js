@@ -12,7 +12,7 @@ app.get('/api/twitch_search', (req, res) => {
   const term = req.query.term;
   const searchURL = `https://api.twitch.tv/helix/search/channels?query=${term}&live_only=true`;
 
-  // twitch auth token exists, validate token
+  // if twitch auth token exists, validate token
   if (token) {
     axios.get('https://id.twitch.tv/oauth2/validate', {
       headers: {
@@ -208,26 +208,3 @@ io.on('connection', client => {
     delete clients[name];
   });
 });
-
-// axios.post('https://id.twitch.tv/oauth2/token', {
-//   client_id: process.env.CLIENT_ID,
-//   client_secret: process.env.CLIENT_SECRET,
-//   grant_type: process.env.GRANT_TYPE
-// })
-//   .then(response => {
-//     console.log(response);
-//   })
-//   .catch((e) => {
-//     console.log(e);
-//   });
-
-// axios.get('https://id.twitch.tv/oauth2/validate', {
-//   headers: {
-//     'Authorization': `Bearer ${token}`
-//   }
-// })
-// .then(response => {
-//   console.log(response);
-// })
-
-// axios.get('https://www.google.com').then(response => {console.log(response)});
