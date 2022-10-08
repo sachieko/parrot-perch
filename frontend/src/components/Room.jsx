@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import './Room.scss';
 import Join from './JoinRoom';
 import View from './ViewRoom';
 import { roomContext } from '../providers/RoomProvider';

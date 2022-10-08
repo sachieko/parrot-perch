@@ -5,7 +5,6 @@ import PublicMessage from './PublicMessage';
 
 const  ChatMessage = props => {
   const { username, color, message, pm, system } = props;
-  console.log(props);
   return (
     <>
       {system && ( 

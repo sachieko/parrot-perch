@@ -1,0 +1,13 @@
+@import '../styles/variables.scss';
+@import '../styles/mixins.scss';
+
+.widget-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 35vh;
+  width: 100vw;
+  overflow-y: scroll;
+
+  @include custom-scrollbar;
+}

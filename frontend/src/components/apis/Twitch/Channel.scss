@@ -1,15 +1,4 @@
 @import '../../../styles/variables.scss';
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: "Source Sans Pro", sans-serif;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
 .streamer-channel {
   display: flex;
