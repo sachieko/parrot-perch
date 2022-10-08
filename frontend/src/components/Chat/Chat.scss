@@ -1,9 +1,77 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
 
 .chat {
-  background-color: #424242;
-  color: #FFFFFF;
+  background-color: $chat-background-color;
+  border: 4rem;
+  height: 35vh;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: fixed;
+  padding: 0.5em;
+  padding-top: 6vh;
+
+  @include custom-scrollbar;
+  
   #message-list {
-    display: flexbox;
+
+    display: flex;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    overflow-y: scroll;
     flex-direction: column;
+    color: $chat-message-color;
+    padding-top: 6vh;
+    padding-left: 1rem;
+  }
+  .chat-list-item {
+    padding-bottom: 0.2rem;
+    padding-top: 0.2rem;
+  }
+  .chat-input {
+    background-color: $chat-background-color;
+    position: fixed;
+    top: 65vh;
+    left: 0;
+    width: 100vw;
+    height: 12vh;
+    border: 0.6px solid $chat-input-border-color;
+    border-left: 0;
+    border-right: 0;
+  }
+
+  #chat-submit {
+    border: 5rem;
+    height: 4vh;
+    width: 90vw;
+    border: 1px solid $chat-input-border-color;
+    border-radius: 0.4rem;
+    margin: 0.4rem;
+    background-color: $chat-input-bg-color;
+    border-color: $chat-input-border-color;
+    color: $chat-message-color;
+    &:focus {
+      background-color: $chat-input-bg-color--focus;
+    }
+  }
+  .chat-pm input{
+    background-color: $chat-input-bg-color;
+    border-color: $chat-input-border-color;
+    color: $chat-message-color;
+    border-radius: 0.4rem;
+    margin: 0.2rem;
+  }
+  button {
+    margin: 0.2rem;
+    border-radius: $chat-button-radius;
+    color: $chat-button-color;
+    background-color: $chat-button-background-color;
+    &:hover {
+      background-color: $chat-button-background-color--hover;
+    }
   }
 }

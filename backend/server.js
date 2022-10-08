@@ -3,8 +3,9 @@ dotenv.config();
 const { Server, Socket } = require('socket.io');
 const express = require('express');
 const app = express();
-const { uniqueNamesGenerator, starWars } = require('unique-names-generator');
-const axios = require('axios').default;
+const { uniqueNamesGenerator, adjectives } = require('unique-names-generator');
+const { random_color } = require('./helpers/userColors');
+const axios = require('axios');
 
 // twitch search route
 app.get('/api/twitch_search', (req, res) => {
@@ -83,6 +84,14 @@ const http = app.listen(process.env.PORT, () => {
 });
 
 const clients = {};
+/* Clients Object
+    name: {
+    id: client id from the socket as a string, 
+    rooms: [arr],  
+    color: 'rgba(x,x,x)',
+    username: 'string' // same as name by default
+  }
+*/ 
 const io = new Server(http);
 
 const rooms = {};
@@ -98,19 +107,16 @@ const rooms = {};
 
 
 io.on('connection', client => {
-  const name = uniqueNamesGenerator({
-    dictionaries: [starWars]
-  });
+  const name = `${uniqueNamesGenerator({
+    dictionaries: [adjectives],
+    separator: ' ',
+    style: 'capital'
+  })}  Parrot`;
 
-  const random_rgba = function () {
-    const o = Math.round, r = Math.random, s = 255;
-    return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
-  };
-
-  const color = random_rgba();
+  const color = random_color();
   // console.log('Client Connected!', name, ':', client.id);
-
-  clients[name] = { id: client.id, rooms: [], color };  // Add client to lookup object. This is for server use.
+  // Add client to lookup object. This is for server use. Ensures if names are the same it does not overwrite the old.
+  !clients[name] && (clients[name] = { id: client.id, rooms: [], color, username: name });  
 
   client.on('createOrJoinRoom', (req) => {
 
@@ -143,8 +149,8 @@ io.on('connection', client => {
       io.to(hostId).emit('getHostYoutubeTime', { for: id });
     }
     client.emit('serveRoom', { room: rooms[room.name] });
-    client.to(room.name).emit('system', { message: `Arr, ye've been boarded by ${name}!`, room: rooms[room.name] });
-    io.to(id).emit('system', { message: `Welcome to the room, ${name}!`, room: rooms[room.name] });
+    client.to(room.name).emit('system', { system: 'announce', username: clients[name].username, room: rooms[room.name], color });
+    io.to(id).emit('system', { system: 'welcome', username: clients[name].username, room: rooms[room.name], color });
   });
 
   client.on('editRoom', (req) => {
@@ -157,19 +163,19 @@ io.on('connection', client => {
   });
 
   client.on('message', data => {
-    // console.log('Data received:', data);
-    const { msg, room, to } = data
-    if (!msg) {
+    const { msg: message, room, to } = data;
+    if (!message) {
       return;
     }
-    const username = name;
+    const username = clients[name].username;
     if (!to) {
-      io.to(room.name).emit('public', { msg, username });
+      io.to(room.name).emit('public', { message, username, color });
       return;
     }
-    const id = clients[to].id;
-    // console.log(`Sending message to ${to}:${id}`);
-    io.to(id).emit('private', { msg, username });
+    const { id: idTo, color: colorTo, username: userTo } = clients[to];
+    const { id: idFrom, color: colorFrom } = clients[name];
+    io.to(idTo).emit('private', { message, username: username, pm: 'receive', color: colorFrom }); // Receiver gets sender's color/name
+    io.to(idFrom).emit('private', { message, username: userTo, pm: 'send', color: colorTo }); // Sender receives other's color
   })
 
   client.on('sendJoinerYoutubeTime', (req) => {
@@ -198,12 +204,13 @@ io.on('connection', client => {
       if (rooms[roomname].users.length === 0) {
         delete rooms[roomname];
         return;
-      } else if (rooms[roomname].host === name) {
+      } 
+      if (rooms[roomname].host === name) {
         const newHost = rooms[roomname].users[0].name;
         rooms[roomname].host = newHost;
-        //client.to(roomname).emit('system', { message: `Host ${name} died. New host: ${newHost} `, room: rooms[roomname] });
+        client.to(roomname).emit('system', { system: 'hostSwap', username: clients[newHost].username, room: rooms[roomname], color: clients[newHost].color });
       }
-      client.to(roomname).emit('system', { message: `${name} has just walked the plank!`, room: rooms[roomname] });
+      client.to(roomname).emit('system', { system: 'exit', username: clients[name].username, room: rooms[roomname], color });
     });
     delete clients[name];
   });

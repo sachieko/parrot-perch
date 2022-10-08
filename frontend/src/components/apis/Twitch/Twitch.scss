@@ -1,0 +1,23 @@
+@import '../../../styles/variables.scss';
+@import '../../../styles/mixins.scss';
+
+
+.twitch-live-search {
+  position: absolute;
+  left: 30vw;
+  justify-content: center;
+  .result-list {
+    background-color: $channel-bg-color;
+    display: flex;
+    height: 35vh;
+    width: 40vw;
+    flex-direction: column;
+    overflow-y: scroll;
+
+    @include custom-scrollbar;
+
+    .twitch-search-results {
+      overflow-x: hidden;
+    }
+  }
+}

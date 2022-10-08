@@ -1,19 +1,23 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import { roomContext } from '../../providers/RoomProvider';
+import drawPath from "../../helpers/whiteboardHelpers";
+
 
 function Whiteboard() {
   const [mouseDown, setMouseDown] = useState(false);
   const [path, setPath] = useState([]);
   const canvasRef = useRef(null);
   const { socket, room, incomingPath } = useContext(roomContext);
+  const [didLoad, setDidLoad] = useState(false);
 
-  useEffect(() => {
+  if (canvasRef.current && !didLoad){
     for (const path of room.paths) {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext('2d');
       drawPath(ctx, path);
+      setDidLoad(true);
     }
-  }, []);
+  }
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -26,23 +30,6 @@ function Whiteboard() {
     const ctx = canvas.getContext('2d');
     drawPath(ctx, path);
   }, [path]);
-
-  const drawPath = (ctx, path) => {
-    for (let i = 0; i < path.length; i++) {
-      const p = path[i];
-      const { x, y } = p;
-      if (i === 0) {
-        ctx.moveTo(x, y);
-      }
-      if (i === path.length - 1) {
-        ctx.lineTo(x, y);
-        ctx.stroke();
-      }
-      if (i > 0 && i < path.length) {
-        ctx.lineTo(x, y);
-      }
-    }
-  }
 
   const handleMouseDown = (e) => {
     const BB = canvasRef.current.getBoundingClientRect();
@@ -76,7 +63,7 @@ function Whiteboard() {
         id='whiteboard'
         width={'1000px'}
         height={'200px'}
-        style={{ border: '1px solid black' }}
+        style={{ border: '1px solid white' }}
         ref={canvasRef}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}

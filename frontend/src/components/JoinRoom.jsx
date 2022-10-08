@@ -1,7 +1,6 @@
 function Join (props) {
 
   return (
-    <main>
     <form>
       <label>
         Join Room:
@@ -13,7 +12,6 @@ function Join (props) {
       </label>
       <input type="submit" value="Submit" onClick={props.onClick} />
     </form>
-    </main>
   )
 }
 

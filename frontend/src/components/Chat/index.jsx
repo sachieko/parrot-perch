@@ -2,41 +2,33 @@ import React, { useContext} from 'react';
 import './Chat.scss'
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
+import UserList from './UserList';
 import { roomContext } from '../../providers/RoomProvider';
 
 
 const Chat = function(props) {
-  const { messages, setMessages, socket, to, setTo, msg, setMsg, room } = useContext(roomContext);
+  const { chatMessages, setChatMessages, socket, to, msg, setMsg, clearChatInput, room } = useContext(roomContext);
   const users = room.users;
   const send = function() {
     socket.emit('message', {msg, room, to});
-    if (to) {
-      const message = `PM to ${to}:${msg}`;
-      setMessages(prev => [message, ...prev]);
-    };
+    clearChatInput();
 
-    setMsg('');
   };
   
-  const messageList = messages.map((message, i) => {
-    return <ChatMessage key={i} message={message} user={'no user set'}/>;
+  const chatMessageList = chatMessages.map((messageObj, i) => {
+    const { username, color, message, pm, system } = messageObj;
+    return <ChatMessage key={i} message={message} username={username} color={color} pm={pm} system={system} />;
   });
 
-  const userList = users.map((user, i) => {
-    return <li key={i}>{user.name}</li>;
+  const userList = users.map((user, i) => { // Use room users to return the list of people you can PM by clicking the button
+    return <UserList key={i} username={user.name} color={user.color} />;
   });
 
   return (
     <section className="chat">
-      <div className="chat-pm">
-        <input 
-          onChange={event => setTo(event.target.value)}
-          value={to}
-          placeholder="Username" />
-      </div>
-      <ChatInput onChange={setMsg} value={msg} send={send} clear={setMessages} />
+      <ChatInput onChange={setMsg} value={msg} send={send} clear={setChatMessages} />
       <div id='message-list'> 
-        {messageList}
+        {chatMessageList}
       </div>
       <ul>
         {userList}

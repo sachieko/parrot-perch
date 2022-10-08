@@ -23,9 +23,9 @@ export default function RoomProvider(props) {
   });
   const [isViewing, setIsViewing] = useState(false);
   // Chat only state
-  const [to, setTo] = useState('');
-  const [messages, setMessages] = useState([]);
-  const [msg, setMsg] = useState('');
+  const [to, setTo] = useState(''); // This is the state of who a user is sending a PM to.
+  const [chatMessages, setChatMessages] = useState([]); // These messages are displayed on the chat window
+  const [msg, setMsg] = useState(''); // This is the message before it's sent to our server
   // Channel changing state
   const [newChannel, setNewChannel] = useState('');
   const [searchValue, setSearchValue] = useState('');
@@ -37,14 +37,13 @@ export default function RoomProvider(props) {
   // term is state
   const term = useDebounce(newChannel, 500);
 
-  // Chat and Rooms useEffect
+  // Chat and Rooms useEffect with sockets
   useEffect(() => {
     const socket = io();
     setSocket(socket);
 
     socket.on('connect', () => {
-      // console.log('connected');
-
+      console.log('A parrot has perched! 🦜');
     });
 
     socket.on('serveRoom', (res) => {
@@ -66,28 +65,30 @@ export default function RoomProvider(props) {
       });
       const message = res.message;
       if (message) {
-        setMessages(prev => [message, ...prev]);
+        setChatMessages(prev => [message, ...prev]);
       }
       setIsViewing(true);
     });
 
     socket.on('system', data => {
-      // console.log(data);
-      const { message, room } = data
+      const { room, username, color, system } = data;
       setRoom((oldRoom) => {
         return { ...oldRoom, name: room.name, channel: room.channel, users: room.users, host: room.host };
       });
-      setMessages(prev => [message, ...prev]);
+      const chatMessage = { username, color, system };
+      setChatMessages(prev => [chatMessage, ...prev]);
     });
 
     socket.on('public', data => {
-      const message = `${data.username}: ${data.msg}`;
-      setMessages(prev => [message, ...prev]); // Keeps all messages in history right now
+      const { username, color, message } = data;
+      const chatMessage = { username, color, message };
+      setChatMessages(prev => [chatMessage, ...prev]); // Keeps all messages in history right now
     });
 
     socket.on('private', data => {
-      const message = `PM from ${data.username}: ${data.msg}`;
-      setMessages(prev => [message, ...prev]); // Same as public. 
+      const { username, color, message, pm } = data;
+      const chatMessage = { username, color, message, pm };
+      setChatMessages(prev => [chatMessage, ...prev]); // Same as public. 
     });
 
     socket.on('setJoinerYoutubeTime', (res) => {
@@ -139,7 +140,12 @@ export default function RoomProvider(props) {
     return () => socket.disconnect();
   }, []);
 
-  // twitch API use
+  // Chat Functions
+  const clearChatInput = () => {
+    setMsg('');
+  };
+
+  // API use
   useEffect(() => {
     if (term === '') {
       setSearchResults([])
@@ -156,19 +162,19 @@ export default function RoomProvider(props) {
   }, [term]);
 
   // Export any usable state or state setters (or custom functions to set state) by declaring them here.
-  const roomData = {
-    to, setTo,
-    messages, setMessages,
-    msg, setMsg,
-    socket, setSocket,
-    isViewing, setIsViewing,
-    room, setRoom,
-    newChannel, setNewChannel,
-    searchResults, setSearchResults,
-    searchValue, setSearchValue,
-    player, setPlayer,
-    incomingPath, setIncomingPath
-  };
+  const roomData = { 
+    to, setTo, // user to send a direct message to
+    chatMessages, setChatMessages, // Chat messages that are showing for a user in the chat
+    msg, setMsg, clearChatInput, // The message a user types in before sending
+    socket, setSocket, // The socket their connection is on
+    isViewing, setIsViewing, // Whether they are viewing a channel or not
+    room, setRoom, // Which room the user is in, including userlist
+    newChannel, setNewChannel, // When a user sets a channel for twitch
+    searchResults, setSearchResults, // Results from the user's channel search
+    searchValue, setSearchValue, // The term of the user's search value
+    player, setPlayer, // Used to manage player for youtube API
+    incomingPath, setIncomingPath // Manages the whiteboard app
+   };
 
   return (
     <roomContext.Provider value={roomData}>

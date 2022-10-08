@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import LiveSearch from "./LiveSearch";
+import './Twitch.scss';
 import { roomContext } from '../../../providers/RoomProvider';
 
 function Twitch() {
@@ -7,7 +8,7 @@ function Twitch() {
   const hostURL = 'localhost' // Update this when deployed
 
   return (
-    <div>
+    <div className='widget twitch-widget'>
       <LiveSearch />
       { room.channel && (
       <div>

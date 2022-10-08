@@ -11,9 +11,18 @@ export default function Results(props) {
     socket.emit('editRoom', { room: { ...room, channel: streamerName } });
     setNewChannel('');
   };
-  return searchResults.map(stream => {
-    return <Channel key={stream.id} {...stream} 
+  const channelList = searchResults.map(stream => {
+    return (
+    
+    <Channel key={stream.id} {...stream} 
       handleChannel={handleChannel}
-    />;
+    />
+    );
   });
-}
+
+  return (
+    <div className='result-list'> 
+    {channelList}
+    </div>
+  )
+};

@@ -40,7 +40,7 @@ function View() {
   });
 
   return (
-    <div>
+    <div className='widget-container'>
       Room Name: {room.name}
       {widgetSwitches[3].selected && <Whiteboard />}
       {showSwitches}
