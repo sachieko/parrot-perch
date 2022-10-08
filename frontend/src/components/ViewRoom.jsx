@@ -40,16 +40,14 @@ function View() {
   });
 
   return (
-    <>
-    <section className='widget-container'>
+    <div className='widget-container'>
       Room Name: {room.name}
       {widgetSwitches[3].selected && <Whiteboard />}
       {showSwitches}
       {widgetSwitches[0].selected && <Twitch />}
       {widgetSwitches[1].selected && <Youtube />}
-    </section>
       {widgetSwitches[2].selected && <Chat />}
-      </>
+    </div>
   );
 };
 
