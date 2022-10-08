@@ -4,7 +4,7 @@ import { roomContext } from '../providers/RoomProvider';
 import Youtube from './apis/Youtube';
 import Twitch from './apis/Twitch';
 import Chat from './Chat';
-import Whiteboard from './Whiteboard';
+import Whiteboard from './whiteboard';
 
 
 function View() {
