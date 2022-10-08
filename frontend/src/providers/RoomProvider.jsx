@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useCallback } from "react";
+import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import io from "socket.io-client";
 import useDebounce from "../hooks/useDebounce";
@@ -10,8 +10,15 @@ export default function RoomProvider(props) {
   const [socket, setSocket] = useState();
   const [room, setRoom] = useState({
     name: '',
+    host: '',
     password: '',
     channel: '',
+    paths: [],
+    youtubeVideo: {
+      channel: '',
+      duration: 0,
+      state: 2 // 1 => play, 2 => pause, 3 => buffer 
+    },
     users: []
   });
   const [isViewing, setIsViewing] = useState(false);
@@ -23,7 +30,12 @@ export default function RoomProvider(props) {
   const [newChannel, setNewChannel] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  //youtube changing state
+  const [player, setPlayer] = useState();
+  const [incomingPath, setIncomingPath] = useState([]);
 
+  // term is state
+  const term = useDebounce(newChannel, 500);
 
   // Chat and Rooms useEffect with sockets
   useEffect(() => {
@@ -37,8 +49,19 @@ export default function RoomProvider(props) {
     socket.on('serveRoom', (res) => {
       const room = res.room;
       setRoom((oldRoom) => {
-        // Possibly store hashed user identifier in local storage?
-        return { ...oldRoom, name: room.name, channel: room.channel, users: room.users };
+        return {
+          ...oldRoom,
+          name: room.name,
+          host: room.host,
+          channel: room.channel,
+          paths: room.paths,
+          youtubeVideo: {
+            channel: room.youtubeVideo.channel,
+            duration: room.youtubeVideo.duration,
+            state: room.youtubeVideo.state
+          },
+          users: room.users
+        };
       });
       const message = res.message;
       if (message) {
@@ -50,7 +73,7 @@ export default function RoomProvider(props) {
     socket.on('system', data => {
       const { room, username, color, system } = data;
       setRoom((oldRoom) => {
-        return { ...oldRoom, name: room.name, channel: room.channel, users: room.users };
+        return { ...oldRoom, name: room.name, channel: room.channel, users: room.users, host: room.host };
       });
       const chatMessage = { username, color, system };
       setChatMessages(prev => [chatMessage, ...prev]);
@@ -68,6 +91,52 @@ export default function RoomProvider(props) {
       setChatMessages(prev => [chatMessage, ...prev]); // Same as public. 
     });
 
+    socket.on('setJoinerYoutubeTime', (res) => {
+      setRoom((oldRoom) => {
+        return {
+          ...oldRoom,
+          youtubeVideo: {
+            ...oldRoom.youtubeVideo,
+            duration: res.time
+          }
+        }
+      });
+    });
+
+    socket.on('getHostYoutubeTime', (res) => {
+      setPlayer(oldPlayer => {
+        if (oldPlayer) {
+          res.time = oldPlayer.getCurrentTime();
+          socket.emit('sendJoinerYoutubeTime', res);
+        }
+        return oldPlayer;
+      });
+    });
+
+    socket.on('serveVideo', (res) => {
+      const room = res.room;
+      setPlayer(oldPlayer => {
+        if (oldPlayer) {
+          const s = oldPlayer.getPlayerState();
+          if (s === 1 || s === 2 || s === 3) {
+            const state = room.youtubeVideo.state;
+            if (state === 1) {
+              oldPlayer.seekTo(room.youtubeVideo.duration);
+            }
+            if (state === 2 || state === 3) {
+              oldPlayer.seekTo(room.youtubeVideo.duration);
+              oldPlayer.pauseVideo();
+            }
+          }
+          return oldPlayer;
+        }
+      });
+    })
+
+    socket.on('broadcastPath', (res) => {
+      setIncomingPath(res.path);
+    });
+
     return () => socket.disconnect();
   }, []);
 
@@ -78,57 +147,19 @@ export default function RoomProvider(props) {
 
   // API use
   useEffect(() => {
-    let token = '';
-    if (newChannel === '') {
+    if (term === '') {
       setSearchResults([])
       return;
     }
-    const searchURL = `https://api.twitch.tv/helix/search/channels?query=${newChannel}&live_only=true`;
-    axios.post('https://id.twitch.tv/oauth2/token', {
-      client_id: process.env.REACT_APP_CLIENT_ID,
-      client_secret: process.env.REACT_APP_CLIENT_SECRET,
-      grant_type: process.env.REACT_APP_GRANT_TYPE
+    axios.get('/api/twitch_search', {
+      params: {
+        term: term
+      }
     })
       .then(response => {
-        token = response.data.access_token
-
-        axios.get('https://id.twitch.tv/oauth2/validate', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        })
+        setSearchResults([...response.data.data])
       })
-      .then(response => {
-        axios.get(searchURL, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Client-Id': process.env.REACT_APP_CLIENT_ID
-          }
-        })
-          .then(response => {
-            setSearchResults([...response.data.data])
-            // console.log(results);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, [newChannel]);
-
-  const term = useDebounce(newChannel, 200);
-
-  // eslint-disable-next-line
-  const onSearch = useCallback(setNewChannel, [term]);
-
-  // on search use effect
-  useEffect(() => {
-    onSearch(term);
-    setNewChannel(term);
-  }, [term, onSearch]);
-
+  }, [term]);
 
   // Export any usable state or state setters (or custom functions to set state) by declaring them here.
   const roomData = { 
@@ -138,9 +169,11 @@ export default function RoomProvider(props) {
     socket, setSocket, // The socket their connection is on
     isViewing, setIsViewing, // Whether they are viewing a channel or not
     room, setRoom, // Which room the user is in, including userlist
-    newChannel, setNewChannel, // When a user sets a channel
+    newChannel, setNewChannel, // When a user sets a channel for twitch
     searchResults, setSearchResults, // Results from the user's channel search
-    searchValue, setSearchValue // The term of the user's search value
+    searchValue, setSearchValue, // The term of the user's search value
+    player, setPlayer, // Used to manage player for youtube API
+    incomingPath, setIncomingPath // Manages the whiteboard app
    };
 
   return (

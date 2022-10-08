@@ -10,8 +10,6 @@ export default function Results(props) {
     e.preventDefault();
     socket.emit('editRoom', { room: { ...room, channel: streamerName } });
     setNewChannel('');
-    // console.log("handleChannel was triggered");
-    // console.log(streamerName);
   };
   const channelList = searchResults.map(stream => {
     return (

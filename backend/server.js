@@ -1,10 +1,83 @@
 const dotenv = require('dotenv');
 dotenv.config();
-const { Server } = require('socket.io');
+const { Server, Socket } = require('socket.io');
 const express = require('express');
 const app = express();
 const { uniqueNamesGenerator, adjectives } = require('unique-names-generator');
 const { random_color } = require('./helpers/userColors');
+const axios = require('axios');
+
+// twitch search route
+app.get('/api/twitch_search', (req, res) => {
+  let token = '';
+  const term = req.query.term;
+  const searchURL = `https://api.twitch.tv/helix/search/channels?query=${term}&live_only=true`;
+
+  // if twitch auth token exists, validate token
+  if (token) {
+    axios.get('https://id.twitch.tv/oauth2/validate', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        // if auth token less than 1 hour left, create new token
+        if (response.data.expires_in < 3600) {
+          axios.post('https://id.twitch.tv/oauth2/token', {
+            client_id: process.env.CLIENT_ID,
+            client_secret: process.env.CLIENT_SECRET,
+            grant_type: process.env.GRANT_TYPE
+          })
+            .then(response => {
+              token = response.data.access_token;
+              //twitch search call
+              return axios.get(searchURL, {
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Client-Id': process.env.CLIENT_ID
+                }
+              })
+                .then(response => {
+                  res.send(response.data);
+                })
+            })
+        } else {
+          // if token has time left continue with api search call
+          return axios.get(searchURL, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Client-Id': process.env.CLIENT_ID
+            }
+          })
+            .then(response => {
+              res.send(response.data);
+            })
+        }
+      })
+  }
+  // if token doesn't exist, create new token
+  if (!token) {
+    axios.post('https://id.twitch.tv/oauth2/token', {
+      client_id: process.env.CLIENT_ID,
+      client_secret: process.env.CLIENT_SECRET,
+      grant_type: process.env.GRANT_TYPE
+    })
+      .then(response => {
+        token = response.data.access_token
+        // twitch api search call
+        return axios.get(searchURL, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Client-Id': process.env.CLIENT_ID
+          }
+        })
+          .then(response => {
+            res.send(response.data);
+          })
+      })
+  }
+});
+
 
 const http = app.listen(process.env.PORT, () => {
   console.log(`Server running at port: ${process.env.PORT}`);
@@ -31,6 +104,8 @@ const rooms = {};
 //  } 
 // }
 
+
+
 io.on('connection', client => {
   const name = `${uniqueNamesGenerator({
     dictionaries: [adjectives],
@@ -49,16 +124,15 @@ io.on('connection', client => {
 
     client.join(room.name);
 
-    
+
     if (!rooms[room.name]) {
       rooms[room.name] = room; // new room
       rooms[room.name].users = []; // new user array
-      // console.log(`New room ${room.name} created`)
-    } 
+      rooms[room.name].host = name;
+    }
 
     // password check happens here
     if (rooms[room.name].password && room.password !== rooms[room.name].password) {
-      // console.log('Incorrect password');
       return;
     }
 
@@ -68,7 +142,12 @@ io.on('connection', client => {
     };
     rooms[room.name].users.push(user);
     clients[name].rooms.push(room.name);
-    const id = clients[name].id
+    const id = clients[name].id;
+    const hostName = rooms[room.name].host;
+    if (name !== hostName) {
+      const hostId = clients[hostName].id;
+      io.to(hostId).emit('getHostYoutubeTime', { for: id });
+    }
     client.emit('serveRoom', { room: rooms[room.name] });
     client.to(room.name).emit('system', { system: 'announce', username: clients[name].username, room: rooms[room.name], color });
     io.to(id).emit('system', { system: 'welcome', username: clients[name].username, room: rooms[room.name], color });
@@ -78,6 +157,7 @@ io.on('connection', client => {
     //possible to sanitize data here.
     const room = req.room;
     rooms[room.name].channel = room.channel;
+    rooms[room.name].youtubeVideo = room.youtubeVideo;
     client.to(room.name).emit('serveRoom', { room: rooms[room.name] });
     client.emit('serveRoom', { room: rooms[room.name] });
   });
@@ -98,6 +178,25 @@ io.on('connection', client => {
     io.to(idFrom).emit('private', { message, username: userTo, pm: 'send', color: colorTo }); // Sender receives other's color
   })
 
+  client.on('sendJoinerYoutubeTime', (req) => {
+    io.to(req.for).emit('setJoinerYoutubeTime', { time: req.time });
+  });
+
+  client.on('editVideo', (req) => {
+    const host = rooms[req.room.name].host;
+    const roomName = req.room.name;
+    if (name === host) {
+      rooms[roomName] = req.room;
+      client.to(roomName).emit('serveVideo', { room: rooms[roomName] });
+    }
+  });
+
+  client.on('savePath', (req) => {
+    const roomName = req.room.name;
+    rooms[roomName].paths.push(req.path);
+    client.to(roomName).emit('broadcastPath', { path: req.path });
+  });
+
   client.on('disconnect', () => {
     // console.log('Client Disconnected', name, ':', client.id);
     clients[name].rooms.forEach(roomname => {
@@ -105,6 +204,11 @@ io.on('connection', client => {
       if (rooms[roomname].users.length === 0) {
         delete rooms[roomname];
         return;
+      } 
+      if (rooms[roomname].host === name) {
+        const newHost = rooms[roomname].users[0].name;
+        rooms[roomname].host = newHost;
+        client.to(roomname).emit('system', { system: 'hostSwap', username: clients[newHost].username, room: rooms[roomname], color: clients[newHost].color });
       }
       client.to(roomname).emit('system', { system: 'exit', username: clients[name].username, room: rooms[roomname], color });
     });

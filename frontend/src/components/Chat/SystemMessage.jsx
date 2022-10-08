@@ -23,6 +23,13 @@ const  SystemMessage = props => {
         <span className='message-item'> has walked the plank!</span>
       </div>
       )}
+      {system === 'hostSwap' && ( 
+      <div className='chat-list-item'>
+        <span className='message-item'>🚢🏴‍☠️ </span>
+        <span className='chat-username-item' style={{ color }}>{username}</span>
+        <span className='message-item'> is the Captain now!</span>
+      </div>
+      )}
     </>
   );
 };
