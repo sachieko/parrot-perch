@@ -57,11 +57,8 @@ function Youtube() {
       setSuggestions([])
       return;
     }
-    // const submit = (e) => {
-    // e.preventDefault();
     axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${terms}&key=${API_KEY}`)
       .then((res) => {
-        // console.log(res.data.items)
         const list = [];
         for (const i of res.data.items) {
           let ply = {};
@@ -75,8 +72,6 @@ function Youtube() {
       .catch((err) => {
         console.log(err);
       });
-    // setTerm('');
-    // }
   }, [terms])
 
   const enterURL = (e, vid) => {
@@ -95,6 +90,9 @@ function Youtube() {
       </article>
     )
   })
+
+  console.log(room.youtubeVideo);
+  console.log(room.youtubeVideo.channel);
 
   return (
     <div>
