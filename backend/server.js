@@ -110,6 +110,12 @@ io.on('connection', client => {
     }
   });
 
+  client.on('savePath', (req) => {
+    const roomName = req.room.name;
+    rooms[roomName].paths.push(req.path);
+    client.to(roomName).emit('broadcastPath', { path: req.path });
+  });
+
   client.on('disconnect', () => {
     // console.log('Client Disconnected', name, ':', client.id);
     clients[name].rooms.forEach(roomname => {
