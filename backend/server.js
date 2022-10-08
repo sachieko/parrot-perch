@@ -6,11 +6,13 @@ const app = express();
 const { uniqueNamesGenerator, starWars } = require('unique-names-generator');
 const axios = require('axios').default;
 
-let token = '';
+// twitch search route
+app.get('/api/twitch_search', (req, res) => {
+  let token = '';
+  const term = req.query.term;
+  const searchURL = `https://api.twitch.tv/helix/search/channels?query=${term}&live_only=true`;
 
-
-app.get('/api/twitch_token', (req, res) => {
-
+  // twitch auth token exists, validate token
   if (token) {
     axios.get('https://id.twitch.tv/oauth2/validate', {
       headers: {
@@ -18,27 +20,41 @@ app.get('/api/twitch_token', (req, res) => {
       }
     })
       .then(response => {
-        
+        // if auth token less than 1 hour left, create new token
         if (response.data.expires_in < 3600) {
-
           axios.post('https://id.twitch.tv/oauth2/token', {
             client_id: process.env.CLIENT_ID,
             client_secret: process.env.CLIENT_SECRET,
             grant_type: process.env.GRANT_TYPE
           })
             .then(response => {
-              token = response.data.access_token
-              res.send(token);
-              console.log('token was out of time, created new token')
-              return token;
+              token = response.data.access_token;
+              //twitch search call
+              return axios.get(searchURL, {
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Client-Id': process.env.CLIENT_ID
+                }
+              })
+                .then(response => {
+                  res.send(response.data);
+                })
             })
         } else {
-          console.log('token still has time left');
-          res.send(token);
+          // if token has time left continue with api search call
+          return axios.get(searchURL, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Client-Id': process.env.CLIENT_ID
+            }
+          })
+            .then(response => {
+              res.send(response.data);
+            })
         }
       })
   }
-
+  // if token doesn't exist, create new token
   if (!token) {
     axios.post('https://id.twitch.tv/oauth2/token', {
       client_id: process.env.CLIENT_ID,
@@ -47,9 +63,16 @@ app.get('/api/twitch_token', (req, res) => {
     })
       .then(response => {
         token = response.data.access_token
-        res.send(token);
-        console.log('created new token')
-        return token;
+        // twitch api search call
+        return axios.get(searchURL, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Client-Id': process.env.CLIENT_ID
+          }
+        })
+          .then(response => {
+            res.send(response.data);
+          })
       })
   }
 });
