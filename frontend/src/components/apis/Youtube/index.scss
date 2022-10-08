@@ -1,3 +1,6 @@
+@import '../../../styles/variables.scss';
+@import '../../../styles/mixins.scss';
+
 .search {
   display: flex;
   justify-content: space-between;
@@ -8,6 +11,14 @@
 
 .search__form {
   flex-grow: 1;
+
+  input {
+    background-color: $chat-input-bg-color;
+    color: #fff;
+    &:hover {
+      background-color: $chat-input-bg-color--focus;
+    }
+  }
 }
 
 .radius {

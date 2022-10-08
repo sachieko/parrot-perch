@@ -91,7 +91,7 @@ function Youtube() {
   return (
     <div>
       <div className='search'>
-        <form  className='search_form' onSubmit={e => e.preventDefault()}>
+        <form  className='search__form' onSubmit={e => e.preventDefault()}>
           <input className='radius' type='text' value={term} placeholder='Search Youtube' onChange={(e) => setTerm(e.target.value)} />
         </form>
       </div>
