@@ -1,11 +1,10 @@
 import axios from 'axios';
 import he from 'he';
 import YoutubePlayer from 'react-youtube';
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { roomContext } from '../../../providers/RoomProvider';
-import { useContext } from 'react';
-import { useEffect } from 'react';
 import useDebounce from '../../../hooks/useDebounce';
+import Result from './Result';
 
 const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY
 
@@ -79,17 +78,15 @@ function Youtube() {
     setTerm('');
   }
 
-  const displaySuggestions = suggestions.map((r, i) => {
+  const displaySuggestions = suggestions.map((suggestion, i) => {
+    const { id, thumb, title } = suggestion;
     return (
-      <article key={i} onClick={(e) => enterURL(e, r.id)}>
-        <img alt='thumbnail' style={{ height: '4em' }} src={r.thumb} />
-        {r.title}
-      </article>
+      <Result key={i} id={id} thumb={thumb} title={title} onClick={enterURL} />
     )
-  })
+  });
 
   return (
-    <div>
+    <div className='widget youtube-widget'>
       <div className='search'>
         <form  className='search__form' onSubmit={e => e.preventDefault()}>
           <input className='radius' type='text' value={term} placeholder='Search Youtube' onChange={(e) => setTerm(e.target.value)} />
