@@ -6,11 +6,8 @@ import { roomContext } from '../../../providers/RoomProvider';
 import { useContext } from 'react';
 import { useEffect } from 'react';
 import useDebounce from '../../../hooks/useDebounce';
-import './index.scss';
 
 const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY
-
-
 
 function Youtube() {
   const { socket, room, setPlayer } = useContext(roomContext);
@@ -90,9 +87,6 @@ function Youtube() {
       </article>
     )
   })
-
-  console.log(room.youtubeVideo);
-  console.log(room.youtubeVideo.channel);
 
   return (
     <div>
