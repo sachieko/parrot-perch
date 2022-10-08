@@ -78,6 +78,16 @@ app.get('/api/twitch_search', (req, res) => {
   }
 });
 
+// Youtube search
+app.get('/api/youtube_search', (req, res) => {
+  const terms = req.query.terms;
+  const searchURL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${terms}&key=${process.env.YOUTUBE_API_KEY}`;
+
+  axios.get(searchURL).then(response => {
+    res.send(response.data);
+  }) 
+})
+
 
 const http = app.listen(process.env.PORT, () => {
   console.log(`Server running at port: ${process.env.PORT}`);
