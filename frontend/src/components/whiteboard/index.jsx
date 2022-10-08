@@ -8,14 +8,16 @@ function Whiteboard() {
   const [path, setPath] = useState([]);
   const canvasRef = useRef(null);
   const { socket, room, incomingPath } = useContext(roomContext);
+  const [didLoad, setDidLoad] = useState(false);
 
-  useEffect(() => {
+  if (canvasRef.current && !didLoad){
     for (const path of room.paths) {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext('2d');
       drawPath(ctx, path);
+      setDidLoad(true);
     }
-  }, [room.paths]);
+  }
 
   useEffect(() => {
     const canvas = canvasRef.current;

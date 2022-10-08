@@ -1,7 +1,5 @@
-const drawPath = function(ctx, path, color) {
-  ctx.strokeStyle = 'white';
-  ctx.shadowColor = color;
-  ctx.shadowBlur = 20;
+const drawPath = function(ctx, path) {
+  ctx.strokeStyle = 'dodgerblue';
   ctx.save();
   ctx.restore();
   for (let i = 0; i < path.length; i++) {
