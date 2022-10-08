@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useCallback } from "react";
+import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import io from "socket.io-client";
 import useDebounce from "../hooks/useDebounce";
@@ -43,7 +43,7 @@ export default function RoomProvider(props) {
     setSocket(socket);
 
     socket.on('connect', () => {
-      console.log('connected');
+      // console.log('connected');
 
     });
 
@@ -139,43 +139,20 @@ export default function RoomProvider(props) {
     return () => socket.disconnect();
   }, []);
 
-
-  // API use
+  // twitch API use
   useEffect(() => {
-    let token = '';
     if (term === '') {
       setSearchResults([])
       return;
     }
-    const searchURL = `https://api.twitch.tv/helix/search/channels?query=${term}&live_only=true`;
-    axios.post('https://id.twitch.tv/oauth2/token', {
-      client_id: process.env.REACT_APP_CLIENT_ID,
-      client_secret: process.env.REACT_APP_CLIENT_SECRET,
-      grant_type: process.env.REACT_APP_GRANT_TYPE
+    axios.get('/api/twitch_search', {
+      params: {
+        term: term
+      }
     })
-      .then(response => {
-        token = response.data.access_token
-
-        axios.get('https://id.twitch.tv/oauth2/validate', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        })
-
-        return axios.get(searchURL, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Client-Id': process.env.REACT_APP_CLIENT_ID
-          }
-        })
-
-      })
       .then(response => {
         setSearchResults([...response.data.data])
       })
-      .catch((e) => {
-        console.log(e);
-      });
   }, [term]);
 
   // Export any usable state or state setters (or custom functions to set state) by declaring them here.
