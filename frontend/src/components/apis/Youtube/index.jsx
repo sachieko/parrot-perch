@@ -98,13 +98,14 @@ function Youtube() {
         </form>
       </div>
       {displaySuggestions}
-      {room.youtubeVideo && room.youtubeVideo.channel && (
-        <YoutubePlayer
-          videoId={room.youtubeVideo.channel}
-          opts={opts}
-          onReady={onReady}
-          onStateChange={emitStateChange} />
-      )}
+
+      <YoutubePlayer
+        videoId={room.youtubeVideo.channel}
+        opts={opts}
+        onReady={onReady}
+        onStateChange={emitStateChange}
+        style={{ display: room.youtubeVideo.channel ? 'block' : 'none' }}
+      />
     </div>
   );
 }
