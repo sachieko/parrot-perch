@@ -4,12 +4,12 @@ function Join (props) {
     <form>
       <label>
         Join Room:
-        <input type="text" name="roomName" value={props.value} onChange={props.onChange} />
       </label>
+        <input type="text" name="roomName" value={props.value} onChange={props.onChange} />
       <label>
         Password:
-      <input type="password" name="roomPassword" value={props.value2} onChange={props.onChange2} />
       </label>
+      <input type="password" name="roomPassword" value={props.value2} onChange={props.onChange2} />
       <input type="submit" value="Submit" onClick={props.onClick} />
     </form>
   )

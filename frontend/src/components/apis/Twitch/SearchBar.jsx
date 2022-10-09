@@ -6,7 +6,6 @@ export default function SearchBar(props) {
   const { newChannel, setNewChannel } = useContext(roomContext);
 
   return (
-    <section className="search">
       <form className="search__form" onSubmit={event => event.preventDefault()}>
         <input
           className="radius"
@@ -18,6 +17,5 @@ export default function SearchBar(props) {
           onChange={event =>setNewChannel(event.target.value)}
         />
       </form>
-    </section>
   );
 }

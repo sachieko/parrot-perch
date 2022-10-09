@@ -3,30 +3,23 @@
 
 * {
   box-sizing: border-box;
+  @include custom-scrollbar;
 }
 
 body {
   font-family: "Source Sans Pro", sans-serif;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background-color: $app-bg-color;
 }
 
 #root {
   background-color: $app-bg-color;
   color: $app-text-color;
-  width: 100vw;
-  margin: 0;
-  top: 0;
-  height: 100vh;
-  position: absolute;
-  .parrot-perch {
-    display: flex;
-    align-content: center;
-  }
 }
 
 .parrot-perch {
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }

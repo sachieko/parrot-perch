@@ -1,10 +1,17 @@
-
+/* App styles */
 $app-bg-color: #09090b;
 $app-text-color: #fff;
 $app-scroll-bg-color: hsla(0,0%,100%,.2);
 $app-scroll-thumb-color: #772ce8;
 $app-scroll-thumb-color--hover: #a970ff;
+$app-input-bg-color: hsla(0,0%,100%,.2);
+$app-input-bg-color--focus: #000;
+$app-input-border-color: #772ce8;
+$app-input-border: 1px solid $app-input-border-color;
+$app-input-border-color--focus: #a970ff;
+$app-input-border--focus: 1px solid $app-input-border-color--focus;
 
+/* Chat Styles */
 $chat-button-background-color: #9177ff;
 $chat-button-color: #fff;
 $chat-button-radius: 0.3rem;
@@ -12,10 +19,16 @@ $chat-button-background-color--hover: #772ce8;
 $chat-input-bg-color: hsla(0,0%,100%,.2);
 $chat-input-bg-color--focus: #000;
 $chat-input-border-color: #772ce8;
+$chat-input-border: 1px solid $chat-input-border-color;
 $chat-input-border-color--focus: #a970ff;
+$chat-input-border--focus: 1px solid $chat-input-border-color--focus;
 $chat-background-color: #0c0c10;
 $chat-message-color: #FFFFFF;
 
+/* Twitch or Youtube styles */
 $channel-text-color: #a970ff;
 $channel-bg-color--hover: hsla(0,0%,100%,.2);
 $channel-bg-color: #0c0c10;
+
+$video-result-color: #fff;
+$video-result-border: 1px solid #772ce8;

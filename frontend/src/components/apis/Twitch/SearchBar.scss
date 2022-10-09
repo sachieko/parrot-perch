@@ -1,13 +1,16 @@
-.search {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
-}
+@import '../../../styles/variables.scss';
+@import '../../../styles/mixins.scss';
 
 .search__form {
-  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  input {
+    background-color: $chat-input-bg-color;
+    color: #fff;
+    &:focus {
+      background-color: $chat-input-bg-color--focus;
+    }
+  }
 }
 
 .radius {
@@ -18,9 +21,5 @@
 }
 
 ::placeholder {
-  text-align: center;
-}
-
-input:placeholder-shown {
   text-align: center;
 }

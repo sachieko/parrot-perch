@@ -40,14 +40,18 @@ function View() {
   });
 
   return (
-    <div className='widget-container'>
+    <>
       Room Name: {room.name}
       {widgetSwitches[3].selected && <Whiteboard />}
+      <div className="nav-toggle">
       {showSwitches}
+      </div>
+    <div className='widget-container'>
       {widgetSwitches[0].selected && <Twitch />}
       {widgetSwitches[1].selected && <Youtube />}
       {widgetSwitches[2].selected && <Chat />}
     </div>
+    </>
   );
 };
 

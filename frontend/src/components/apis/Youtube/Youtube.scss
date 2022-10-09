@@ -1,33 +1,46 @@
 @import '../../../styles/variables.scss';
 @import '../../../styles/mixins.scss';
 
-.twitch-live-search {
-  position: sticky;
-  z-index: 1;
+.search__form {
+  input {
+    margin: 0.5rem;
+    background-color: $chat-input-bg-color;
+    color: #fff;
+    outline: none;
+    &:hover {
+      background-color: $chat-input-bg-color--focus;
+    }
+  }
 }
-.result-list {
+
+.search {
+  position: sticky;
+}
+
+.youtube-results {
   background-color: $channel-bg-color;
   display: flex;
   position: absolute;
-  left: 35vw;
+  left: 30vw;
   height: 35vh;
   width: 40vw;
   flex-direction: column;
   overflow-y: scroll;
-  .streamer-channel {
-    display: flex;
+  .video-article {
     color: $video-result-color;
     margin: 0.2rem;
     margin-top: 0.5rem;
     border: $video-result-border;
     border-radius: 0.4em;
     &:hover {
-      background-color: $channel-bg-color--hover;
+      background: $channel-bg-color--hover;
     }
   }
 }
 
-.stream-frames {
-  margin-top: 0.5rem;
-  position: sticky;
+.radius {
+  border-radius: 0.5rem;
+  width: 20em;
+  height: 2.3em;
+  text-align: center;
 }

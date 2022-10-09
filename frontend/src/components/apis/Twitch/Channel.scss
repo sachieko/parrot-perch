@@ -1,17 +1,5 @@
 @import '../../../styles/variables.scss';
 
-.streamer-channel {
-  display: flex;
-  color: $channel-text-color;
-  margin: 0.2rem;
-  margin-top: 0.5rem;
-  border: 1px solid $channel-text-color;
-  border-radius: 0.4em;
-  &:hover {
-    background: $channel-bg-color--hover;
-  }
-}
-
 .thumbnail {
   border-top-left-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;

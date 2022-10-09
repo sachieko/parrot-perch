@@ -14,23 +14,26 @@
   padding: 0.5em;
   padding-top: 6vh;
 
+  input {
+    outline: none;
+  }
+
   @include custom-scrollbar;
   
   #message-list {
-
     display: flex;
-    top: 0;
-    left: 0;
     width: 100vw;
     overflow-y: scroll;
     flex-direction: column;
     color: $chat-message-color;
+    background-color: $chat-background-color;
     padding-top: 6vh;
-    padding-left: 1rem;
+    padding-left: 0.5rem;
   }
   .chat-list-item {
     padding-bottom: 0.2rem;
     padding-top: 0.2rem;
+    background-color: $chat-background-color;
   }
   .chat-input {
     background-color: $chat-background-color;
@@ -39,9 +42,13 @@
     left: 0;
     width: 100vw;
     height: 12vh;
-    border: 0.6px solid $chat-input-border-color;
+    border: $chat-input-border;
     border-left: 0;
     border-right: 0;
+
+    input {
+      outline: none;
+    }
   }
 
   #chat-submit {
@@ -57,6 +64,10 @@
     &:focus {
       background-color: $chat-input-bg-color--focus;
     }
+  }
+
+  .chat-pm {
+    background-color: $chat-background-color;
   }
   .chat-pm input{
     background-color: $chat-input-bg-color;

@@ -1,11 +1,11 @@
 import axios from 'axios';
 import he from 'he';
 import YoutubePlayer from 'react-youtube';
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { roomContext } from '../../../providers/RoomProvider';
-import { useContext } from 'react';
-import { useEffect } from 'react';
 import useDebounce from '../../../hooks/useDebounce';
+import Result from './Result';
+import './Youtube.scss';
 
 function Youtube() {
   const { socket, room, setPlayer } = useContext(roomContext);
@@ -13,8 +13,8 @@ function Youtube() {
   const [suggestions, setSuggestions] = useState([]);
   const terms = useDebounce(term, 500);
   const opts = useState({
-    height: '390',
-    width: '640',
+    height: '600',
+    width: '100%',
     playerVars: {
       autoplay: 1,
       mute: 1
@@ -81,29 +81,31 @@ function Youtube() {
     setTerm('');
   }
 
-  const displaySuggestions = suggestions.map((r, i) => {
+  const displaySuggestions = suggestions.map((suggestion, i) => {
+    const { id, thumb, title } = suggestion;
     return (
-      <article key={i} onClick={(e) => enterURL(e, r.id)}>
-        <img alt='thumbnail' style={{ height: '4em' }} src={r.thumb} />
-        {r.title}
-      </article>
+      <Result key={i} id={id} thumb={thumb} title={title} onClick={enterURL} />
     )
-  })
+  });
 
   return (
-    <div>
+    <div className='widget youtube-widget'>
       <div className='search'>
-        <form className='search_form' onSubmit={e => e.preventDefault()}>
+        <form className='search__form' onSubmit={e => e.preventDefault()}>
           <input className='radius' type='text' value={term} placeholder='Search Youtube' onChange={(e) => setTerm(e.target.value)} />
         </form>
+        {suggestions.length > 0 && (
+        <div className='youtube-results'>
+          {displaySuggestions}
+        </div>
+        )}
       </div>
-      {displaySuggestions}
-
       <YoutubePlayer
         videoId={room.youtubeVideo.channel}
         opts={opts}
         onReady={onReady}
         onStateChange={emitStateChange}
+        className='youtube-video'
         style={{ display: room.youtubeVideo.channel ? 'block' : 'none' }}
       />
     </div>
