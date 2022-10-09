@@ -23,3 +23,9 @@ body {
   overflow-y: scroll;
   overflow-x: hidden;
 }
+
+.root-inputs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
