@@ -95,7 +95,6 @@ function Youtube() {
         </form>
       </div>
       {displaySuggestions}
-
       <YoutubePlayer
         videoId={room.youtubeVideo.channel}
         opts={opts}
