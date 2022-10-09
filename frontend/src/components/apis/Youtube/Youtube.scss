@@ -9,14 +9,12 @@
     outline: none;
     &:hover {
       background-color: $chat-input-bg-color--focus;
-      
     }
   }
 }
 
 .search {
   position: sticky;
-  border: $video-result-border;
 }
 
 .youtube-results {
