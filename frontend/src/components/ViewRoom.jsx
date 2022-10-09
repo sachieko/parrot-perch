@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import { roomContext } from '../providers/RoomProvider';
 import Youtube from './apis/Youtube';
-import Twitch from './apis/twitch';
+import Twitch from './apis/Twitch';
 import Chat from './Chat';
 import Whiteboard from './whiteboard';
 
