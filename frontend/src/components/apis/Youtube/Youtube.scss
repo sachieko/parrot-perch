@@ -3,12 +3,20 @@
 
 .search__form {
   input {
+    margin: 0.5rem;
     background-color: $chat-input-bg-color;
     color: #fff;
+    outline: none;
     &:hover {
       background-color: $chat-input-bg-color--focus;
+      
     }
   }
+}
+
+.search {
+  position: sticky;
+  border: $video-result-border;
 }
 
 .youtube-results {

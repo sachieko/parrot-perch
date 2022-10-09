@@ -2,15 +2,12 @@
 @import './styles/mixins.scss';
 
 * {
-  background-color: $app-bg-color;
   box-sizing: border-box;
   @include custom-scrollbar;
 }
 
 body {
   font-family: "Source Sans Pro", sans-serif;
-  overflow-y: scroll;
-  overflow-x: hidden;
   background-color: $app-bg-color;
 }
 
@@ -21,6 +18,8 @@ body {
 
 .parrot-perch {
   display: flex;
-  justify-content: center;
   flex-direction: column;
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }

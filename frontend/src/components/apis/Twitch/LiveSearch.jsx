@@ -8,7 +8,7 @@ export default function LiveSearch(props) {
   return (
     <div className='twitch-live-search'>  
         <SearchBar />
-        { searchResults.length > 0 && (
+        {searchResults.length > 0 && (
         <Results />
         )}
     </div>

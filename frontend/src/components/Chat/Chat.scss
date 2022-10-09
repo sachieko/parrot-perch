@@ -14,6 +14,10 @@
   padding: 0.5em;
   padding-top: 6vh;
 
+  input {
+    outline: none;
+  }
+
   @include custom-scrollbar;
   
   #message-list {
@@ -23,8 +27,8 @@
     flex-direction: column;
     color: $chat-message-color;
     background-color: $chat-background-color;
-    padding-top: 8vh;
-    padding-left: 1rem;
+    padding-top: 6vh;
+    padding-left: 0.5rem;
   }
   .chat-list-item {
     padding-bottom: 0.2rem;

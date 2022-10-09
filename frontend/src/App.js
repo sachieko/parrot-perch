@@ -7,7 +7,7 @@ const App = function() {
 
   return (
     <div className="parrot-perch">
-      <h1>Hello World!</h1>
+      <h1>Parrot Perch</h1>
       <RoomProvider>
         <Room />
       </RoomProvider>
