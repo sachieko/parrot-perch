@@ -6,6 +6,7 @@ const app = express();
 const { uniqueNamesGenerator, adjectives } = require('unique-names-generator');
 const { random_color } = require('./helpers/userColors');
 const axios = require('axios');
+const bcrypt = require('bcrypt');
 
 // twitch search route
 app.get('/api/twitch_search', (req, res) => {
@@ -131,18 +132,24 @@ io.on('connection', client => {
   client.on('createOrJoinRoom', (req) => {
 
     const room = req.room;
+    const password = req.room.password
+    let hashedPassword = '';
 
+    if (password) {
+      hashedPassword = bcrypt.hashSync(password, 10);
+    }
+   
     client.join(room.name);
-
 
     if (!rooms[room.name]) {
       rooms[room.name] = room; // new room
+      rooms[room.name].password = hashedPassword;
       rooms[room.name].users = []; // new user array
       rooms[room.name].host = name;
     }
 
-    // password check happens here
-    if (rooms[room.name].password && room.password !== rooms[room.name].password) {
+    // password check
+    if (rooms[room.name].password && !bcrypt.compareSync(password, rooms[room.name].password)) {
       return;
     }
 
