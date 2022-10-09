@@ -15,7 +15,7 @@ function Room() {
   return (
     <>
       {!isViewing &&
-      <div>
+      <div className='join-inputs'>
         <Join
           value={room.name}
           value2={room.password}

@@ -3,7 +3,7 @@
 
 
 .twitch-live-search {
-  
+    justify-content: center;
   .result-list {
     background-color: $channel-bg-color;
     display: flex;
@@ -15,9 +15,6 @@
 
     @include custom-scrollbar;
 
-    .twitch-search-results {
-      overflow-x: hidden;
-    }
   }
 }
 

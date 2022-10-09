@@ -2,6 +2,8 @@
 @import '../../../styles/mixins.scss';
 
 .search__form {
+  display: flex;
+  justify-content: center;
   input {
     background-color: $chat-input-bg-color;
     color: #fff;

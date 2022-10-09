@@ -4,15 +4,28 @@
 .widget-container {
   display: flex;
   flex-direction: column;
-  margin-bottom: 35vh;
+  bottom: 35vh;
   height: 70vh;
   width: 100vw;
-  overflow-y: scroll;
   background-color: $app-bg-color;
-  
+
   @include custom-scrollbar;
   .widget {
     height: 30vh;
     width: 100vw;
+  }
+}
+
+.join-inputs form input {
+  background-color: $app-input-bg-color;
+  color: $app-text-color;
+  border: $app-input-border;
+  border-radius: 0.4rem;
+  margin: 0.5rem;
+
+  &:focus {
+    background-color: $app-input-bg-color--focus;
+    border: $app-input-border--focus;
+    outline: none;
   }
 }
