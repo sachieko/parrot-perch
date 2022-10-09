@@ -3,13 +3,11 @@
 
 
 .twitch-live-search {
-  position: absolute;
-  left: 30vw;
-  justify-content: center;
   
   .result-list {
     background-color: $channel-bg-color;
     display: flex;
+    position: absolute;
     height: 35vh;
     width: 40vw;
     flex-direction: column;
@@ -21,4 +19,8 @@
       overflow-x: hidden;
     }
   }
+}
+
+.stream-frames {
+  margin-top: 2rem;
 }

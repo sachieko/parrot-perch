@@ -3,6 +3,7 @@
 
 * {
   box-sizing: border-box;
+  @include custom-scrollbar;
 }
 
 body {
@@ -28,5 +29,7 @@ body {
 }
 
 .parrot-perch {
+  display: flex;
   justify-content: center;
+  flex-direction: column;
 }

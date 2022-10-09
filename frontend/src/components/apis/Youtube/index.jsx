@@ -5,6 +5,7 @@ import { useState, useContext, useEffect } from 'react';
 import { roomContext } from '../../../providers/RoomProvider';
 import useDebounce from '../../../hooks/useDebounce';
 import Result from './Result';
+import './Youtube.scss';
 
 function Youtube() {
   const { socket, room, setPlayer } = useContext(roomContext);
@@ -12,8 +13,8 @@ function Youtube() {
   const [suggestions, setSuggestions] = useState([]);
   const terms = useDebounce(term, 500);
   const opts = useState({
-    height: '390',
-    width: '640',
+    height: '600',
+    width: '100%',
     playerVars: {
       autoplay: 1,
       mute: 1
@@ -93,13 +94,18 @@ function Youtube() {
         <form className='search__form' onSubmit={e => e.preventDefault()}>
           <input className='radius' type='text' value={term} placeholder='Search Youtube' onChange={(e) => setTerm(e.target.value)} />
         </form>
+        {suggestions.length > 0 && (
+        <div className='youtube-results'>
+          {displaySuggestions}
+        </div>
+        )}
       </div>
-      {displaySuggestions}
       <YoutubePlayer
         videoId={room.youtubeVideo.channel}
         opts={opts}
         onReady={onReady}
         onStateChange={emitStateChange}
+        className='youtube-video'
         style={{ display: room.youtubeVideo.channel ? 'block' : 'none' }}
       />
     </div>

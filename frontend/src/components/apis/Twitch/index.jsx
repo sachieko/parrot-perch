@@ -11,7 +11,7 @@ function Twitch() {
     <div className='widget twitch-widget'>
       <LiveSearch />
       { room.channel && (
-      <div>
+      <div className='stream-frames'>
         <iframe
           display='inline'
           src={`https://player.twitch.tv/?channel=${room.channel}&parent=${hostURL}`}

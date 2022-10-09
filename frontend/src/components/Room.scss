@@ -4,12 +4,15 @@
 .widget-container {
   display: flex;
   flex-direction: column;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 35vh;
+  margin-bottom: 35vh;
+  height: 70vh;
   width: 100vw;
   overflow-y: scroll;
-
+  background-color: $app-bg-color;
+  
   @include custom-scrollbar;
+  .widget {
+    height: 30vh;
+    width: 100vw;
+  }
 }

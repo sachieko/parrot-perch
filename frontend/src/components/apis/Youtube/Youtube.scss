@@ -1,0 +1,52 @@
+@import '../../../styles/variables.scss';
+@import '../../../styles/mixins.scss';
+
+.search__form {
+  input {
+    background-color: $chat-input-bg-color;
+    color: #fff;
+    &:hover {
+      background-color: $chat-input-bg-color--focus;
+    }
+  }
+}
+
+.youtube-widget {
+  margin-top: 30vh;
+}
+
+.youtube-results {
+  background-color: $channel-bg-color;
+  display: flex;
+  position: absolute;
+  left: 30vw;
+  height: 35vh;
+  width: 40vw;
+  flex-direction: column;
+  overflow-y: scroll;
+  .video-article {
+    color: $video-result-color;
+    margin: 0.2rem;
+    margin-top: 0.5rem;
+    border: $video-result-border;
+    border-radius: 0.4em;
+    &:hover {
+      background: $channel-bg-color--hover;
+    }
+  }
+}
+
+.radius {
+  border-radius: 0.5rem;
+  width: 20em;
+  height: 2.3em;
+  text-align: center;
+}
+
+::placeholder {
+  text-align: center;
+}
+
+input:placeholder-shown {
+  text-align: center;
+}

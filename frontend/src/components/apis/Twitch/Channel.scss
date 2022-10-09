@@ -2,10 +2,10 @@
 
 .streamer-channel {
   display: flex;
-  color: $channel-text-color;
+  color: $video-result-color;
   margin: 0.2rem;
   margin-top: 0.5rem;
-  border: 1px solid $channel-text-color;
+  border: $video-result-border;
   border-radius: 0.4em;
   &:hover {
     background: $channel-bg-color--hover;
