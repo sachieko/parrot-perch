@@ -3,18 +3,23 @@
 
 
 .twitch-live-search {
-    justify-content: center;
+  background-color: $channel-bg-color;
+  display: flex;
+  position: absolute;
+  left: 30vw;
+  height: 35vh;
+  width: 40vw;
+  flex-direction: column;
+  overflow-y: scroll;
   .result-list {
-    background-color: $channel-bg-color;
-    display: flex;
-    position: absolute;
-    height: 35vh;
-    width: 40vw;
-    flex-direction: column;
-    overflow-y: scroll;
-
-    @include custom-scrollbar;
-
+    color: $video-result-color;
+    margin: 0.2rem;
+    margin-top: 0.5rem;
+    border: $video-result-border;
+    border-radius: 0.4em;
+    &:hover {
+      background: $channel-bg-color--hover;
+    }
   }
 }
 

@@ -22,6 +22,7 @@
     overflow-y: scroll;
     flex-direction: column;
     color: $chat-message-color;
+    background-color: $chat-background-color;
     padding-top: 8vh;
     padding-left: 1rem;
   }
@@ -59,6 +60,10 @@
     &:focus {
       background-color: $chat-input-bg-color--focus;
     }
+  }
+
+  .chat-pm {
+    background-color: $chat-background-color;
   }
   .chat-pm input{
     background-color: $chat-input-bg-color;

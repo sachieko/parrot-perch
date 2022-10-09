@@ -11,10 +11,6 @@
   }
 }
 
-.youtube-widget {
-  margin-top: 30vh;
-}
-
 .youtube-results {
   background-color: $channel-bg-color;
   display: flex;
@@ -40,13 +36,5 @@
   border-radius: 0.5rem;
   width: 20em;
   height: 2.3em;
-  text-align: center;
-}
-
-::placeholder {
-  text-align: center;
-}
-
-input:placeholder-shown {
   text-align: center;
 }

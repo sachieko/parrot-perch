@@ -4,16 +4,11 @@
 .widget-container {
   display: flex;
   flex-direction: column;
-  bottom: 35vh;
+  margin-bottom: 100vh;
   height: 70vh;
   width: 100vw;
   background-color: $app-bg-color;
-
   @include custom-scrollbar;
-  .widget {
-    height: 30vh;
-    width: 100vw;
-  }
 }
 
 .join-inputs form input {
