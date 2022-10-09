@@ -1,6 +1,6 @@
 
 const random_color = function () {
-  const o = Math.round, r = Math.random, s = 255;
+  const floor = Math.floor, rnd = Math.random, s = 255;
   const colors = [
     'rgb(178 251 109)',
     'rgb(255 205 65)',
@@ -15,7 +15,7 @@ const random_color = function () {
     'rgb(110,175,255)',
     'rgb(255,147,147)'
   ];
-  return colors[o(r(colors.length - 1))];
+  return colors[floor(rnd() * colors.length)];
 };
 
 exports.random_color = random_color;
