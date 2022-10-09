@@ -6,8 +6,6 @@ import { roomContext } from '../../../providers/RoomProvider';
 import useDebounce from '../../../hooks/useDebounce';
 import Result from './Result';
 
-const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY
-
 function Youtube() {
   const { socket, room, setPlayer } = useContext(roomContext);
   const [term, setTerm] = useState('');
@@ -53,7 +51,11 @@ function Youtube() {
       setSuggestions([])
       return;
     }
-    axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${terms}&key=${API_KEY}`)
+    axios.get('/api/youtube_search', {
+      params: {
+        terms: terms
+      }
+    })
       .then((res) => {
         const list = [];
         for (const i of res.data.items) {
@@ -88,18 +90,18 @@ function Youtube() {
   return (
     <div className='widget youtube-widget'>
       <div className='search'>
-        <form  className='search__form' onSubmit={e => e.preventDefault()}>
+        <form className='search__form' onSubmit={e => e.preventDefault()}>
           <input className='radius' type='text' value={term} placeholder='Search Youtube' onChange={(e) => setTerm(e.target.value)} />
         </form>
       </div>
       {displaySuggestions}
-      { room.youtubeVideo && room.youtubeVideo.channel && ( 
+      {room.youtubeVideo && room.youtubeVideo.channel && (
         <YoutubePlayer
           videoId={room.youtubeVideo.channel}
           opts={opts}
           onReady={onReady}
           onStateChange={emitStateChange} />
-       )}
+      )}
     </div>
   );
 }
