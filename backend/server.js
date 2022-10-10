@@ -180,14 +180,12 @@ io.on('connection', client => {
   });
 
   client.on('message', data => {
-    const { msg: message, room, to } = data;
-    if (!message) {
+    const { msg, room, to } = data;
+    if (!msg) {
       return;
     }
     const username = clients[name].username;
-    if (message.length > 500) {
-      message = message.slice(0, 500);
-    }
+    const message = msg.length > 500 ? msg.slice(0, 500) : msg;
     if (!to) {
       io.to(room.name).emit('public', { message, username, color });
       return;
