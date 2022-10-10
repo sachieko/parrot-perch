@@ -81,6 +81,7 @@
     
     button {
       margin-right: 0;
+      margin-left: 0.4rem;
       height: 2rem;
     }
   }
@@ -102,6 +103,14 @@
     background-color: $chat-button-background-color;
     &:hover {
       background-color: $chat-button-background-color--hover;
+    }
+  }
+}
+
+@media only screen and (max-width: 270px) {
+  .chat {
+    #chat-submit {
+      width: 70vw;
     }
   }
 }
@@ -146,6 +155,7 @@
 
     .chat-pm select {
       margin: 0.4rem;
+      margin-top: 0;
     }
   }
 }
@@ -178,7 +188,6 @@
 
       select {
         margin: 0.5rem;
-        margin-left: 0;
         width: 8rem;
       }
     }
