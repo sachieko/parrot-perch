@@ -11,7 +11,7 @@ const ChatInput = props => {
   return (
     <div className="chat-input-container">
       <div className="chat-pm">
-        <button onClick={() => setTo('')}><i class="fa fa-refresh" aria-hidden="true"></i></button>
+        <button onClick={() => setTo('')}><i className="fa fa-refresh" aria-hidden="true"></i></button>
         <select onChange={(event) => setTo(event.target.value)} value={to} >
           <option className='user-list-item' value="">Select a friend</option>
           {options}
