@@ -26,8 +26,14 @@
   &:focus::placeholder {
     color: transparent;
   }
-
+  
   &:hover {
     background-color: $chat-input-bg-color--focus;
+  }
+}
+/* Tablet CSS */
+@media only screen and (min-width: 768px) {
+  .widget-container {
+    width: 80vw;
   }
 }

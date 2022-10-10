@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: $app-font-family;
   background-color: $app-bg-color;
 }
 
@@ -25,6 +25,7 @@ body {
 }
 
 .nav {
+  height: 10vh;
   background-color: $app-bg-color;
 
   .nav-link {

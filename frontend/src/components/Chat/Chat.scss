@@ -8,7 +8,6 @@
   bottom: 0;
   left: 0;
   width: 100vw;
-  overflow-y: scroll;
   overflow-x: hidden;
   position: fixed;
   padding: 0.5em;
@@ -28,6 +27,7 @@
     display: flex;
     width: 100vw;
     overflow-y: scroll;
+    overflow-x: hidden;
     flex-direction: column;
     color: $chat-message-color;
     background-color: $chat-background-color;
@@ -35,11 +35,17 @@
     padding-left: 0.5rem;
   }
   .chat-list-item {
+    display: flex;
+    flex-flow: row wrap;
     padding-bottom: 0.2rem;
     padding-top: 0.2rem;
     background-color: $chat-background-color;
+    font-family: 'Ubuntu', sans-serif;
+    span {
+      white-space: pre-wrap;
+    }
   }
-  .chat-input {
+  .chat-input-container {
     background-color: $chat-background-color;
     position: fixed;
     top: 65vh;
@@ -58,7 +64,7 @@
   #chat-submit {
     border: 5rem;
     height: 4vh;
-    width: 90vw;
+    width: 75vw;
     border: 1px solid $chat-input-border-color;
     border-radius: 0.4rem;
     margin: 0.4rem;
@@ -72,6 +78,12 @@
 
   .chat-pm {
     background-color: $chat-background-color;
+    
+    button {
+      margin-right: 0;
+      margin-left: 0.4rem;
+      height: 2rem;
+    }
   }
   .chat-pm select{
     background-color: $chat-input-bg-color;
@@ -79,14 +91,124 @@
     color: $chat-message-color;
     border-radius: 0.4rem;
     margin: 0.2rem;
+    margin-left: 0;
+    outline: none;
+    height: 2rem;
   }
   button {
     margin: 0.2rem;
+    height: 2rem;
     border-radius: $chat-button-radius;
     color: $chat-button-color;
     background-color: $chat-button-background-color;
     &:hover {
       background-color: $chat-button-background-color--hover;
+    }
+  }
+}
+
+@media only screen and (max-width: 270px) {
+  .chat {
+    #chat-submit {
+      width: 70vw;
+    }
+  }
+}
+/* Tablet CSS */
+@media only screen and (min-width: 768px) {
+  .chat {
+    height: 100vh;
+    bottom: 0;
+    left: 80vw;
+    right: 0;
+    width: 20vw;
+    padding-top: 0;
+    border-left: $chat-input-border;
+    ::-webkit-scrollbar-track {
+      margin-top: 10vh;
+    }
+
+    .chat-input-container {
+      width: 20vw;
+      left: 80vw;
+      right: 0;
+      top: 80vh;
+      height: 20vh;
+      border-left: $chat-input-border;
+      border-bottom: 0;
+    }
+
+    #chat-submit {
+      width: 18vw;
+      height: 2rem;
+    }
+    
+    #message-list {
+      padding-top: 0;
+      margin-bottom: 20vh;
+      width: 20vw;
+    }
+
+    button {
+      margin: 0.4rem;
+    }
+
+    .chat-pm select {
+      margin: 0.4rem;
+      margin-top: 0;
+    }
+  }
+}
+/* Desktop CSS */
+@media only screen and (min-width: 1024px) {
+  .chat {
+    height: 100vh;
+    bottom: 0;
+    left: 80vw;
+    right: 0;
+    width: 20vw;
+    padding-top: 0;
+    border-left: $chat-input-border;
+
+    button {
+      margin: 0.5rem;
+    }
+
+    .chat-pm {
+      display: flex;
+      flex-direction: row;
+      height: 3rem;
+
+      button {
+        margin-right: 0;
+      }
+
+      select {
+        margin: 0.5rem;
+        margin-left: 0;
+        width: 8rem;
+      }
+    }
+
+    .chat-input-container {
+      width: 20vw;
+      left: 80vw;
+      right: 0;
+      top: 84vh;
+      height: 20vh;
+      border-left: $chat-input-border;
+      border-bottom: 0;
+    }
+
+    #chat-submit {
+      width: 18vw;
+      height: 2rem;
+    }
+    
+    #message-list {
+      padding-top: 0;
+      margin-bottom: 16vh;
+      width: 20vw;
     }
   }
 }

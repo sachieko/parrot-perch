@@ -58,7 +58,7 @@ function Whiteboard() {
   }
 
   return (
-    <div>
+    <div className='canvas-container'>
       <canvas
         id='whiteboard'
         width={'1000px'}
