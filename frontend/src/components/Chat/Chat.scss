@@ -78,6 +78,11 @@
 
   .chat-pm {
     background-color: $chat-background-color;
+    
+    button {
+      margin-right: 0;
+      height: 2rem;
+    }
   }
   .chat-pm select{
     background-color: $chat-input-bg-color;
@@ -85,10 +90,13 @@
     color: $chat-message-color;
     border-radius: 0.4rem;
     margin: 0.2rem;
+    margin-left: 0;
     outline: none;
+    height: 2rem;
   }
   button {
     margin: 0.2rem;
+    height: 2rem;
     border-radius: $chat-button-radius;
     color: $chat-button-color;
     background-color: $chat-button-background-color;
@@ -159,8 +167,20 @@
       margin: 0.5rem;
     }
 
-    .chat-pm select {
-      margin: 0.5rem;
+    .chat-pm {
+      display: flex;
+      flex-direction: row;
+      height: 3rem;
+
+      button {
+        margin-right: 0;
+      }
+
+      select {
+        margin: 0.5rem;
+        margin-left: 0;
+        width: 8rem;
+      }
     }
 
     .chat-input-container {
