@@ -13,6 +13,10 @@
   padding: 0.5em;
   padding-top: 6vh;
 
+  .warning-text {
+    color: red;
+  }
+
   input {
     outline: none;
   }
@@ -35,15 +39,16 @@
     padding-left: 0.5rem;
   }
   .chat-list-item {
-    display: flex;
-    flex-flow: row wrap;
     padding-bottom: 0.2rem;
     padding-top: 0.2rem;
+    padding-right: 0.4rem;
     background-color: $chat-background-color;
     font-family: 'Ubuntu', sans-serif;
-    span {
-      white-space: pre-wrap;
+    word-break: break-all;
+    .message-item {
+      width: 98vw;
     }
+
   }
   .chat-input-container {
     background-color: $chat-background-color;
@@ -146,7 +151,13 @@
     #message-list {
       padding-top: 0;
       margin-bottom: 20vh;
-      width: 20vw;
+      width: 20vw; 
+      .chat-list-item {
+        width: 19vw;
+      }
+      .message-item {
+        width: 19vw;
+      }
     }
 
     button {
