@@ -185,6 +185,9 @@ io.on('connection', client => {
       return;
     }
     const username = clients[name].username;
+    if (message.length > 500) {
+      message = message.slice(0, 500);
+    }
     if (!to) {
       io.to(room.name).emit('public', { message, username, color });
       return;
