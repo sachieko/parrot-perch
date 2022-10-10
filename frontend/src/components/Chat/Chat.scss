@@ -45,9 +45,12 @@
     padding-top: 0.2rem;
     background-color: $chat-background-color;
     font-family: 'Ubuntu', sans-serif;
-    span {
+    .message-item {
+      width: 100vw;
       white-space: pre-wrap;
+      word-wrap: break-word;
     }
+
   }
   .chat-input-container {
     background-color: $chat-background-color;
@@ -151,6 +154,9 @@
       padding-top: 0;
       margin-bottom: 20vh;
       width: 20vw;
+      .message-item {
+        width: 19vw;
+      }
     }
 
     button {
