@@ -22,4 +22,8 @@
     border: $app-input-border--focus;
     outline: none;
   }
+
+  &:focus::placeholder {
+    color: transparent;
+  }
 }
