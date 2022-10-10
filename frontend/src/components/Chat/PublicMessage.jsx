@@ -8,7 +8,7 @@ const PublicMessage = (props) => {
         <span className='chat-username-item' style={{ color }}>{username}</span>
         {`: `}
       </span>
-      <span className='message-item'>{message}</span>
+        <span className='message-item'>{message}</span>
     </div>
   );
 };
