@@ -26,11 +26,65 @@
   &:focus::placeholder {
     color: transparent;
   }
-  
+
   &:hover {
     background-color: $chat-input-bg-color--focus;
   }
 }
+
+.nav-toggle {
+  display: flex;
+  justify-content: center;
+}
+
+.mb-2 {
+  margin-top: 0.5em;
+  margin-left: 1em;
+  box-shadow: 0px 0px 7px 2px $app-input-bg-color;
+  transition: all .2s ease-in-out;
+  color: white !important;
+
+  &:hover {
+    background-color: $app-bg-color !important;
+  }
+
+  &:active {
+    background-color: white !important;
+  }
+}
+
+[for|="button-Twitch"] {
+  background-color: #6441a5 !important;
+
+  &.selected {
+    background-color: $app-input-bg-color !important;
+  }
+}
+
+[for|="button-Youtube"] {
+  background-color: #FF0000 !important;
+
+  &.selected {
+    background-color: $app-input-bg-color !important;
+  }
+}
+
+[for|="button-Chat"] {
+  background-color: #2db300 !important;
+
+  &.selected {
+    background-color: $app-input-bg-color !important;
+  }
+}
+
+[for|="button-Whiteboard"] {
+  background-color: dodgerblue !important;
+
+  &.selected {
+    background-color: $app-input-bg-color !important;
+  }
+}
+
 /* Tablet CSS */
 @media only screen and (min-width: 768px) {
   .widget-container {

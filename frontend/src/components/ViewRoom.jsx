@@ -10,10 +10,10 @@ import Whiteboard from './whiteboard';
 function View() {
   const { room } = useContext(roomContext);
   const [widgetSwitches, setWidgetSwitches] = useState(
-    [{ name: 'twitch', selected: true },
-    { name: 'youtube', selected: true },
-    { name: 'chat', selected: true },
-    { name: 'whiteboard', selected: true }]);
+    [{ name: 'Twitch', selected: true },
+    { name: 'Youtube', selected: true },
+    { name: 'Chat', selected: true },
+    { name: 'Whiteboard', selected: true }]);
 
   const selectSwitch = (i) => {
     setWidgetSwitches((oldSwitches) => {
@@ -24,15 +24,25 @@ function View() {
     });
   }
 
+  const addclass=()=>{
+    document.querySelector(".mb-2").classList.toggle('selected');
+} 
+
   const showSwitches = widgetSwitches.map((switcher, i) => {
+    const addclass=()=>{
+      document.querySelector(`[for|=button-${switcher.name}]`).classList.toggle('selected');
+  } 
+
     return <ToggleButton
       className="mb-2"
-      id="toggle-check"
+      id={`button-${switcher.name}`}
       type="checkbox"
-      variant="outline-primary"
+      variant="outline-secondary"
       checked={switcher.selected}
       value="1"
-      onClick={() => selectSwitch(i)}
+      onClick={() => {
+        selectSwitch(i)
+        addclass()}}
       key={i}
     >
       {switcher.name}
@@ -43,14 +53,15 @@ function View() {
     <>
       Room Name: {room.name}
       {widgetSwitches[3].selected && <Whiteboard />}
-      <div className="nav-toggle">
-      {showSwitches}
+
+      <div className='widget-container'>
+        <div className="nav-toggle">
+          {showSwitches}
+        </div>
+        {widgetSwitches[0].selected && <Twitch />}
+        {widgetSwitches[1].selected && <Youtube />}
+        {widgetSwitches[2].selected && <Chat />}
       </div>
-    <div className='widget-container'>
-      {widgetSwitches[0].selected && <Twitch />}
-      {widgetSwitches[1].selected && <Youtube />}
-      {widgetSwitches[2].selected && <Chat />}
-    </div>
     </>
   );
 };
