@@ -185,7 +185,7 @@ io.on('connection', client => {
       return;
     }
     const username = clients[name].username;
-    const message = msg.length > 500 ? msg.slice(0, 500) : msg;
+    const message = msg.length > 500 ? msg.slice(0, 500) + '... your message is too long!' : msg;
     if (!to) {
       io.to(room.name).emit('public', { message, username, color });
       return;
