@@ -2,7 +2,6 @@ import React from "react";
 
 const PrivateMessage = (props) => {
   const { username, color, message, pm } = props;
-  console.log(props);
   return (
     <>
     {pm === 'receive' && (
