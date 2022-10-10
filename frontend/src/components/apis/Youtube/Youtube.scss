@@ -44,3 +44,12 @@
   height: 2.3em;
   text-align: center;
 }
+
+@media only screen and (min-width: 768px) {
+  .youtube-video {
+    iframe {
+      width: 85vw;
+      height: 70vh;
+    }
+  }
+}

@@ -55,12 +55,14 @@
   .stream-frames {
     display: flex;
     flex-direction: row;
-    width: 80vw;
+    width: 85vw;
     .twitch-video-frame {
-      width: 80vw;
+      width: 100vw;
+      height: 70vh;
     }
     .twitch-chat-frame {
-      width: 15vw;
+      width: 20vw;
+      height: 70vh;
     }
   }
 }
