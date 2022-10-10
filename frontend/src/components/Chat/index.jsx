@@ -26,7 +26,7 @@ const Chat = function(props) {
 
   return (
     <section className="chat">
-      <ChatInput onChange={setMsg} value={msg} send={send} clear={setChatMessages} />
+      <ChatInput onChange={setMsg} value={msg} send={send} clear={setChatMessages} users={users} />
       <div id='message-list'> 
         {chatMessageList}
       </div>

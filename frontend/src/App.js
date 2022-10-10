@@ -3,11 +3,15 @@ import Room from './components/Room'
 import RoomProvider from './providers/RoomProvider';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const App = function() {
+const App = function () {
 
   return (
     <div className="parrot-perch">
-      <h1>Parrot Perch</h1>
+      <nav className='nav'>
+        <a href='/' className='nav-link'>
+          <h1>Parrot Perch</h1>
+        </a>
+      </nav>
       <RoomProvider>
         <Room />
       </RoomProvider>

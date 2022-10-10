@@ -122,7 +122,7 @@ io.on('connection', client => {
     dictionaries: [adjectives],
     separator: ' ',
     style: 'capital'
-  })}  Parrot`;
+  })} Parrot`;
 
   const color = random_color();
   // console.log('Client Connected!', name, ':', client.id);
