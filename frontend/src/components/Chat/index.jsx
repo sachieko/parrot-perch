@@ -26,8 +26,6 @@ const Chat = function(props) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  
-
   useEffect(() => {
     scrollToBottom();
   }, [chatMessages])
@@ -42,7 +40,7 @@ const Chat = function(props) {
       <ChatInput onChange={setMsg} value={msg} send={send} clear={setChatMessages} users={users} />
       <div id='message-list' > 
         {chatMessageList}
-        <div ref={messagesEndRef} />
+        <div ref={messagesEndRef} /> 
       </div>
     </section>
   );
