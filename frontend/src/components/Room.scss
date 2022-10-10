@@ -32,13 +32,6 @@
   }
 }
 
-/* Tablet CSS */
-@media only screen and (min-width: 768px) {
-  .widget-container {
-    width: 80vw;
-  }
-}
-
 .nav-toggle {
   display: flex;
   justify-content: center;
@@ -89,5 +82,12 @@
 
   &.selected {
     background-color: $app-input-bg-color !important;
+  }
+}
+
+/* Tablet CSS */
+@media only screen and (min-width: 768px) {
+  .widget-container {
+    width: 80vw;
   }
 }
