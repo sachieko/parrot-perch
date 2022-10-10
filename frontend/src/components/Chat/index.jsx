@@ -2,7 +2,6 @@ import React, { useContext} from 'react';
 import './Chat.scss'
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
-import UserList from './UserList';
 import { roomContext } from '../../providers/RoomProvider';
 
 
@@ -20,19 +19,12 @@ const Chat = function(props) {
     return <ChatMessage key={i} message={message} username={username} color={color} pm={pm} system={system} />;
   });
 
-  const userList = users.map((user, i) => { // Use room users to return the list of people you can PM by clicking the button
-    return <UserList key={i} username={user.name} color={user.color} />;
-  });
-
   return (
     <section className="chat">
       <ChatInput onChange={setMsg} value={msg} send={send} clear={setChatMessages} users={users} />
       <div id='message-list'> 
         {chatMessageList}
       </div>
-      <ul>
-        {userList}
-      </ul>
     </section>
   );
 };
