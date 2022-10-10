@@ -36,7 +36,7 @@
 }
 
 .twitch-chat-container {
-  width: 100px;
+  width: 20vw;
   display: inline;
   position: relative;
 
@@ -48,5 +48,11 @@
   }
   button:hover {
     color: dodgerblue;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .stream-frames {
+    width: 92vw;
   }
 }

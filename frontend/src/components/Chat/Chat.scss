@@ -90,3 +90,34 @@
     }
   }
 }
+
+@media only screen and (min-width: 768px) {
+  .chat {
+    height: 100vh;
+    bottom: 0;
+    left: 80vw;
+    right: 0;
+    width: 20vw;
+    padding-top: 0;
+    border-left: $chat-input-border;
+    ::-webkit-scrollbar-track {
+      margin-top: 10vh;
+    }
+
+    .chat-input {
+      width: 20vw;
+      left: 80vw;
+      right: 0;
+      top: 87.5vh;
+      border-left: $chat-input-border;
+    }
+
+    #chat-submit {
+      width: 18vw;
+    }
+    
+    #message-list {
+      padding-top: 0;
+    }
+  }
+}
