@@ -8,7 +8,9 @@
     background-color: $chat-input-bg-color;
     color: #fff;
     &:focus {
-      background-color: $chat-input-bg-color--focus;
+      background-color: $app-input-bg-color--focus;
+      border: $app-input-border--focus;
+      outline: none;
     }
   }
 }
