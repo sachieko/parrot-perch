@@ -29,3 +29,9 @@ body {
   flex-direction: column;
   align-items: center;
 }
+
+#app-header {
+  background: linear-gradient(90deg, red -5%, yellow 10%, aqua, lime 30%);
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
