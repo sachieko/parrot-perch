@@ -24,12 +24,8 @@ function View() {
     });
   }
 
-  const addclass=()=>{
-    document.querySelector(".mb-2").classList.toggle('selected');
-} 
-
   const showSwitches = widgetSwitches.map((switcher, i) => {
-    const addclass=()=>{
+    const addclass = () => {
       document.querySelector(`[for|=button-${switcher.name}]`).classList.toggle('selected');
   } 
 
