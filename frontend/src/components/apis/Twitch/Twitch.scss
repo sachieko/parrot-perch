@@ -53,6 +53,14 @@
 
 @media only screen and (min-width: 768px) {
   .stream-frames {
-    width: 92vw;
+    display: flex;
+    flex-direction: row;
+    width: 80vw;
+    .twitch-video-frame {
+      width: 80vw;
+    }
+    .twitch-chat-frame {
+      width: 15vw;
+    }
   }
 }

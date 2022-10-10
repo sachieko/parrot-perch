@@ -96,9 +96,9 @@
   .chat {
     height: 100vh;
     bottom: 0;
-    left: 80vw;
+    left: 85vw;
     right: 0;
-    width: 20vw;
+    width: 15vw;
     padding-top: 0;
     border-left: $chat-input-border;
     ::-webkit-scrollbar-track {
@@ -106,20 +106,22 @@
     }
 
     .chat-input {
-      width: 20vw;
-      left: 80vw;
+      width: 15vw;
+      left: 85vw;
       right: 0;
-      top: 87.5vh;
+      top: 88vh;
       border-left: $chat-input-border;
       border-bottom: 0;
     }
 
     #chat-submit {
-      width: 18vw;
+      width: 12vw;
     }
     
     #message-list {
       padding-top: 0;
+      margin-bottom: 12vh;
+      width: 15vw;
     }
   }
 }
