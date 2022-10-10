@@ -12,14 +12,14 @@ function Youtube() {
   const [term, setTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const terms = useDebounce(term, 500);
-  const opts = useState({
+  const opts = {
     height: '600',
     width: '100%',
     playerVars: {
       autoplay: 1,
       mute: 1
     }
-  })[0];
+  };
 
   const onReady = (event) => {
     setPlayer(event.target);

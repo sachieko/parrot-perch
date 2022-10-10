@@ -18,6 +18,10 @@
     outline: none;
   }
 
+  .user-list-item {
+    background-color: $chat-background-color;
+  }
+
   @include custom-scrollbar;
   
   #message-list {
@@ -69,7 +73,7 @@
   .chat-pm {
     background-color: $chat-background-color;
   }
-  .chat-pm input{
+  .chat-pm select{
     background-color: $chat-input-bg-color;
     border-color: $chat-input-border-color;
     color: $chat-message-color;

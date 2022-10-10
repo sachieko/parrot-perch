@@ -24,6 +24,14 @@ body {
   overflow-x: hidden;
 }
 
+.nav {
+  background-color: $nav-background-color;
+
+  .nav-link {
+    color: $nav-link-color;
+  }
+}
+
 .root-inputs {
   display: flex;
   flex-direction: column;

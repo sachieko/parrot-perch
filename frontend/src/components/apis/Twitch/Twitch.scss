@@ -5,6 +5,7 @@
   position: sticky;
   z-index: 1;
 }
+
 .result-list {
   background-color: $channel-bg-color;
   display: flex;
@@ -14,6 +15,7 @@
   width: 40vw;
   flex-direction: column;
   overflow-y: scroll;
+
   .streamer-channel {
     display: flex;
     color: $video-result-color;
@@ -21,6 +23,7 @@
     margin-top: 0.5rem;
     border: $video-result-border;
     border-radius: 0.4em;
+
     &:hover {
       background-color: $channel-bg-color--hover;
     }
@@ -30,4 +33,20 @@
 .stream-frames {
   margin-top: 0.5rem;
   position: sticky;
+}
+
+.twitch-chat-container {
+  width: 100px;
+  display: inline;
+  position: relative;
+
+  button {
+    position: absolute;
+    color: #FFFFFF;
+    background: none;
+    border: none;
+  }
+  button:hover {
+    color: dodgerblue;
+  }
 }
