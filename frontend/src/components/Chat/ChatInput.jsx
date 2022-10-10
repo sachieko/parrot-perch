@@ -4,8 +4,8 @@ import { roomContext } from '../../providers/RoomProvider';
 const ChatInput = props => {
   const { to, setTo } = useContext(roomContext);
 
-  const options = props.users.map(u => {
-    return <option value={u.name}>{u.name}</option>
+  const options = props.users.map(user => {
+    return <option className='user-list-item' style={{color: user.color}} value={user.name}>{user.name}</option>
   });
   
   return (
@@ -16,12 +16,12 @@ const ChatInput = props => {
         placeholder="Chat something!"
         onKeyUp={event => event.key === 'Enter' && props.value ? props.send() : null} id='chat-submit' />
       <div className="chat-pm">
+        <button onClick={() => setTo('')}>Reset PM</button>
         <select onChange={(event) => setTo(event.target.value)} value={to} >
-          <option value="">Select a friend</option>
+          <option className='user-list-item' value="">Select a friend</option>
           {options}
         </select>
         <button onClick={props.send}>Chat</button>
-        <button onClick={() => props.clear([])}>Clear Chat</button>
       </div>
     </div>
   );

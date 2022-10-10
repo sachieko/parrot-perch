@@ -18,6 +18,10 @@
     outline: none;
   }
 
+  .user-list-item {
+    background-color: $chat-background-color;
+  }
+
   @include custom-scrollbar;
   
   #message-list {
