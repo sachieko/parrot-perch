@@ -16,6 +16,9 @@ const Chat = function(props) {
    } = useContext(roomContext);
   const users = room.users;
   const send = function() {
+    if (msg.length > 1000) {
+      return;
+    }
     socket.emit('message', {msg, room, to});
     clearChatInput();
   };

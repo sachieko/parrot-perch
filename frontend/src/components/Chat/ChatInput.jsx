@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { roomContext } from '../../providers/RoomProvider';
 
 const ChatInput = props => {
-  const { to, setTo } = useContext(roomContext);
+  const { to, setTo, msg } = useContext(roomContext);
 
   const options = props.users.map((user, i) => {
     return <option key={i} className='user-list-item' style={{color: user.color}} value={user.name}>{user.name}</option>
@@ -26,6 +26,9 @@ const ChatInput = props => {
         autoComplete="off"
         onKeyUp={event => event.key === 'Enter' && props.value ? props.send() : null} id='chat-submit' />
         <button onClick={props.send}>Chat</button>
+        {msg.length > 1000 && (
+        <span className="warning-text">{`${msg.length}/1000`}</span>
+        )}
       </div>
     </div>
   );
