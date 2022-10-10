@@ -38,6 +38,7 @@
     padding-bottom: 0.2rem;
     padding-top: 0.2rem;
     background-color: $chat-background-color;
+    font-family: 'Ubuntu', sans-serif;
   }
   .chat-input {
     background-color: $chat-background-color;
@@ -110,6 +111,7 @@
       right: 0;
       top: 87.5vh;
       border-left: $chat-input-border;
+      border-bottom: 0;
     }
 
     #chat-submit {

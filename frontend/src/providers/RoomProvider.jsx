@@ -63,9 +63,9 @@ export default function RoomProvider(props) {
           users: room.users
         };
       });
-      const message = res.message;
-      if (message) {
-        setChatMessages(prev => [message, ...prev]);
+      const chatMessage = res.message;
+      if (chatMessage) {
+        setChatMessages(prev => [...prev, chatMessage]);
       }
       setIsViewing(true);
     });
@@ -76,19 +76,19 @@ export default function RoomProvider(props) {
         return { ...oldRoom, name: room.name, channel: room.channel, users: room.users, host: room.host };
       });
       const chatMessage = { username, color, system };
-      setChatMessages(prev => [chatMessage, ...prev]);
+      setChatMessages(prev => [...prev, chatMessage]);
     });
 
     socket.on('public', data => {
       const { username, color, message } = data;
       const chatMessage = { username, color, message };
-      setChatMessages(prev => [chatMessage, ...prev]); // Keeps all messages in history right now
+      setChatMessages(prev => [...prev, chatMessage]); // Keeps all messages in history right now
     });
 
     socket.on('private', data => {
       const { username, color, message, pm } = data;
       const chatMessage = { username, color, message, pm };
-      setChatMessages(prev => [chatMessage, ...prev]); // Same as public. 
+      setChatMessages(prev => [...prev, chatMessage]); // Same as public. 
     });
 
     socket.on('setJoinerYoutubeTime', (res) => {

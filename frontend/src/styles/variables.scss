@@ -1,5 +1,5 @@
 /* App styles */
-$app-bg-color: #09090b;
+$app-bg-color: rgb(35, 35, 38);
 $app-text-color: #fff;
 $app-scroll-bg-color: hsla(0,0%,100%,.2);
 $app-scroll-thumb-color: #772ce8;
@@ -10,6 +10,7 @@ $app-input-border-color: #772ce8;
 $app-input-border: 1px solid $app-input-border-color;
 $app-input-border-color--focus: #a970ff;
 $app-input-border--focus: 1px solid $app-input-border-color--focus;
+$app-font-family: 'Ubuntu', sans-serif;
 
 /* Chat Styles */
 $chat-button-background-color: #9177ff;
@@ -18,11 +19,11 @@ $chat-button-radius: 0.3rem;
 $chat-button-background-color--hover: #772ce8;
 $chat-input-bg-color: hsla(0,0%,100%,.2);
 $chat-input-bg-color--focus: #000;
-$chat-input-border-color: #772ce8;
+$chat-input-border-color: #a970ff;
 $chat-input-border: 1px solid $chat-input-border-color;
 $chat-input-border-color--focus: #a970ff;
 $chat-input-border--focus: 1px solid $chat-input-border-color--focus;
-$chat-background-color: #0c0c10;
+$chat-background-color: #262630;
 $chat-message-color: #FFFFFF;
 
 /* Twitch or Youtube styles */
