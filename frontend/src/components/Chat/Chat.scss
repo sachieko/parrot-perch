@@ -122,7 +122,7 @@
     }
 
     #chat-submit {
-      width: 12vw;
+      width: 18vw;
       height: 2rem;
     }
     
@@ -130,6 +130,14 @@
       padding-top: 0;
       margin-bottom: 20vh;
       width: 20vw;
+    }
+
+    button {
+      margin: 0.4rem;
+    }
+
+    .chat-pm select {
+      margin: 0.4rem;
     }
   }
 }
