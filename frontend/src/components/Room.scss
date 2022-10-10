@@ -26,4 +26,8 @@
   &:focus::placeholder {
     color: transparent;
   }
+
+  &:hover {
+    background-color: $chat-input-bg-color--focus;
+  }
 }
