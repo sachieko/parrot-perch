@@ -3,14 +3,14 @@ import { roomContext } from '../../providers/RoomProvider';
 import drawPath from "../../helpers/whiteboardHelpers";
 
 
-function Whiteboard() {
+function Whiteboard(props) {
   const [mouseDown, setMouseDown] = useState(false);
   const [path, setPath] = useState([]);
   const canvasRef = useRef(null);
   const { socket, room, incomingPath } = useContext(roomContext);
   const [didLoad, setDidLoad] = useState(false);
 
-  if (canvasRef.current && !didLoad){
+  if (canvasRef.current && !didLoad) {
     for (const path of room.paths) {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext('2d');
@@ -50,24 +50,24 @@ function Whiteboard() {
   }
 
   const handleMouseUp = (e) => {
-    const BB = canvasRef.current.getBoundingClientRect();
-    const x = e.clientX - BB.left;
-    const y = e.clientY - BB.top;
-    setPath(oldPath => [...oldPath, { x, y }]);
     setMouseDown(false);
   }
 
   return (
     <div>
       <canvas
+        style={{
+          display: props.selected ? 'block' : 'none',
+          border: '1px solid white'
+        }}
         id='whiteboard'
         width={'1000px'}
         height={'200px'}
-        style={{ border: '1px solid white' }}
         ref={canvasRef}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
+        onMouseUp={() => setMouseDown(false)}
+        onMouseLeave={() => setMouseDown(false)}
       >
       </canvas>
     </div >

@@ -42,7 +42,7 @@ function View() {
   return (
     <>
       Room Name: {room.name}
-      {widgetSwitches[3].selected && <Whiteboard />}
+      {<Whiteboard selected={widgetSwitches[3].selected}/>}
       <div className="nav-toggle">
       {showSwitches}
       </div>
