@@ -25,10 +25,22 @@ body {
 }
 
 .nav {
-  background-color: $nav-background-color;
   height: 10vh;
+  background-color: $app-bg-color;
 
   .nav-link {
     color: $nav-link-color;
   }
+}
+
+.root-inputs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#app-header {
+  background: linear-gradient(90deg, red 0%, yellow 20%, aqua 70%, lime 90%);
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

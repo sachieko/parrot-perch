@@ -14,7 +14,6 @@
 .join-inputs form input {
   background-color: $app-input-bg-color;
   color: $app-text-color;
-  border: $app-input-border;
   border-radius: 0.4rem;
   margin: 0.5rem;
 
@@ -22,6 +21,14 @@
     background-color: $app-input-bg-color--focus;
     border: $app-input-border--focus;
     outline: none;
+  }
+
+  &:focus::placeholder {
+    color: transparent;
+  }
+  
+  &:hover {
+    background-color: $chat-input-bg-color--focus;
   }
 }
 /* Tablet CSS */
