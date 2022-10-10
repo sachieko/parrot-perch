@@ -51,11 +51,25 @@
   }
 }
 
+.stream-frames {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  .twitch-video-frame {
+    width: 60vw;
+    height: 50vh;
+  }
+  .twitch-chat-frame {
+    width: 40vw;
+    height: 50vh;
+  }
+}
+/* Tablet CSS */
 @media only screen and (min-width: 768px) {
   .stream-frames {
     display: flex;
     flex-direction: row;
-    width: 85vw;
+    width: 80vw;
     .twitch-video-frame {
       width: 100vw;
       height: 70vh;

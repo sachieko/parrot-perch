@@ -45,10 +45,17 @@
   text-align: center;
 }
 
+.youtube-video {
+  iframe {
+    width: 100vw;
+    height: 50vh;
+  }
+}
+/* Tablet CSS */
 @media only screen and (min-width: 768px) {
   .youtube-video {
     iframe {
-      width: 85vw;
+      width: 80vw;
       height: 70vh;
     }
   }
