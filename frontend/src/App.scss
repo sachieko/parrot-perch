@@ -40,6 +40,7 @@ body {
 }
 
 #app-header {
+  font-family: $app-font-family;
   background: linear-gradient(90deg, red 0%, yellow 20%, aqua 70%, lime 90%);
   -webkit-text-fill-color: transparent;
   background-clip: text;
