@@ -25,7 +25,7 @@ function Youtube(props) {
 
   const onReady = (event) => {
     if (room.youtubeVideo.channel) {
-      socket.emit('retrieveHostYoutubeTime', { room: room })
+      socket.emit('retrieveHostYoutubeTime', { room: room });
     }
   }
 
@@ -62,7 +62,7 @@ function Youtube(props) {
         playRef.current.internalPlayer.pauseVideo();
       }
     });
-  }, [socket])
+  }, [socket]);
 
   useEffect(() => {
     if (terms === '') {
