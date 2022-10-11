@@ -48,8 +48,9 @@ function View() {
   return (
     <>
       <h3 className='room-header'>Room Name: {room.name}</h3>
+      <div className='canvas-container'>
       {widgetSwitches[3].selected && <Whiteboard />}
-
+      </div>
       <div className='widget-container'>
         <div className="nav-toggle">
           {showSwitches}
