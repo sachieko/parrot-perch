@@ -27,7 +27,7 @@ function View() {
   const showSwitches = widgetSwitches.map((switcher, i) => {
     const addClass = () => {
       document.querySelector(`[for|=button-${switcher.name}]`).classList.toggle('selected');
-    }
+    };
 
     return <ToggleButton
       className="mb-2"
