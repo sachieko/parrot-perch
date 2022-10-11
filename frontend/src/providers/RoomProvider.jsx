@@ -30,8 +30,6 @@ export default function RoomProvider(props) {
   const [newChannel, setNewChannel] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  //youtube changing state
-  const [player, setPlayer] = useState();
 
   // term is state
   const term = useDebounce(newChannel, 500);
@@ -90,48 +88,6 @@ export default function RoomProvider(props) {
       setChatMessages(prev => [...prev, chatMessage]); // Same as public. 
     });
 
-    socket.on('setJoinerYoutubeTime', (res) => {
-      setRoom((oldRoom) => {
-        return {
-          ...oldRoom,
-          youtubeVideo: {
-            ...oldRoom.youtubeVideo,
-            duration: res.time
-          }
-        }
-      });
-    });
-
-    socket.on('getHostYoutubeTime', (res) => {
-      setPlayer(oldPlayer => {
-        if (oldPlayer) {
-          res.time = oldPlayer.getCurrentTime();
-          socket.emit('sendJoinerYoutubeTime', res);
-        }
-        return oldPlayer;
-      });
-    });
-
-    socket.on('serveVideo', (res) => {
-      const room = res.room;
-      setPlayer(oldPlayer => {
-        if (oldPlayer) {
-          const s = oldPlayer.getPlayerState();
-          if (s === 1 || s === 2 || s === 3) {
-            const state = room.youtubeVideo.state;
-            if (state === 1) {
-              oldPlayer.seekTo(room.youtubeVideo.duration);
-            }
-            if (state === 2 || state === 3) {
-              oldPlayer.seekTo(room.youtubeVideo.duration);
-              oldPlayer.pauseVideo();
-            }
-          }
-          return oldPlayer;
-        }
-      });
-    })
-
     return () => socket.disconnect();
   }, []);
 
@@ -167,7 +123,6 @@ export default function RoomProvider(props) {
     newChannel, setNewChannel, // When a user sets a channel for twitch
     searchResults, setSearchResults, // Results from the user's channel search
     searchValue, setSearchValue, // The term of the user's search value
-    player, setPlayer, // Used to manage player for youtube API
    };
 
   return (

@@ -8,10 +8,11 @@ import Result from './Result';
 import './Youtube.scss';
 
 function Youtube() {
-  const { socket, room, setPlayer } = useContext(roomContext);
+  const { socket, room } = useContext(roomContext);
   const [term, setTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const terms = useDebounce(term, 500);
+  const [player, setPlayer] = useState();
   const opts = {
     height: '600',
     width: '100%',
@@ -23,6 +24,7 @@ function Youtube() {
 
   const onReady = (event) => {
     setPlayer(event.target);
+    socket.emit('retrieveHostYoutubeTime', {room: room})
     if (room.youtubeVideo.channel) {
       event.target.seekTo(room.youtubeVideo.duration);
     }
@@ -46,6 +48,56 @@ function Youtube() {
       socket.emit('editVideo', { room: changedRoom });
     }
   }
+
+  useEffect(() => {
+    if (!socket) {
+      return;
+    }
+
+    socket.on('getHostYoutubeTime', (res) => {
+      console.log('here');
+      console.log(player);
+      if (player) {
+        console.log(player);
+        res.time = player.getCurrentTime();
+        console.log('time', res.time);
+        socket.emit('sendJoinerYoutubeTime', res);
+      }
+    });
+
+    socket.on('setJoinerYoutubeTime', (res) => {
+      console.log('here', player, res.time);
+      if (player) {
+        player.seekTo(res.time);
+      }
+    });
+
+    /*socket.on('serveVideo', (res) => {
+      const room = res.room;
+      setPlayer(oldPlayer => {
+        if (oldPlayer) {
+          const s = oldPlayer.getPlayerState();
+          if (s === 1 || s === 2 || s === 3) {
+            const state = room.youtubeVideo.state;
+            if (state === 1) {
+              oldPlayer.seekTo(room.youtubeVideo.duration);
+            }
+            if (state === 2 || state === 3) {
+              oldPlayer.seekTo(room.youtubeVideo.duration);
+              oldPlayer.pauseVideo();
+            }
+          }
+          return oldPlayer;
+        }
+      });
+    });*/
+
+    return () => {
+      socket.off('setJoinerYoutubeTime');
+      socket.off('getHostYoutubeTime');
+      socket.off('serveVideo');
+    }
+  }, [socket, player])
 
   useEffect(() => {
     if (terms === '') {
@@ -95,9 +147,9 @@ function Youtube() {
           <input className='radius' type='text' value={term} placeholder='Search Youtube' onChange={(e) => setTerm(e.target.value)} />
         </form>
         {suggestions.length > 0 && term && (
-        <div className='youtube-results'>
-          {displaySuggestions}
-        </div>
+          <div className='youtube-results'>
+            {displaySuggestions}
+          </div>
         )}
       </div>
       <YoutubePlayer

@@ -160,11 +160,6 @@ io.on('connection', client => {
     rooms[room.name].users.push(user);
     clients[name].rooms.push(room.name);
     const id = clients[name].id;
-    const hostName = rooms[room.name].host;
-    if (name !== hostName) {
-      const hostId = clients[hostName].id;
-      io.to(hostId).emit('getHostYoutubeTime', { for: id });
-    }
     client.emit('serveRoom', { room: rooms[room.name] });
     client.to(room.name).emit('system', { system: 'announce', username: clients[name].username, room: rooms[room.name], color });
     io.to(id).emit('system', { system: 'welcome', username: clients[name].username, room: rooms[room.name], color });
@@ -195,6 +190,15 @@ io.on('connection', client => {
     io.to(idTo).emit('private', { message, username: username, pm: 'receive', color: colorFrom }); // Receiver gets sender's color/name
     io.to(idFrom).emit('private', { message, username: userTo, pm: 'send', color: colorTo }); // Sender receives other's color
   })
+
+  client.on('retrieveHostYoutubeTime', (req) => {
+    const hostName = rooms[req.room.name].host;
+    const id = clients[name].id
+    if (name !== hostName) {
+      const hostId = clients[hostName].id;
+      io.to(hostId).emit('getHostYoutubeTime', { for: id });
+    }
+  });
 
   client.on('sendJoinerYoutubeTime', (req) => {
     io.to(req.for).emit('setJoinerYoutubeTime', { time: req.time });
