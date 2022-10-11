@@ -8,7 +8,7 @@ import Result from './Result';
 import './Youtube.scss';
 import { useRef } from 'react';
 
-function Youtube() {
+function Youtube(props) {
   const { socket, room } = useContext(roomContext);
   const [term, setTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
@@ -99,9 +99,14 @@ function Youtube() {
     )
   });
 
+  if (!props.selected && playRef.current){
+    playRef.current.internalPlayer.mute();
+  }
+
   return (
     <div className='widget youtube-widget'>
-      <div className='search'>
+      <div className='search' 
+      style={{ display: props.selected ? 'block' : 'none' }}>
         <form className='search__form' onSubmit={e => e.preventDefault()}>
           <input className='radius' type='text' value={term} placeholder='Search Youtube' onChange={(e) => setTerm(e.target.value)} />
         </form>
@@ -118,7 +123,7 @@ function Youtube() {
         onReady={onReady}
         onStateChange={emitStateChange}
         className='youtube-video'
-        style={{ display: room.youtubeVideo.channel ? 'block' : 'none' }}
+        style={{ display: room.youtubeVideo.channel && props.selected ? 'block' : 'none' }}
       />
     </div>
   );
