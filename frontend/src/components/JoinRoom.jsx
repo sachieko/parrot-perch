@@ -3,7 +3,7 @@ function Join (props) {
   return (
     <form className="root-inputs">
       <label>
-        -Create or Join a Room-
+      ❈Create or Join a Room❈
       </label>
         <input className='radius' placeholder="Enter Room Name" type="text" name="roomName" value={props.value} onChange={props.onChange} />
       <label>

@@ -27,20 +27,32 @@ body {
 .nav {
   height: 10vh;
   background-color: $app-bg-color;
+  display: flex;
+  justify-content: center;
 
   .nav-link {
     color: $nav-link-color;
+    display: flex;
+    flex-direction: row;
   }
+}
+
+.logo-image {
+  height: 4rem;
+  width: 6rem;
 }
 
 .root-inputs {
   display: flex;
   flex-direction: column;
   align-items: center;
+  input {
+    width: 90vw;
+  }
 }
 
 #app-header {
-  font-family: $app-font-family;
+  font-family: $app-logo-font-family;
   background: linear-gradient(90deg, red 0%, yellow 20%, aqua 70%, lime 90%);
   -webkit-text-fill-color: transparent;
   background-clip: text;
