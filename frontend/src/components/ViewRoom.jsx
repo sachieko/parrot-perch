@@ -25,9 +25,9 @@ function View() {
   }
 
   const showSwitches = widgetSwitches.map((switcher, i) => {
-    const addclass = () => {
+    const addClass = () => {
       document.querySelector(`[for|=button-${switcher.name}]`).classList.toggle('selected');
-  } 
+    }
 
     return <ToggleButton
       className="mb-2"
@@ -38,7 +38,8 @@ function View() {
       value="1"
       onClick={() => {
         selectSwitch(i)
-        addclass()}}
+        addClass()
+      }}
       key={i}
     >
       {switcher.name}
@@ -48,14 +49,14 @@ function View() {
   return (
     <>
       <div className='header-container'>
-        <h3 className='room-header'>Room Name: {room.name}</h3>
-      </div>
-      <div className='canvas-container'>
-      {widgetSwitches[3].selected && <Whiteboard />}
+        <h3 className='room-header'>Room Name: {room.name} </h3>
       </div>
       <div className='widget-container'>
         <div id="nav-toggle">
           {showSwitches}
+        </div>
+        <div className='canvas-container'>
+          {widgetSwitches[3].selected && <Whiteboard />}
         </div>
         {widgetSwitches[0].selected && <Twitch />}
         {widgetSwitches[1].selected && <Youtube />}
