@@ -89,15 +89,18 @@
   .twitch-live-search {
     width: 40vw;
   }
-  
+
+  .result-list {
+    left: 5vw;
+  }
   .stream-frames {
-    width: 40vw;
+    width: 45vw;
 
     .twitch-video-frame {
-      width: 90vw;
+      width: 87vw;
     }
     .twitch-chat-frame {
-      width: 10vw;
+      width: 13vw;
     }
   }
 }

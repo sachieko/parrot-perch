@@ -55,6 +55,7 @@
 @media only screen and (min-width: 768px) {
   .youtube-video {
     iframe {
+      margin-top: 0.5rem;
       width: 80vw;
       height: 70vh;
     }
@@ -68,12 +69,16 @@
 
 @media only screen and (min-width: 1080px) {
   .youtube-search {
-    width: 40vw;
+    width: 35vw;
+  }
+
+  .youtube-results {
+    left: 5vw;
   }
 
   .youtube-video {
     iframe {
-      width: 40vw;
+      width: 35vw;
     }
   }
 }
