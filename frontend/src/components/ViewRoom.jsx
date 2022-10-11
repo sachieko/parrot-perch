@@ -53,14 +53,14 @@ function View() {
       <div className='canvas-container'>
       {widgetSwitches[3].selected && <Whiteboard />}
       </div>
-      <div className='widget-container'>
         <div id="nav-toggle">
           {showSwitches}
         </div>
+      <div className='widget-container'>
         {widgetSwitches[0].selected && <Twitch />}
         {widgetSwitches[1].selected && <Youtube />}
-        {widgetSwitches[2].selected && <Chat />}
       </div>
+        {widgetSwitches[2].selected && <Chat />}
     </>
   );
 };

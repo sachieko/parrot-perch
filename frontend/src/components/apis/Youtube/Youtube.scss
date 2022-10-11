@@ -13,7 +13,7 @@
   }
 }
 
-.search {
+.youtube-search {
   position: sticky;
 }
 
@@ -44,17 +44,18 @@
   height: 2.3em;
   text-align: center;
 }
-
 .youtube-video {
   iframe {
-    width: 100vw;
-    height: 50vh;
+    width: inherit;
+    flex-grow: 1;
   }
 }
+
 /* Tablet CSS */
 @media only screen and (min-width: 768px) {
   .youtube-video {
     iframe {
+      margin-top: 0.5rem;
       width: 80vw;
       height: 70vh;
     }
@@ -63,5 +64,22 @@
   .youtube-results {
     left: 25vw;
     width: 30vw;
+  }
+}
+
+@media only screen and (min-width: 1080px) {
+  .youtube-search {
+    width: 35vw;
+  }
+
+  .youtube-results {
+    left: 5vw;
+  }
+
+  .youtube-video {
+    iframe {
+      width: inherit;
+      flex-grow: 1;
+    }
   }
 }

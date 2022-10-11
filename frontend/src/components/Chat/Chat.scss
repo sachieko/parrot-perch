@@ -44,9 +44,13 @@
     padding-right: 0.4rem;
     background-color: $chat-background-color;
     font-family: 'Ubuntu', sans-serif;
-    word-break: break-all;
+    .chat-username-item {
+      word-break: keep-all;
+    }
     .message-item {
+      word-break: break-all;
       width: 98vw;
+      
     }
 
   }

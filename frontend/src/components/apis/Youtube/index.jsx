@@ -14,7 +14,6 @@ function Youtube() {
   const terms = useDebounce(term, 500);
   const opts = {
     height: '600',
-    width: '100%',
     playerVars: {
       autoplay: 1,
       mute: 1
@@ -89,8 +88,8 @@ function Youtube() {
   });
 
   return (
-    <div className='widget youtube-widget'>
-      <div className='search'>
+    <div className='youtube-widget'>
+      <div className='youtube-search'>
         <form className='search__form' onSubmit={e => e.preventDefault()}>
           <input className='radius' type='text' value={term} placeholder='Search Youtube' onChange={(e) => setTerm(e.target.value)} />
         </form>
@@ -106,7 +105,7 @@ function Youtube() {
         onReady={onReady}
         onStateChange={emitStateChange}
         className='youtube-video'
-        style={{ display: room.youtubeVideo.channel ? 'block' : 'none' }}
+        style={{ display: room.youtubeVideo.channel ? 'flex' : 'none' }}
       />
     </div>
   );
