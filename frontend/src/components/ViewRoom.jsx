@@ -52,14 +52,14 @@ function View() {
         <h3 className='room-header'>Room Name: {room.name} </h3>
       </div>
       <div className='canvas-container'>
-      {widgetSwitches[3].selected && <Whiteboard />}
+      {<Whiteboard selected={widgetSwitches[3].selected}/>}
       </div>
         <div id="nav-toggle">
           {showSwitches}
         </div>
       <div className='widget-container'>
         {widgetSwitches[0].selected && <Twitch />}
-        {widgetSwitches[1].selected && <Youtube />}
+        {<Youtube selected={widgetSwitches[1].selected}/>}
       </div>
         {widgetSwitches[2].selected && <Chat />}
     </>

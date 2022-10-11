@@ -6,6 +6,7 @@ const drawPath = function(ctx, path) {
     const p = path[i];
     const { x, y } = p;
     if (i === 0) {
+      ctx.beginPath();
       ctx.moveTo(x, y);
     }
     if (i === path.length - 1) {

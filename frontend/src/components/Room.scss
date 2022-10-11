@@ -12,6 +12,12 @@
 }
 .canvas-container {
   margin-left: 1vw;
+  button {
+    border-radius: 100%;
+    width: 2em;
+    height: 2em;
+    border-color: #FFFFFF;
+  }
   
   #whiteboard {
     margin-top: 0.25em;
