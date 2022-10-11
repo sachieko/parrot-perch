@@ -13,7 +13,7 @@
   }
 }
 
-.search {
+.youtube-search {
   position: sticky;
 }
 
@@ -63,5 +63,17 @@
   .youtube-results {
     left: 25vw;
     width: 30vw;
+  }
+}
+
+@media only screen and (min-width: 1080px) {
+  .youtube-search {
+    width: 40vw;
+  }
+
+  .youtube-video {
+    iframe {
+      width: 40vw;
+    }
   }
 }

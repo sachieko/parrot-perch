@@ -18,6 +18,7 @@
   color: $app-text-color;
   border-radius: 0.4rem;
   margin: 0.5rem;
+  width: 16rem;
 
   &:focus {
     background-color: $app-input-bg-color--focus;
@@ -85,13 +86,20 @@
     }
   }
 }
-/* Very small screen styles */
-@media only screen and (max-width: 300px) {
 
-}
 /* Tablet CSS */
 @media only screen and (min-width: 768px) {
   .widget-container {
     width: 80vw;
+  }
+
+  #nav-toggle {
+    width: 80vw;
+  }
+}
+
+@media only screen and (min-width: 1080px) {
+  .widget-container{
+    flex-direction: row;
   }
 }

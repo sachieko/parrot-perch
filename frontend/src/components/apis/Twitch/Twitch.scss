@@ -85,3 +85,19 @@
     width: 30vw;
   }
 }
+@media only screen and (min-width: 1080px) {
+  .twitch-live-search {
+    width: 40vw;
+  }
+  
+  .stream-frames {
+    width: 40vw;
+
+    .twitch-video-frame {
+      width: 90vw;
+    }
+    .twitch-chat-frame {
+      width: 10vw;
+    }
+  }
+}
