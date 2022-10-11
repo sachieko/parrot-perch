@@ -12,11 +12,11 @@
 }
 .canvas-container {
   margin-left: 1vw;
+  align-self: center;
   
   #whiteboard {
     margin-top: 0.25em;
     border-radius: 10px;
-    align-items: center;
   }
 }
 .join-inputs form input {
