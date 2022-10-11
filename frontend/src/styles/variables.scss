@@ -12,7 +12,14 @@ $app-input-border-color--focus: #a970ff;
 $app-input-border--focus: 1px solid $app-input-border-color--focus;
 $app-font-family: 'Ubuntu', sans-serif;
 $app-logo-font-family: 'Oleo Script Swash Caps', cursive;
-$app-header-background: linear-gradient(90deg, red 0%, yellow 20%, aqua 70%, lime 90%);
+$app-room-text-header-background: linear-gradient(90deg, red 40%, yellow 50%, aqua 60%, lime 70%);
+$app-room-text-header-background-moz: -moz-linear-gradient(90deg, red 40%, yellow 50%, aqua 60%, lime 70%);
+$app-room-text-header-background-web: -webkit-linear-gradient(90deg, red 40%, yellow 50%, aqua 60%, lime 70%);
+$app-header-background: linear-gradient(90deg, red 10%, yellow 30%, aqua 70%, lime 90%);
+$app-header-background-moz: -moz-linear-gradient(90deg, red 10%, yellow 30%, aqua 70%, lime 90%);
+$app-header-background-web: -webkit-linear-gradient(90deg, red 10%, yellow 30%, aqua 70%, lime 90%);
+$app-header-border: 1px solid #a970ff;
+$app-header-background-color: #262630;
 
 /* Chat Styles */
 $chat-button-background-color: #9177ff;

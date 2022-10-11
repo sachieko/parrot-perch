@@ -54,12 +54,36 @@ body {
 #app-header {
   font-family: $app-logo-font-family;
   background: $app-header-background;
+  background: $app-header-background-web;
+  background: $app-header-background-moz;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.header-container {
+  background-color: $app-header-background-color;
+}
+.room-header {
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+  border: $app-header-border;
+  border-left: 0;
+  border-right: 0;
+  padding: 0.5rem;
+  background: $app-room-text-header-background;
+  background: $app-room-text-header-background-web;
+  background: $app-room-text-header-background-moz;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 /* Tablet Styles */
 @media only screen and (min-width: 768px) {
 .nav {
+  margin-right: 20vw;
+}
+
+.room-header {
+  width: 80vw;
   margin-right: 20vw;
 }
 }
