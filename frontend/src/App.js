@@ -8,8 +8,8 @@ const App = function () {
 
   return (
     <div className="parrot-perch">
-      <NavBar />
       <RoomProvider>
+        <NavBar />
         <Room />
       </RoomProvider>
     </div>
