@@ -6,98 +6,57 @@ import { roomContext } from '../../../providers/RoomProvider';
 import useDebounce from '../../../hooks/useDebounce';
 import Result from './Result';
 import './Youtube.scss';
+import { useRef } from 'react';
 
 function Youtube() {
   const { socket, room } = useContext(roomContext);
   const [term, setTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const terms = useDebounce(term, 500);
-  const [player, setPlayer] = useState();
+  const playRef = useRef(null);
   const opts = {
     height: '600',
     width: '100%',
     playerVars: {
       autoplay: 1,
-      mute: 1
+      mute: 1,
+      origin: 'http://localhost:3000'
     }
   };
 
   const onReady = (event) => {
-    setPlayer(event.target);
-    socket.emit('retrieveHostYoutubeTime', {room: room})
     if (room.youtubeVideo.channel) {
-      event.target.seekTo(room.youtubeVideo.duration);
+      socket.emit('retrieveHostYoutubeTime', { room: room })
     }
   }
 
   const emitStateChange = (e) => {
     const state = e.target.getPlayerState();
-    if (state !== 1 && state !== 2 && state !== 3) {
-      return;
-    }
     const currentTime = e.target.getCurrentTime();
-    const changedRoom = {
-      ...room,
-      youtubeVideo: {
-        ...room.youtubeVideo,
-        duration: currentTime,
-        state: state
-      }
-    }
-    if (state === 1) {
-      socket.emit('editVideo', { room: changedRoom });
-    }
+    socket.emit('editVideo', { room: room, time: currentTime, state: state });
   }
 
   useEffect(() => {
     if (!socket) {
       return;
     }
-
     socket.on('getHostYoutubeTime', (res) => {
-      console.log('here');
-      console.log(player);
-      if (player) {
-        console.log(player);
-        res.time = player.getCurrentTime();
-        console.log('time', res.time);
-        socket.emit('sendJoinerYoutubeTime', res);
-      }
+      res.time = playRef.current.internalPlayer.getCurrentTime();
+      socket.emit('sendJoinerYoutubeTime', res);
     });
-
     socket.on('setJoinerYoutubeTime', (res) => {
-      console.log('here', player, res.time);
-      if (player) {
-        player.seekTo(res.time);
+      playRef.current.internalPlayer.seekTo(res.time);
+    });
+    socket.on('serveVideo', (res) => {
+      playRef.current.internalPlayer.seekTo(res.time);
+      if (res.state === 1) {
+        playRef.current.internalPlayer.playVideo();
+      }
+      if (res.state === 2 || res.state === 3) {
+        playRef.current.internalPlayer.pauseVideo();
       }
     });
-
-    /*socket.on('serveVideo', (res) => {
-      const room = res.room;
-      setPlayer(oldPlayer => {
-        if (oldPlayer) {
-          const s = oldPlayer.getPlayerState();
-          if (s === 1 || s === 2 || s === 3) {
-            const state = room.youtubeVideo.state;
-            if (state === 1) {
-              oldPlayer.seekTo(room.youtubeVideo.duration);
-            }
-            if (state === 2 || state === 3) {
-              oldPlayer.seekTo(room.youtubeVideo.duration);
-              oldPlayer.pauseVideo();
-            }
-          }
-          return oldPlayer;
-        }
-      });
-    });*/
-
-    return () => {
-      socket.off('setJoinerYoutubeTime');
-      socket.off('getHostYoutubeTime');
-      socket.off('serveVideo');
-    }
-  }, [socket, player])
+  }, [socket])
 
   useEffect(() => {
     if (terms === '') {
@@ -155,6 +114,7 @@ function Youtube() {
       <YoutubePlayer
         videoId={room.youtubeVideo.channel}
         opts={opts}
+        ref={playRef}
         onReady={onReady}
         onStateChange={emitStateChange}
         className='youtube-video'

@@ -208,8 +208,7 @@ io.on('connection', client => {
     const host = rooms[req.room.name].host;
     const roomName = req.room.name;
     if (name === host) {
-      rooms[roomName] = req.room;
-      client.to(roomName).emit('serveVideo', { room: rooms[roomName] });
+      client.to(roomName).emit('serveVideo', { time: req.time, state: req.state });
     }
   });
 

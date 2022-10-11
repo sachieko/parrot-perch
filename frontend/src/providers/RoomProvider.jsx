@@ -113,7 +113,7 @@ export default function RoomProvider(props) {
   }, [term]);
 
   // Export any usable state or state setters (or custom functions to set state) by declaring them here.
-  const roomData = { 
+  const roomData = {
     to, setTo, // user to send a direct message to
     chatMessages, setChatMessages, // Chat messages that are showing for a user in the chat
     msg, setMsg, clearChatInput, // The message a user types in before sending
@@ -123,7 +123,7 @@ export default function RoomProvider(props) {
     newChannel, setNewChannel, // When a user sets a channel for twitch
     searchResults, setSearchResults, // Results from the user's channel search
     searchValue, setSearchValue, // The term of the user's search value
-   };
+  };
 
   return (
     <roomContext.Provider value={roomData}>
