@@ -111,7 +111,7 @@ function Youtube(props) {
 
   return (
     <div className='youtube-widget' style={{ display: props.selected ? 'flex' : 'none' }}>
-      <div className='youtube-search' style={{ display: props.selected ? 'block' : 'none' }}>
+      <div className='youtube-search' >
         <form className='search__form' onSubmit={e => e.preventDefault()}>
           <input className='radius' type='text' value={term} placeholder='Search Youtube' onChange={(e) => setTerm(e.target.value)} />
         </form>
