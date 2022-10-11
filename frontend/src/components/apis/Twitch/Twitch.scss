@@ -38,7 +38,7 @@
 .twitch-chat-container {
   display: inline;
   position: relative;
-
+  min-width: 2rem;
   button {
     position: absolute;
     color: #FFFFFF;
@@ -88,6 +88,10 @@
 
   .result-list {
     left: 5vw;
+  }
+
+  .twitch-chat-container {
+    min-width: 1.5rem;
   }
 
   .stream-frames {
