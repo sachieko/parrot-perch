@@ -53,7 +53,13 @@ body {
 
 #app-header {
   font-family: $app-logo-font-family;
-  background: linear-gradient(90deg, red 0%, yellow 20%, aqua 70%, lime 90%);
+  background: $app-header-background;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+/* Tablet Styles */
+@media only screen and (min-width: 768px) {
+.nav {
+  margin-right: 20vw;
+}
 }
