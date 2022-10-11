@@ -50,7 +50,6 @@ function Youtube(props) {
         });
     });
     socket.on('setJoinerYoutubeTime', (res) => {
-      console.log('setting', res.time);
       playRef.current.internalPlayer.seekTo(res.time);
     });
     socket.on('serveVideo', (res) => {
