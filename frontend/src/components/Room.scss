@@ -84,7 +84,12 @@
     background-color: $app-input-bg-color !important;
   }
 }
-
+/* Very small screen styles */
+@media only screen and (max-width: 300px) {
+  .nav-toggle {
+    flex-wrap: wrap;
+  }
+}
 /* Tablet CSS */
 @media only screen and (min-width: 768px) {
   .widget-container {
