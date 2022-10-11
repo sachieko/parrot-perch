@@ -10,10 +10,10 @@ import Whiteboard from './whiteboard';
 function View() {
   const { room } = useContext(roomContext);
   const [widgetSwitches, setWidgetSwitches] = useState(
-    [{ name: 'twitch', selected: true },
-    { name: 'youtube', selected: true },
-    { name: 'chat', selected: true },
-    { name: 'whiteboard', selected: true }]);
+    [{ name: 'Twitch', selected: true },
+    { name: 'Youtube', selected: true },
+    { name: 'Chat', selected: true },
+    { name: 'Whiteboard', selected: true }]);
 
   const selectSwitch = (i) => {
     setWidgetSwitches((oldSwitches) => {
@@ -25,14 +25,20 @@ function View() {
   }
 
   const showSwitches = widgetSwitches.map((switcher, i) => {
+    const addclass = () => {
+      document.querySelector(`[for|=button-${switcher.name}]`).classList.toggle('selected');
+  } 
+
     return <ToggleButton
       className="mb-2"
-      id="toggle-check"
+      id={`button-${switcher.name}`}
       type="checkbox"
-      variant="outline-primary"
+      variant="outline-secondary"
       checked={switcher.selected}
       value="1"
-      onClick={() => selectSwitch(i)}
+      onClick={() => {
+        selectSwitch(i)
+        addclass()}}
       key={i}
     >
       {switcher.name}
@@ -41,16 +47,20 @@ function View() {
 
   return (
     <>
-      Room Name: {room.name}
-      {<Whiteboard selected={widgetSwitches[3].selected}/>}
-      <div className="nav-toggle">
-      {showSwitches}
+      <div className='header-container'>
+        <h3 className='room-header'>Room Name: {room.name}</h3>
       </div>
-    <div className='widget-container'>
-      {widgetSwitches[0].selected && <Twitch />}
-      {widgetSwitches[1].selected && <Youtube />}
-      {widgetSwitches[2].selected && <Chat />}
-    </div>
+      <div className='canvas-container'>
+      {<Whiteboard selected={widgetSwitches[3].selected}/>}
+      </div>
+      <div className='widget-container'>
+        <div id="nav-toggle">
+          {showSwitches}
+        </div>
+        {widgetSwitches[0].selected && <Twitch />}
+        {widgetSwitches[1].selected && <Youtube />}
+        {widgetSwitches[2].selected && <Chat />}
+      </div>
     </>
   );
 };

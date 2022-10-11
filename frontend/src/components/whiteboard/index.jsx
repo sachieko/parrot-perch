@@ -54,7 +54,7 @@ function Whiteboard(props) {
   }
 
   return (
-    <div>
+    <div className='canvas-container'>
       <canvas
         style={{
           display: props.selected ? 'block' : 'none',

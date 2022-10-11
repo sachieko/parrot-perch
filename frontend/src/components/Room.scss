@@ -10,7 +10,9 @@
   background-color: $app-bg-color;
   @include custom-scrollbar;
 }
-
+.canvas-container {
+  margin-left: 1vw;
+}
 .join-inputs form input {
   background-color: $app-input-bg-color;
   color: $app-text-color;
@@ -29,5 +31,67 @@
 
   &:hover {
     background-color: $chat-input-bg-color--focus;
+  }
+}
+
+#nav-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  [for|="button-Twitch"] {
+    background-color: $twitch-toggle-color;
+  
+    &.selected {
+      background-color: $app-input-bg-color;
+    }
+  }
+  [for|="button-Youtube"] {
+    background-color: $youtube-toggle-color;
+  
+    &.selected {
+      background-color: $app-input-bg-color;
+    }
+  }
+  
+  [for|="button-Chat"] {
+    background-color: $chat-toggle-color;
+  
+    &.selected {
+      background-color: $app-input-bg-color;
+    }
+  }
+  
+  [for|="button-Whiteboard"] {
+    background-color: $whiteboard-toggle-color;
+  
+    &.selected {
+      background-color: $app-input-bg-color;
+    }
+  }
+  .mb-2 {
+    margin-top: 0.5em;
+    margin-left: 1em;
+    box-shadow: 0px 0px 7px 2px $app-input-bg-color;
+    transition: all .2s ease-in-out;
+    color: white;
+  
+    &:active {
+      background-color: $app-bg-color;
+    }
+  
+    &:active {
+      background-color: white;
+    }
+  }
+}
+/* Very small screen styles */
+@media only screen and (max-width: 300px) {
+
+}
+/* Tablet CSS */
+@media only screen and (min-width: 768px) {
+  .widget-container {
+    width: 80vw;
   }
 }

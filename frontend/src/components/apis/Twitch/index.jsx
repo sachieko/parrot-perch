@@ -19,22 +19,24 @@ function Twitch() {
       {room.channel && (
         <div className='stream-frames'>
           <iframe
+            className='twitch-video-frame'
             display='inline'
             src={`https://player.twitch.tv/?channel=${room.channel}&parent=${hostURL}`}
             height="480"
-            width="69%"
             allowFullScreen
             title={room.name}>
           </iframe>
           <span className='twitch-chat-container'>
             <button onClick={minimize}>-</button>
-            {viewChat && <iframe
-              frameBorder="0"
-              scrolling="no"
-              src={`https://www.twitch.tv/embed/${room.channel}/chat?darkpopout&parent=${hostURL}`}
-              height="480"
-              title={room.name}>
-            </iframe>}
+            {viewChat && (
+                <iframe
+                className='twitch-chat-frame'
+                frameBorder="0"
+                scrolling="no"
+                src={`https://www.twitch.tv/embed/${room.channel}/chat?darkpopout&parent=${hostURL}`}
+                height="480"
+                title={room.name}>
+              </iframe>)}
           </span>
         </div>
       )}
