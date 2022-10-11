@@ -27,21 +27,63 @@ body {
 .nav {
   height: 10vh;
   background-color: $app-bg-color;
+  display: flex;
+  justify-content: center;
 
   .nav-link {
     color: $nav-link-color;
+    display: flex;
+    flex-direction: row;
   }
+}
+
+.logo-image {
+  height: 4rem;
+  width: 6rem;
 }
 
 .root-inputs {
   display: flex;
   flex-direction: column;
   align-items: center;
+  input {
+    width: 90vw;
+  }
 }
 
 #app-header {
-  font-family: $app-font-family;
-  background: linear-gradient(90deg, red 0%, yellow 20%, aqua 70%, lime 90%);
+  font-family: $app-logo-font-family;
+  background: $app-header-background;
+  background: $app-header-background-web;
+  background: $app-header-background-moz;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+.header-container {
+  background-color: $app-header-background-color;
+}
+.room-header {
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+  border: $app-header-border;
+  border-left: 0;
+  border-right: 0;
+  padding: 0.5rem;
+  background: $app-room-text-header-background;
+  background: $app-room-text-header-background-web;
+  background: $app-room-text-header-background-moz;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+/* Tablet Styles */
+@media only screen and (min-width: 768px) {
+.nav {
+  margin-right: 20vw;
+}
+
+.room-header {
+  width: 80vw;
+  margin-right: 20vw;
+}
 }

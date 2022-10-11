@@ -24,12 +24,8 @@ function View() {
     });
   }
 
-  const addclass=()=>{
-    document.querySelector(".mb-2").classList.toggle('selected');
-} 
-
   const showSwitches = widgetSwitches.map((switcher, i) => {
-    const addclass=()=>{
+    const addclass = () => {
       document.querySelector(`[for|=button-${switcher.name}]`).classList.toggle('selected');
   } 
 
@@ -51,11 +47,14 @@ function View() {
 
   return (
     <>
-      Room Name: {room.name}
+      <div className='header-container'>
+        <h3 className='room-header'>Room Name: {room.name}</h3>
+      </div>
+      <div className='canvas-container'>
       {widgetSwitches[3].selected && <Whiteboard />}
-
+      </div>
       <div className='widget-container'>
-        <div className="nav-toggle">
+        <div id="nav-toggle">
           {showSwitches}
         </div>
         {widgetSwitches[0].selected && <Twitch />}

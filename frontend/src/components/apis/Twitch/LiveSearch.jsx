@@ -4,11 +4,11 @@ import Results from "./Results";
 import { roomContext } from "../../../providers/RoomProvider";
 
 export default function LiveSearch(props) {
- const { searchResults } = useContext(roomContext);
+ const { searchResults, newChannel } = useContext(roomContext);
   return (
     <div className='twitch-live-search'>  
         <SearchBar />
-        {searchResults.length > 0 && (
+        {searchResults.length > 0 && newChannel && (
         <Results />
         )}
     </div>
