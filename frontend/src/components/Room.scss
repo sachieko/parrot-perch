@@ -12,6 +12,12 @@
 }
 .canvas-container {
   margin-left: 1vw;
+  button {
+    border-radius: 100%;
+    width: 2em;
+    height: 2em;
+    border-color: #FFFFFF;
+  }
 }
 .join-inputs form input {
   background-color: $app-input-bg-color;

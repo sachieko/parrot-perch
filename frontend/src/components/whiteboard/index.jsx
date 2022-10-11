@@ -76,7 +76,7 @@ function Whiteboard(props) {
 
   return (
     <div className='canvas-container'>
-      <button onClick={eraseWhiteboard}>Erase</button>
+      <button onClick={eraseWhiteboard}>X</button>
       <canvas
         style={{
           display: props.selected ? 'block' : 'none',
