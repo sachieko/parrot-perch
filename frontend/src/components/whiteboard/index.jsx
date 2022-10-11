@@ -7,8 +7,9 @@ function Whiteboard(props) {
   const [mouseDown, setMouseDown] = useState(false);
   const [path, setPath] = useState([]);
   const canvasRef = useRef(null);
-  const { socket, room, incomingPath } = useContext(roomContext);
+  const { socket, room } = useContext(roomContext);
   const [didLoad, setDidLoad] = useState(false);
+  const [incomingPath, setIncomingPath] = useState([]);
 
   if (canvasRef.current && !didLoad) {
     for (const path of room.paths) {
@@ -20,8 +21,28 @@ function Whiteboard(props) {
   }
 
   useEffect(() => {
+    if (!socket) {
+      return;
+    }
+    socket.on('broadcastPath', (res) => {
+      setIncomingPath(res.path);
+    });
+    socket.on('broadcastErase', (res) => {
+      setIncomingPath(res.path);
+    });
+    return () => {
+      socket.off('broadcastPath');
+      socket.off('broadcastErase');
+    }
+  }, [socket]);
+
+  useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
+    if (incomingPath.length === 0) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      return;
+    }
     drawPath(ctx, incomingPath);
   }, [incomingPath]);
 
@@ -49,12 +70,13 @@ function Whiteboard(props) {
     }
   }
 
-  const handleMouseUp = (e) => {
-    setMouseDown(false);
+  const eraseWhiteboard = (e) => {
+    socket.emit('eraseWhiteboard', { room: room });
   }
 
   return (
     <div className='canvas-container'>
+      <button onClick={eraseWhiteboard}>Erase</button>
       <canvas
         style={{
           display: props.selected ? 'block' : 'none',

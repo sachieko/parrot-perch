@@ -82,11 +82,11 @@ app.get('/api/twitch_search', (req, res) => {
 // Youtube search
 app.get('/api/youtube_search', (req, res) => {
   const terms = req.query.terms;
-  const searchURL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${terms}&maxResults=20&key=${process.env.YOUTUBE_API_KEY}`;
+  const searchURL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${terms}&maxResults=20&type=video&key=${process.env.YOUTUBE_API_KEY}`;
 
   axios.get(searchURL).then(response => {
     res.send(response.data);
-  }) 
+  })
 })
 
 
@@ -102,7 +102,7 @@ const clients = {};
     color: 'rgba(x,x,x)',
     username: 'string' // same as name by default
   }
-*/ 
+*/
 const io = new Server(http);
 
 const rooms = {};
@@ -127,7 +127,7 @@ io.on('connection', client => {
   const color = random_color();
   // console.log('Client Connected!', name, ':', client.id);
   // Add client to lookup object. This is for server use. Ensures if names are the same it does not overwrite the old.
-  !clients[name] && (clients[name] = { id: client.id, rooms: [], color, username: name });  
+  !clients[name] && (clients[name] = { id: client.id, rooms: [], color, username: name });
 
   client.on('createOrJoinRoom', (req) => {
 
@@ -138,7 +138,7 @@ io.on('connection', client => {
     if (password) {
       hashedPassword = bcrypt.hashSync(password, 10);
     }
-   
+
     client.join(room.name);
 
     if (!rooms[room.name]) {
@@ -215,6 +215,13 @@ io.on('connection', client => {
     client.to(roomName).emit('broadcastPath', { path: req.path });
   });
 
+  client.on('eraseWhiteboard', (req) => {
+    const roomName = req.room.name;
+    rooms[roomName].paths = [];
+    client.to(roomName).emit('broadcastErase', { path: [] });
+    client.emit('broadcastErase', { path: [] });
+  });
+
   client.on('disconnect', () => {
     // console.log('Client Disconnected', name, ':', client.id);
     clients[name].rooms.forEach(roomname => {
@@ -222,7 +229,7 @@ io.on('connection', client => {
       if (rooms[roomname].users.length === 0) {
         delete rooms[roomname];
         return;
-      } 
+      }
       if (rooms[roomname].host === name) {
         const newHost = rooms[roomname].users[0].name;
         rooms[roomname].host = newHost;
