@@ -52,7 +52,7 @@ function View() {
       {widgetSwitches[3].selected && <Whiteboard />}
       </div>
       <div className='widget-container'>
-        <div className="nav-toggle">
+        <div id="nav-toggle">
           {showSwitches}
         </div>
         {widgetSwitches[0].selected && <Twitch />}
