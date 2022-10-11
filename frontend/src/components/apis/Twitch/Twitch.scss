@@ -6,6 +6,11 @@
   z-index: 1;
 }
 
+.min-twitch-btn {
+  display: flex;
+  align-self: end;
+}
+
 .result-list {
   background-color: $channel-bg-color;
   display: flex;
@@ -30,16 +35,10 @@
   }
 }
 
-.stream-frames {
-  margin-top: 0.5rem;
-  position: sticky;
-}
-
 .twitch-chat-container {
-  width: 20vw;
   display: inline;
   position: relative;
-
+  min-width: 2rem;
   button {
     position: absolute;
     color: #FFFFFF;
@@ -52,30 +51,27 @@
 }
 
 .stream-frames {
+  margin-top: 0.5rem;
   display: flex;
   flex-direction: row;
   width: 100vw;
   .twitch-video-frame {
-    width: 60vw;
+    flex-grow: 1;
     height: 50vh;
   }
   .twitch-chat-frame {
-    width: 40vw;
+    flex-grow: 0.2;
     height: 50vh;
   }
 }
 /* Tablet CSS */
 @media only screen and (min-width: 768px) {
   .stream-frames {
-    display: flex;
-    flex-direction: row;
     width: 80vw;
     .twitch-video-frame {
-      width: 100vw;
       height: 70vh;
     }
     .twitch-chat-frame {
-      width: 20vw;
       height: 70vh;
     }
   }
@@ -83,5 +79,30 @@
   .result-list {
     left: 25vw;
     width: 30vw;
+  }
+}
+@media only screen and (min-width: 1080px) {
+  .twitch-live-search {
+    width: 40vw;
+  }
+
+  .result-list {
+    left: 5vw;
+  }
+
+  .twitch-chat-container {
+    min-width: 1.5rem;
+  }
+
+  .stream-frames {
+    width: inherit;
+    .twitch-video-frame {
+      flex-grow: 1;
+      min-width: none;
+    }
+    .twitch-chat-frame {
+      min-width: none;
+      flex-grow: 1;
+    }
   }
 }

@@ -58,7 +58,6 @@ function Whiteboard() {
   }
 
   return (
-    <div className='canvas-container'>
       <canvas
         id='whiteboard'
         width={'1000px'}
@@ -70,7 +69,6 @@ function Whiteboard() {
         onMouseUp={handleMouseUp}
       >
       </canvas>
-    </div >
   )
 }
 
