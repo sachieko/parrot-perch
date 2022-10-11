@@ -14,7 +14,7 @@ function Twitch() {
   }
 
   return (
-    <div className='widget twitch-widget'>
+    <div className='twitch-widget'>
       <LiveSearch />
       {room.channel && (
         <div className='stream-frames'>
@@ -26,7 +26,7 @@ function Twitch() {
             allowFullScreen
             title={room.name}>
           </iframe>
-          <span className='twitch-chat-container'>
+          <div className='twitch-chat-container'>
           <button class="min-twitch-btn" onClick={minimize}>-</button>
             {viewChat && (
                 <iframe
@@ -37,7 +37,7 @@ function Twitch() {
                 height="480"
                 title={room.name}>
               </iframe>)}
-          </span>
+          </div>
         </div>
       )}
     </div>

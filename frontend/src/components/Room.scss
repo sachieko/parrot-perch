@@ -100,15 +100,21 @@
 
 @media only screen and (min-width: 1080px) {
   .widget-container {
-    display: flex;
     flex-direction: row;
+    height: 80vh;
   }
+
   .twitch-widget {
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
+    min-width: 0;
   }
+  
   .youtube-widget {
     display: flex;
     flex-direction: column;
-    width: inherit;
+    flex-grow: 1;
+    min-width: 0;
   }
 }

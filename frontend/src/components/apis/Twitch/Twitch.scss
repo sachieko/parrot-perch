@@ -35,11 +35,6 @@
   }
 }
 
-.stream-frames {
-  margin-top: 0.5rem;
-  position: sticky;
-}
-
 .twitch-chat-container {
   display: inline;
   position: relative;
@@ -56,6 +51,7 @@
 }
 
 .stream-frames {
+  margin-top: 0.5rem;
   display: flex;
   flex-direction: row;
   width: 100vw;
@@ -93,14 +89,16 @@
   .result-list {
     left: 5vw;
   }
+
   .stream-frames {
     width: inherit;
-    display: flex;
-    .twitch-chat-frame {
-      width: inherit;
-    }
     .twitch-video-frame {
-      width: inherit;
+      flex-grow: 1;
+      min-width: none;
+    }
+    .twitch-chat-frame {
+      min-width: none;
+      flex-grow: 1;
     }
   }
 }
