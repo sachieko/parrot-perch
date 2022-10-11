@@ -10,13 +10,9 @@
   background-color: $app-bg-color;
   @include custom-scrollbar;
 }
-
 .canvas-container {
-  display: block;
-  width: 1002px;
-  height: 202px;
+  margin-left: 1vw;
 }
-
 .join-inputs form input {
   background-color: $app-input-bg-color;
   color: $app-text-color;
@@ -89,12 +85,6 @@
     }
   }
 }
-
-
-
-
-
-
 /* Very small screen styles */
 @media only screen and (max-width: 300px) {
 
