@@ -41,10 +41,17 @@ function Youtube(props) {
       return;
     }
     socket.on('getHostYoutubeTime', (res) => {
-      res.time = playRef.current.internalPlayer.getCurrentTime();
-      socket.emit('sendJoinerYoutubeTime', res);
+      playRef.current.internalPlayer.getCurrentTime()
+        .then(time => {
+          res.time = time;
+          socket.emit('sendJoinerYoutubeTime', res);
+        })
+        .catch(e => {
+          console.log(e);
+        });
     });
     socket.on('setJoinerYoutubeTime', (res) => {
+      console.log('setting', res.time);
       playRef.current.internalPlayer.seekTo(res.time);
     });
     socket.on('serveVideo', (res) => {
@@ -99,14 +106,14 @@ function Youtube(props) {
     )
   });
 
-  if (!props.selected && playRef.current){
+  if (!props.selected && playRef.current) {
     playRef.current.internalPlayer.mute();
   }
 
   return (
     <div className='widget youtube-widget'>
-      <div className='search' 
-      style={{ display: props.selected ? 'block' : 'none' }}>
+      <div className='search'
+        style={{ display: props.selected ? 'block' : 'none' }}>
         <form className='search__form' onSubmit={e => e.preventDefault()}>
           <input className='radius' type='text' value={term} placeholder='Search Youtube' onChange={(e) => setTerm(e.target.value)} />
         </form>
