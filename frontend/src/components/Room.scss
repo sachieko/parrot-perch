@@ -99,7 +99,16 @@
 }
 
 @media only screen and (min-width: 1080px) {
-  .widget-container{
+  .widget-container {
+    display: flex;
     flex-direction: row;
+  }
+  .twitch-widget {
+    flex-grow: 1;
+  }
+  .youtube-widget {
+    display: flex;
+    flex-direction: column;
+    width: inherit;
   }
 }

@@ -77,8 +77,9 @@
   }
 
   .youtube-video {
+    width: inherit;
     iframe {
-      width: 35vw;
+      width: inherit;
     }
   }
 }
