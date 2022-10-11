@@ -47,7 +47,7 @@ function View() {
 
   return (
     <>
-      Room Name: {room.name}
+      <h3 className='room-header'>Room Name: {room.name}</h3>
       {widgetSwitches[3].selected && <Whiteboard />}
 
       <div className='widget-container'>
