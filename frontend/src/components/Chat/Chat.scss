@@ -45,10 +45,12 @@
     background-color: $chat-background-color;
     font-family: 'Ubuntu', sans-serif;
     .chat-username-item {
+      overflow-wrap: break-word;
       word-break: keep-all;
     }
     .message-item {
-      word-break: break-all;
+      overflow-wrap: break-word;
+      word-break: break-word;
       width: 98vw;
       
     }
