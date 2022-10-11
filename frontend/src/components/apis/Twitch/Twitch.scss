@@ -97,7 +97,8 @@
     width: 45vw;
 
     .twitch-video-frame {
-      width: 87vw;
+      width: 200vw;
+      flex-grow: 1;
     }
     .twitch-chat-frame {
       width: 13vw;
