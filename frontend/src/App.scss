@@ -78,12 +78,8 @@ body {
 }
 /* Tablet Styles */
 @media only screen and (min-width: 768px) {
-.parrot-perch {
-  width: 80vw;
-}
 
 .room-header {
-  width: 80vw;
-  margin-right: 20vw;
+  padding-right: 20vw;
 }
 }
