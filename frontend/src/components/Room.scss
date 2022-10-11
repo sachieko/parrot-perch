@@ -10,20 +10,25 @@
   background-color: $app-bg-color;
   @include custom-scrollbar;
 }
+
 .canvas-container {
   margin-left: 1vw;
-  button {
-    border-radius: 100%;
-    width: 2em;
-    height: 2em;
-    border-color: #FFFFFF;
+
+  .fa-solid {
+    transition: all .2s ease-in-out;
+
+    &:hover {
+      transform: scale(1.2);
+
+    }
   }
-  
+
   #whiteboard {
     margin-top: 0.25em;
     border-radius: 10px;
   }
 }
+
 .join-inputs form input {
   background-color: $app-input-bg-color;
   color: $app-text-color;
@@ -53,45 +58,47 @@
 
   [for|="button-Twitch"] {
     background-color: $twitch-toggle-color;
-  
+
     &.selected {
       background-color: $app-input-bg-color;
     }
   }
+
   [for|="button-Youtube"] {
     background-color: $youtube-toggle-color;
-  
+
     &.selected {
       background-color: $app-input-bg-color;
     }
   }
-  
+
   [for|="button-Chat"] {
     background-color: $chat-toggle-color;
-  
+
     &.selected {
       background-color: $app-input-bg-color;
     }
   }
-  
+
   [for|="button-Whiteboard"] {
     background-color: $whiteboard-toggle-color;
-  
+
     &.selected {
       background-color: $app-input-bg-color;
     }
   }
+
   .mb-2 {
     margin-top: 0.5em;
     margin-left: 1em;
     box-shadow: 0px 0px 2px 1px $app-input-bg-color;
     transition: all .2s ease-in-out;
     color: white;
-  
+
     &:hover {
       transform: scale(1.11);
     }
-  
+
     &:active {
       background-color: white;
     }
@@ -122,7 +129,7 @@
     flex-grow: 1;
     min-width: 0;
   }
-  
+
   .youtube-widget {
     display: flex;
     flex-direction: column;
