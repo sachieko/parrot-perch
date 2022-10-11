@@ -27,7 +27,7 @@ function Twitch() {
             title={room.name}>
           </iframe>
           <div className='twitch-chat-container'>
-          <button class="min-twitch-btn" onClick={minimize}>{viewChat ? <i className="fa-solid fa-window-minimize"></i> : <i className="fa-solid fa-plus"></i>}</button>
+          <button className="min-twitch-btn" onClick={minimize}>{viewChat ? <i className="fa-solid fa-window-minimize"></i> : <i className="fa-solid fa-plus"></i>}</button>
             {viewChat && (
                 <iframe
                 className='twitch-chat-frame'
