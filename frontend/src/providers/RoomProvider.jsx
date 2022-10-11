@@ -30,9 +30,6 @@ export default function RoomProvider(props) {
   const [newChannel, setNewChannel] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  //youtube changing state
-  const [player, setPlayer] = useState();
-  const [incomingPath, setIncomingPath] = useState([]);
 
   // term is state
   const term = useDebounce(newChannel, 500);
@@ -91,52 +88,6 @@ export default function RoomProvider(props) {
       setChatMessages(prev => [...prev, chatMessage]); // Same as public. 
     });
 
-    socket.on('setJoinerYoutubeTime', (res) => {
-      setRoom((oldRoom) => {
-        return {
-          ...oldRoom,
-          youtubeVideo: {
-            ...oldRoom.youtubeVideo,
-            duration: res.time
-          }
-        }
-      });
-    });
-
-    socket.on('getHostYoutubeTime', (res) => {
-      setPlayer(oldPlayer => {
-        if (oldPlayer) {
-          res.time = oldPlayer.getCurrentTime();
-          socket.emit('sendJoinerYoutubeTime', res);
-        }
-        return oldPlayer;
-      });
-    });
-
-    socket.on('serveVideo', (res) => {
-      const room = res.room;
-      setPlayer(oldPlayer => {
-        if (oldPlayer) {
-          const s = oldPlayer.getPlayerState();
-          if (s === 1 || s === 2 || s === 3) {
-            const state = room.youtubeVideo.state;
-            if (state === 1) {
-              oldPlayer.seekTo(room.youtubeVideo.duration);
-            }
-            if (state === 2 || state === 3) {
-              oldPlayer.seekTo(room.youtubeVideo.duration);
-              oldPlayer.pauseVideo();
-            }
-          }
-          return oldPlayer;
-        }
-      });
-    })
-
-    socket.on('broadcastPath', (res) => {
-      setIncomingPath(res.path);
-    });
-
     return () => socket.disconnect();
   }, []);
 
@@ -162,7 +113,7 @@ export default function RoomProvider(props) {
   }, [term]);
 
   // Export any usable state or state setters (or custom functions to set state) by declaring them here.
-  const roomData = { 
+  const roomData = {
     to, setTo, // user to send a direct message to
     chatMessages, setChatMessages, // Chat messages that are showing for a user in the chat
     msg, setMsg, clearChatInput, // The message a user types in before sending
@@ -172,9 +123,7 @@ export default function RoomProvider(props) {
     newChannel, setNewChannel, // When a user sets a channel for twitch
     searchResults, setSearchResults, // Results from the user's channel search
     searchValue, setSearchValue, // The term of the user's search value
-    player, setPlayer, // Used to manage player for youtube API
-    incomingPath, setIncomingPath // Manages the whiteboard app
-   };
+  };
 
   return (
     <roomContext.Provider value={roomData}>

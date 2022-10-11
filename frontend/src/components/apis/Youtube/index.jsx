@@ -6,45 +6,63 @@ import { roomContext } from '../../../providers/RoomProvider';
 import useDebounce from '../../../hooks/useDebounce';
 import Result from './Result';
 import './Youtube.scss';
+import { useRef } from 'react';
 
-function Youtube() {
-  const { socket, room, setPlayer } = useContext(roomContext);
+function Youtube(props) {
+  const { socket, room } = useContext(roomContext);
   const [term, setTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const terms = useDebounce(term, 500);
+  const playRef = useRef(null);
   const opts = {
     height: '600',
     playerVars: {
       autoplay: 1,
-      mute: 1
+      mute: 1,
+      origin: 'http://localhost:3000'
     }
   };
 
   const onReady = (event) => {
-    setPlayer(event.target);
     if (room.youtubeVideo.channel) {
-      event.target.seekTo(room.youtubeVideo.duration);
+      socket.emit('retrieveHostYoutubeTime', { room: room });
     }
   }
 
   const emitStateChange = (e) => {
     const state = e.target.getPlayerState();
-    if (state !== 1 && state !== 2 && state !== 3) {
+    const currentTime = e.target.getCurrentTime();
+    socket.emit('editVideo', { room: room, time: currentTime, state: state });
+  }
+
+  useEffect(() => {
+    if (!socket) {
       return;
     }
-    const currentTime = e.target.getCurrentTime();
-    const changedRoom = {
-      ...room,
-      youtubeVideo: {
-        ...room.youtubeVideo,
-        duration: currentTime,
-        state: state
+    socket.on('getHostYoutubeTime', (res) => {
+      playRef.current.internalPlayer.getCurrentTime()
+        .then(time => {
+          res.time = time;
+          socket.emit('sendJoinerYoutubeTime', res);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    });
+    socket.on('setJoinerYoutubeTime', (res) => {
+      console.log('setting', res.time);
+      playRef.current.internalPlayer.seekTo(res.time);
+    });
+    socket.on('serveVideo', (res) => {
+      playRef.current.internalPlayer.seekTo(res.time);
+      if (res.state === 1) {
+        playRef.current.internalPlayer.playVideo();
       }
-    }
-    if (state === 1) {
-      socket.emit('editVideo', { room: changedRoom });
-    }
-  }
+      if (res.state === 2 || res.state === 3) {
+        playRef.current.internalPlayer.pauseVideo();
+      }
+    });
+  }, [socket]);
 
   useEffect(() => {
     if (terms === '') {
@@ -87,25 +105,30 @@ function Youtube() {
     )
   });
 
+  if (!props.selected && playRef.current) {
+    playRef.current.internalPlayer.mute();
+  }
+
   return (
     <div className='youtube-widget'>
-      <div className='youtube-search'>
+      <div className='youtube-search' style={{ display: props.selected ? 'block' : 'none' }}>
         <form className='search__form' onSubmit={e => e.preventDefault()}>
           <input className='radius' type='text' value={term} placeholder='Search Youtube' onChange={(e) => setTerm(e.target.value)} />
         </form>
         {suggestions.length > 0 && term && (
-        <div className='youtube-results'>
-          {displaySuggestions}
-        </div>
+          <div className='youtube-results'>
+            {displaySuggestions}
+          </div>
         )}
       </div>
       <YoutubePlayer
         videoId={room.youtubeVideo.channel}
         opts={opts}
+        ref={playRef}
         onReady={onReady}
         onStateChange={emitStateChange}
         className='youtube-video'
-        style={{ display: room.youtubeVideo.channel ? 'flex' : 'none' }}
+        style={{ display: room.youtubeVideo.channel && props.selected ? 'flex' : 'none' }}
       />
     </div>
   );
