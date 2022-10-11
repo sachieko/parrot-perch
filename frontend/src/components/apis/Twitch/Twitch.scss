@@ -7,17 +7,27 @@
 }
 
 .min-twitch-btn {
-  display: flex;
-  align-self: end;
+  position: absolute;
+  z-index: 1;
+  top: 0.2rem;
+  right: 0.2rem;
+  color: #FFFFFF;
+  background: none;
+  border: none;
+  &:hover {
+    color: dodgerblue;
+  }
 }
 
 .result-list {
   background-color: $channel-bg-color;
   display: flex;
   position: absolute;
-  left: 35vw;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
   height: 35vh;
-  width: 40vw;
+  width: 20em;
   flex-direction: column;
   overflow-y: scroll;
 
@@ -36,31 +46,24 @@
 }
 
 .twitch-chat-container {
-  display: inline;
+  display: flex;
   position: relative;
-  min-width: 2rem;
-  button {
-    position: absolute;
-    color: #FFFFFF;
-    background: none;
-    border: none;
-  }
-  button:hover {
-    color: dodgerblue;
-  }
 }
 
 .stream-frames {
   margin-top: 0.5rem;
   display: flex;
+  position: relative;
   flex-direction: row;
   width: 100vw;
   .twitch-video-frame {
+    display: flex;
     flex-grow: 1;
     height: 50vh;
   }
   .twitch-chat-frame {
-    flex-grow: 0.2;
+    width: inherit;
+    min-width: 0;
     height: 50vh;
   }
 }
@@ -76,22 +79,11 @@
     }
   }
 
-  .result-list {
-    left: 25vw;
-    width: 30vw;
-  }
 }
 @media only screen and (min-width: 1080px) {
-  .twitch-live-search {
-    width: 40vw;
-  }
-
-  .result-list {
-    left: 5vw;
-  }
 
   .twitch-chat-container {
-    min-width: 1.5rem;
+    display: flex;
   }
 
   .stream-frames {
@@ -99,10 +91,6 @@
     .twitch-video-frame {
       flex-grow: 1;
       min-width: none;
-    }
-    .twitch-chat-frame {
-      min-width: none;
-      flex-grow: 1;
     }
   }
 }

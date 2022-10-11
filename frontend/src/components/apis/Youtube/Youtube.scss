@@ -21,9 +21,11 @@
   background-color: $channel-bg-color;
   display: flex;
   position: absolute;
-  left: 30vw;
+  left: 0;
+  right: 0;
   height: 35vh;
-  width: 40vw;
+  width: 20em;
+  margin: 0 auto;
   flex-direction: column;
   overflow-y: scroll;
   .video-article {
@@ -60,21 +62,9 @@
       height: 70vh;
     }
   }
-
-  .youtube-results {
-    left: 25vw;
-    width: 30vw;
-  }
 }
 
 @media only screen and (min-width: 1080px) {
-  .youtube-search {
-    width: 35vw;
-  }
-
-  .youtube-results {
-    left: 5vw;
-  }
 
   .youtube-video {
     iframe {

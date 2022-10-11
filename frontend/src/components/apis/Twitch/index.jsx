@@ -18,6 +18,7 @@ function Twitch() {
       <LiveSearch />
       {room.channel && (
         <div className='stream-frames'>
+          <button className="min-twitch-btn" onClick={minimize}>{viewChat ? <i className="fa-solid fa-window-minimize"></i> : <i className="fa-solid fa-plus"></i>}</button>
           <iframe
             className='twitch-video-frame'
             display='inline'
@@ -27,7 +28,6 @@ function Twitch() {
             title={room.name}>
           </iframe>
           <div className='twitch-chat-container'>
-          <button className="min-twitch-btn" onClick={minimize}>{viewChat ? <i className="fa-solid fa-window-minimize"></i> : <i className="fa-solid fa-plus"></i>}</button>
             {viewChat && (
                 <iframe
                 className='twitch-chat-frame'
