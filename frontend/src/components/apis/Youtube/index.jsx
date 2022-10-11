@@ -16,7 +16,6 @@ function Youtube(props) {
   const playRef = useRef(null);
   const opts = {
     height: '600',
-    width: '100%',
     playerVars: {
       autoplay: 1,
       mute: 1,
@@ -111,9 +110,8 @@ function Youtube(props) {
   }
 
   return (
-    <div className='widget youtube-widget'>
-      <div className='search'
-        style={{ display: props.selected ? 'block' : 'none' }}>
+    <div className='youtube-widget'>
+      <div className='youtube-search' style={{ display: props.selected ? 'block' : 'none' }}>
         <form className='search__form' onSubmit={e => e.preventDefault()}>
           <input className='radius' type='text' value={term} placeholder='Search Youtube' onChange={(e) => setTerm(e.target.value)} />
         </form>
@@ -130,7 +128,7 @@ function Youtube(props) {
         onReady={onReady}
         onStateChange={emitStateChange}
         className='youtube-video'
-        style={{ display: room.youtubeVideo.channel && props.selected ? 'block' : 'none' }}
+        style={{ display: room.youtubeVideo.channel && props.selected ? 'flex' : 'none' }}
       />
     </div>
   );

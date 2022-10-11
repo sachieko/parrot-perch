@@ -75,7 +75,7 @@ function Whiteboard(props) {
   }
 
   return (
-    <div className='canvas-container'>
+    <>
       <button onClick={eraseWhiteboard}>X</button>
       <canvas
         style={{
@@ -92,7 +92,7 @@ function Whiteboard(props) {
         onMouseLeave={() => setMouseDown(false)}
       >
       </canvas>
-    </div >
+    </>
   )
 }
 
