@@ -79,6 +79,9 @@ export default function RoomProvider(props) {
       setRoom((oldRoom) => {
         return { ...oldRoom, name: room.name, channel: room.channel, users: room.users, host: room.host };
       });
+      if (system === 'left') {
+        setTo('');
+      }
       const chatMessage = { username, color, system };
       setChatMessages(prev => [...prev, chatMessage]);
     });
