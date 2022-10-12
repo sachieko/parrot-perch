@@ -210,10 +210,11 @@
 
     .chat-input-container {
       width: 20vw;
+      position: -webkit-sticky;
+      position: sticky;
       left: 80vw;
       right: 0;
-      top: 84vh;
-      height: 20vh;
+      height: 10em;
       border-left: $chat-input-border;
       border-bottom: 0;
     }
