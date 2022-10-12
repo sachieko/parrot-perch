@@ -20,7 +20,7 @@
 
 .radius {
   border-radius: 0.5rem;
-  width: 20em;
+  width: 15em;
   height: 2.3em;
   text-align: center;
 }
@@ -28,4 +28,9 @@
 ::placeholder {
   text-align: center;
   color: #c9c9c9;
+}
+@media only screen and (min-width: 768px) {
+  .radius {
+    width: 20em;
+  }
 }

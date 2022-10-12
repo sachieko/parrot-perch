@@ -7,17 +7,27 @@
 }
 
 .min-twitch-btn {
-  display: flex;
-  align-self: end;
+  position: absolute;
+  z-index: 1;
+  top: 81vh;
+  left: 0vw;
+  color: #FFFFFF;
+  background: none;
+  border: none;
+  &:hover {
+    color: dodgerblue;
+  }
 }
 
 .result-list {
   background-color: $channel-bg-color;
   display: flex;
   position: absolute;
-  left: 35vw;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
   height: 35vh;
-  width: 40vw;
+  width: 20em;
   flex-direction: column;
   overflow-y: scroll;
 
@@ -35,74 +45,58 @@
   }
 }
 
-.twitch-chat-container {
-  display: inline;
-  position: relative;
-  min-width: 2rem;
-  button {
-    position: absolute;
-    color: #FFFFFF;
-    background: none;
-    border: none;
-  }
-  button:hover {
-    color: dodgerblue;
-  }
-}
-
 .stream-frames {
   margin-top: 0.5rem;
   display: flex;
-  flex-direction: row;
+  position: relative;
+  flex-direction: column;
   width: 100vw;
   .twitch-video-frame {
     flex-grow: 1;
-    height: 50vh;
+    height: 80vh;
+    min-width: 60%;
   }
+
   .twitch-chat-frame {
-    flex-grow: 0.2;
-    height: 50vh;
+    flex-grow: 1;
+    width: 100%;
+    height: 80vh;
   }
 }
 /* Tablet CSS */
 @media only screen and (min-width: 768px) {
+  .min-twitch-btn {
+    display: flex;
+    gap: 0.2em;
+    top: -2em;
+    left: 1em;
+    right: auto;
+  }
+
   .stream-frames {
-    width: 80vw;
+    flex-direction: row;
+    width: inherit;
     .twitch-video-frame {
       height: 70vh;
     }
     .twitch-chat-frame {
       height: 70vh;
+      width: 40%;
     }
   }
 
-  .result-list {
-    left: 25vw;
-    width: 30vw;
-  }
 }
 @media only screen and (min-width: 1080px) {
-  .twitch-live-search {
-    width: 40vw;
-  }
 
-  .result-list {
-    left: 5vw;
-  }
-
-  .twitch-chat-container {
-    min-width: 1.5rem;
+  .twitch-chat-frame {
+    width: 10em;
+    min-width: 0;
   }
 
   .stream-frames {
     width: inherit;
-    .twitch-video-frame {
-      flex-grow: 1;
-      min-width: none;
-    }
     .twitch-chat-frame {
-      min-width: none;
-      flex-grow: 1;
+      width: 35%;
     }
   }
 }
