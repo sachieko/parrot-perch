@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { roomContext } from '../../providers/RoomProvider';
 
 const  SystemMessage = props => {
   const { username, color, system } = props;
+  const { setTo } = useContext(roomContext);
+  if (system === 'left') {
+  setTo('');
+  }
   return (
     <>
       {system === 'welcome' && ( 
@@ -31,6 +36,14 @@ const  SystemMessage = props => {
         <span className='message-item'>🚢🏴‍☠️ 
         <span className='chat-username-item' style={{ color }}>{username}</span>
         <span className='message-item'>{` is the Captain now!`}</span>
+        </span>
+      </div>
+      )}
+      {system === 'left' && ( 
+      <div className='chat-list-item'>
+        <span className='message-item'>☠️
+        <span className='chat-username-item' style={{ color }}>{username}</span>
+        <span className='message-item'>{` is swimming with the sharks!`}</span>
         </span>
       </div>
       )}
