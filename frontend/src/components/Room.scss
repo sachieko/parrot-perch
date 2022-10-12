@@ -115,9 +115,9 @@
   font-family: $app-room-font-family;
   justify-content: center;
   border: $app-header-border;
-  margin: 0 auto;
   left: 0;
   right: 0;
+  margin: 0 auto;
   border-left: 0;
   border-right: 0;
   padding: 0.5rem;
@@ -138,12 +138,13 @@
   #nav-toggle {
     width: 80vw;
   }
-}
 
-.room-header {
-  padding-right: 20vw;
-}
 
+  .room-header {
+    padding-right: 20vw;
+  }
+}
+/* desktop CSS */
 @media only screen and (min-width: 1080px) {
   .widget-container {
     flex-direction: row;
@@ -161,5 +162,9 @@
     display: flex;
     flex-grow: 1;
     min-width: 0;
+  }
+
+  .room-header{
+    padding-right: 25vw;
   }
 }

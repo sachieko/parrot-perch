@@ -37,7 +37,7 @@ body {
   }
 }
 
-.logo-image {
+.nav-link .logo-image {
   height: 4rem;
   width: 6rem;
 }
@@ -53,6 +53,7 @@ body {
 
 #app-header {
   font-family: $app-logo-font-family;
+  font-size: 2.5em;
   background: $app-header-background;
   background: $app-header-background-web;
   background: $app-header-background-moz;
@@ -61,4 +62,24 @@ body {
 }
 .header-container {
   background-color: $app-header-background-color;
+}
+/* Tablet CSS Styles */
+@media only screen and (min-width: 768px) {
+  #app-header {
+    font-size: 4em;
+  }
+  .nav-link .logo-image {
+    height: 5em;
+    width: 8em;
+  }
+}
+/* Desktop CSS Styles */
+@media only screen and (min-width: 1080px) {
+  #app-header {
+    font-size: 5em;
+  }
+  .nav-link .logo-image {
+    height: 6em;
+    width: 12em;
+  }
 }
