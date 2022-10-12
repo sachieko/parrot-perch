@@ -1,12 +1,7 @@
-import React, { useContext } from 'react';
-import { roomContext } from '../../providers/RoomProvider';
+import React from 'react';
 
 const  SystemMessage = props => {
   const { username, color, system } = props;
-  const { setTo } = useContext(roomContext);
-  if (system === 'left') {
-  setTo('');
-  }
   return (
     <>
       {system === 'welcome' && ( 
