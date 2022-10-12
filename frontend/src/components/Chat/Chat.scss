@@ -4,14 +4,14 @@
 .chat {
   background-color: $chat-background-color;
   border: 4rem;
-  height: 35vh;
-  bottom: 0;
-  left: 0;
-  width: 100vw;
+  height: 20em;
+  z-index: 1;
   overflow-x: hidden;
-  position: fixed;
-  padding: 0.5em;
-  padding-top: 6vh;
+  position: -webkit-sticky;
+  position: sticky;
+  left: 0;
+  right: 0;
+  bottom: 0;
 
   .warning-text {
     color: red;
@@ -29,13 +29,17 @@
   
   #message-list {
     display: flex;
-    width: 100vw;
+    width: 100%;
+    min-height: 20vh;
     overflow-y: scroll;
     overflow-x: hidden;
+    position: fixed;
+    top: 65vh;
+    padding-top: 6em;
+    bottom: 0;
     flex-direction: column;
     color: $chat-message-color;
     background-color: $chat-background-color;
-    padding-top: 6vh;
     padding-left: 0.5rem;
   }
   .chat-list-item {
@@ -45,10 +49,12 @@
     background-color: $chat-background-color;
     font-family: 'Ubuntu', sans-serif;
     .chat-username-item {
+      white-space: nowrap;
       overflow-wrap: break-word;
       word-break: keep-all;
     }
     .message-item {
+      padding-left: 0.2em;
       overflow-wrap: break-word;
       word-break: break-word;
       width: 98vw;
@@ -57,12 +63,15 @@
 
   }
   .chat-input-container {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
     background-color: $chat-background-color;
     position: fixed;
     top: 65vh;
     left: 0;
     width: 100vw;
-    height: 12vh;
+    height: 6em;
     border: $chat-input-border;
     border-left: 0;
     border-right: 0;
@@ -75,7 +84,8 @@
   #chat-submit {
     border: 5rem;
     height: 4vh;
-    width: 75vw;
+    min-width: 5em;
+    flex-grow: 1;
     border: 1px solid $chat-input-border-color;
     border-radius: 0.4rem;
     margin: 0.4rem;
@@ -120,8 +130,9 @@
 
 @media only screen and (max-width: 270px) {
   .chat {
+    right: 0;
     #chat-submit {
-      width: 70vw;
+      width: 20em;
     }
   }
 }
@@ -129,36 +140,38 @@
 @media only screen and (min-width: 768px) {
 
   .chat {
-    height: 100vh;
     bottom: 0;
-    left: 80vw;
+    top: 0;
+    left: 0;
     right: 0;
     width: 20vw;
     padding-top: 0;
     border-left: $chat-input-border;
-    ::-webkit-scrollbar-track {
-      margin-top: 10vh;
-    }
-
     .chat-input-container {
-      width: 20vw;
-      left: 80vw;
+      z-index: 1;
+      width: 27%;
+      left: 73%;
       right: 0;
-      top: 80vh;
-      height: 20vh;
+      height: 8em;
+      top: auto;
+      bottom: 0;
       border-left: $chat-input-border;
       border-bottom: 0;
     }
 
     #chat-submit {
-      width: 18vw;
-      height: 2rem;
+      width: 80%;
+      height: 2em;
     }
     
     #message-list {
+      border-left: $chat-input-border;
+      right: 0;
+      top: 0;
       padding-top: 0;
-      margin-bottom: 22vh;
-      width: 20vw; 
+      padding-bottom: 8em;
+      height: 100%;
+      width: 27%; 
       .chat-list-item {
         width: 19vw;
       }
@@ -178,13 +191,12 @@
   }
 }
 /* Desktop CSS */
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 1080px) {
   .chat {
     height: 100vh;
     bottom: 0;
-    left: 80vw;
     right: 0;
-    width: 20vw;
+    width: 15em;
     padding-top: 0;
     border-left: $chat-input-border;
 
@@ -209,10 +221,12 @@
     }
 
     .chat-input-container {
-      width: 20vw;
+      display: flex;
+      flex-direction: column;
       position: -webkit-sticky;
       position: sticky;
-      left: 80vw;
+      width: 5em;
+      left: 0;
       right: 0;
       height: 10em;
       border-left: $chat-input-border;
@@ -227,7 +241,7 @@
     #message-list {
       padding-top: 0;
       margin-bottom: 16vh;
-      width: 20vw;
+      width: 15em;
     }
   }
 }
