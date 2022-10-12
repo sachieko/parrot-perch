@@ -193,55 +193,6 @@
 /* Desktop CSS */
 @media only screen and (min-width: 1080px) {
   .chat {
-    height: 100vh;
-    bottom: 0;
-    right: 0;
     width: 15em;
-    padding-top: 0;
-    border-left: $chat-input-border;
-
-    button {
-      margin: 0.5rem;
-    }
-
-    .chat-pm {
-      display: flex;
-      flex-direction: row;
-      height: 3rem;
-
-      button {
-        margin-right: 0;
-      }
-
-      select {
-        margin: 0.5rem;
-        margin-left: 0;
-        width: 8rem;
-      }
-    }
-
-    .chat-input-container {
-      display: flex;
-      flex-direction: column;
-      position: -webkit-sticky;
-      position: sticky;
-      width: 5em;
-      left: 0;
-      right: 0;
-      height: 10em;
-      border-left: $chat-input-border;
-      border-bottom: 0;
-    }
-
-    #chat-submit {
-      width: 18vw;
-      height: 2rem;
-    }
-    
-    #message-list {
-      padding-top: 0;
-      margin-bottom: 16vh;
-      width: 15em;
-    }
   }
 }
