@@ -9,8 +9,8 @@
 .min-twitch-btn {
   position: absolute;
   z-index: 1;
-  top: -2rem;
-  left: 90vw;
+  top: 81vh;
+  left: 0vw;
   color: #FFFFFF;
   background: none;
   border: none;
@@ -66,7 +66,11 @@
 /* Tablet CSS */
 @media only screen and (min-width: 768px) {
   .min-twitch-btn {
-    left: 77vw;
+    display: flex;
+    align-items: center;
+    top: -2em;
+    left: auto;
+    right: 1em;
   }
 
   .stream-frames {
