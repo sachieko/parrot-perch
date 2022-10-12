@@ -139,7 +139,7 @@ io.on('connection', client => {
       hashedPassword = bcrypt.hashSync(password, 10);
     }
 
-    client.join(room.name);
+    client.join(room.name.toLowerCase().trim());
 
     if (!rooms[room.name]) {
       rooms[room.name] = room; // new room
@@ -150,6 +150,7 @@ io.on('connection', client => {
 
     // password check
     if (rooms[room.name].password && !bcrypt.compareSync(password, rooms[room.name].password)) {
+      // client.to(clients[name].id).emit('Error')
       return;
     }
 
