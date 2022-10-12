@@ -9,8 +9,8 @@
 .min-twitch-btn {
   position: absolute;
   z-index: 1;
-  top: 0.2rem;
-  right: 0.2rem;
+  top: -2rem;
+  left: 90vw;
   color: #FFFFFF;
   background: none;
   border: none;
@@ -65,6 +65,10 @@
 }
 /* Tablet CSS */
 @media only screen and (min-width: 768px) {
+  .min-twitch-btn {
+    left: 77vw;
+  }
+
   .stream-frames {
     flex-direction: row;
     width: inherit;
@@ -79,6 +83,9 @@
 
 }
 @media only screen and (min-width: 1080px) {
+  .min-twitch-btn {
+    left: 38vw;
+  }
 
   .twitch-chat-frame {
     width: 10em;
@@ -87,11 +94,8 @@
 
   .stream-frames {
     width: inherit;
-    .twitch-video-frame {
-      min-width: 0;
-    }
     .twitch-chat-frame {
-      min-width: 0;
+      width: 35%;
     }
   }
 }
