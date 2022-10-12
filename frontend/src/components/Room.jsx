@@ -5,10 +5,11 @@ import View from './ViewRoom';
 import { roomContext } from '../providers/RoomProvider';
 
 function Room() {
-  const { room, setRoom, isViewing, socket } = useContext(roomContext);
+  const { room, setRoom, isViewing, socket, alert, clearAlert } = useContext(roomContext);
 
   const handleJoin = function (e) {
     e.preventDefault();
+    clearAlert();
     socket.emit('createOrJoinRoom', { room });
   };
   
@@ -22,6 +23,7 @@ function Room() {
           onClick={handleJoin}
           onChange={(e) => setRoom({ ...room, name: e.target.value })}
           onChange2={(e) => setRoom({ ...room, password: e.target.value })} 
+          alert={alert}
         />
         </div>
       }
