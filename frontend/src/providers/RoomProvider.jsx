@@ -30,6 +30,8 @@ export default function RoomProvider(props) {
   const [newChannel, setNewChannel] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  // Alerts from errors state
+  const [alert, setAlert] = useState('');
 
   // term is state
   const term = useDebounce(newChannel, 500);
@@ -67,6 +69,11 @@ export default function RoomProvider(props) {
       setIsViewing(true);
     });
 
+    socket.on('error', data => {
+      console.log('Hey!')
+      setAlert(data.alert);
+    });
+
     socket.on('system', data => {
       const { room, username, color, system } = data;
       setRoom((oldRoom) => {
@@ -93,6 +100,11 @@ export default function RoomProvider(props) {
 
     return () => socket.disconnect();
   }, []);
+
+  // Alert functions
+  const clearAlert = () => {
+    setAlert('');
+  };
 
   // Chat Functions
   const clearChatInput = () => {
@@ -126,6 +138,7 @@ export default function RoomProvider(props) {
     newChannel, setNewChannel, // When a user sets a channel for twitch
     searchResults, setSearchResults, // Results from the user's channel search
     searchValue, setSearchValue, // The term of the user's search value
+    alert, clearAlert // Used to manage alert state for joining rooms
   };
 
   return (

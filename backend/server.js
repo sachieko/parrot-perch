@@ -138,6 +138,7 @@ io.on('connection', client => {
     if (password) {
       hashedPassword = bcrypt.hashSync(password, 10);
     }
+    room.name = room.name.toLowerCase().trim(); // case insensitive rooms
 
     client.join(room.name);
 
@@ -150,6 +151,7 @@ io.on('connection', client => {
 
     // password check
     if (rooms[room.name].password && !bcrypt.compareSync(password, rooms[room.name].password)) {
+      client.emit('error', { alert: 'bad password' });
       return;
     }
 
