@@ -69,8 +69,8 @@
     display: flex;
     gap: 0.2em;
     top: -2em;
-    left: auto;
-    right: 1em;
+    left: 1em;
+    right: auto;
   }
 
   .stream-frames {
@@ -87,9 +87,6 @@
 
 }
 @media only screen and (min-width: 1080px) {
-  .min-twitch-btn {
-    left: 40vw;
-  }
 
   .twitch-chat-frame {
     width: 10em;
