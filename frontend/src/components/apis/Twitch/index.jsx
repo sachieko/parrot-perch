@@ -3,6 +3,7 @@ import LiveSearch from "./LiveSearch";
 import './Twitch.scss';
 import { roomContext } from '../../../providers/RoomProvider';
 import { useState } from 'react';
+import MinimizeToggle from './MinimizeToggle';
 
 function Twitch() {
   const { room } = useContext(roomContext);
@@ -18,7 +19,7 @@ function Twitch() {
       <LiveSearch />
       {room.channel && (
         <div className='stream-frames'>
-          <button className="min-twitch-btn" onClick={minimize}>{viewChat ? <i className="fa-solid fa-window-minimize"></i> : <i className="fa-solid fa-plus"></i>}</button>
+          <button className="min-twitch-btn" onClick={minimize}><MinimizeToggle bool={viewChat} /></button>
           <iframe
             className='twitch-video-frame'
             display='inline'
