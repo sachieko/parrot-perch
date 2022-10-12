@@ -27,7 +27,6 @@ function Twitch() {
             allowFullScreen
             title={room.name}>
           </iframe>
-          <div className='twitch-chat-container'>
             {viewChat && (
                 <iframe
                 className='twitch-chat-frame'
@@ -37,7 +36,6 @@ function Twitch() {
                 height="480"
                 title={room.name}>
               </iframe>)}
-          </div>
         </div>
       )}
     </div>

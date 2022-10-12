@@ -45,11 +45,6 @@
   }
 }
 
-.twitch-chat-container {
-  display: flex;
-  position: relative;
-}
-
 .stream-frames {
   margin-top: 0.5rem;
   display: flex;
@@ -58,13 +53,13 @@
   width: 100vw;
   .twitch-video-frame {
     display: flex;
-    flex-grow: 1;
+    flex-grow: 2;
     height: 50vh;
   }
+
   .twitch-chat-frame {
+    flex-grow: 0.5;
     width: inherit;
-    min-width: 0;
-    height: 50vh;
   }
 }
 /* Tablet CSS */
@@ -82,15 +77,18 @@
 }
 @media only screen and (min-width: 1080px) {
 
-  .twitch-chat-container {
-    display: flex;
+  .twitch-chat-frame {
+    width: 10em;
+    min-width: 0;
   }
 
   .stream-frames {
     width: inherit;
     .twitch-video-frame {
-      flex-grow: 1;
-      min-width: none;
+      min-width: 0;
+    }
+    .twitch-chat-frame {
+      min-width: 0;
     }
   }
 }
