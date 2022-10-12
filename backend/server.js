@@ -150,7 +150,7 @@ io.on('connection', client => {
 
     // password check
     if (rooms[room.name].password && !bcrypt.compareSync(password, rooms[room.name].password)) {
-      // client.to(clients[name].id).emit('Error')
+      client.to(clients[name].id).emit('Error', { alert: 'bad password' });
       return;
     }
 
