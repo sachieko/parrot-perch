@@ -112,7 +112,7 @@
 
 .room-header {
   display: flex;
-  width: 100vw;
+  width: 100%;
   font-family: $app-room-font-family;
   justify-content: center;
   border: $app-header-border;
@@ -132,8 +132,10 @@
 /* Tablet CSS */
 @media only screen and (min-width: 768px) {
   .widget-container {
+    left: 0;
     height: 80vh;
-    width: 80vw;
+    min-width: 0;
+    width: 74%;
   }
 
   #nav-toggle {

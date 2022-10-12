@@ -193,6 +193,7 @@
 /* Desktop CSS */
 @media only screen and (min-width: 1080px) {
   .chat {
-    width: 15em;
+    width: 0;
+    border-left: none;
   }
 }

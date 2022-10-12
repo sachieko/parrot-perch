@@ -27,13 +27,13 @@ function Youtube(props) {
     if (room.youtubeVideo.channel) {
       socket.emit('retrieveHostYoutubeTime', { room: room });
     }
-  }
+  };
 
   const emitStateChange = (e) => {
     const state = e.target.getPlayerState();
     const currentTime = e.target.getCurrentTime();
     socket.emit('editVideo', { room: room, time: currentTime, state: state });
-  }
+  };
 
   useEffect(() => {
     if (!socket) {
@@ -87,7 +87,7 @@ function Youtube(props) {
       .catch((err) => {
         console.log(err);
       });
-  }, [terms])
+  }, [terms]);
 
   const enterURL = (e, vid) => {
     const ytvideo = { ...room.youtubeVideo }
@@ -95,7 +95,7 @@ function Youtube(props) {
     socket.emit('editRoom', { room: { ...room, youtubeVideo: ytvideo } });
     setSuggestions([]);
     setTerm('');
-  }
+  };
 
   const displaySuggestions = suggestions.map((suggestion, i) => {
     const { id, thumb, title } = suggestion;
@@ -131,6 +131,6 @@ function Youtube(props) {
       />
     </div>
   );
-}
+};
 
 export default Youtube;
