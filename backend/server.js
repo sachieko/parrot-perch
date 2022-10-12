@@ -195,11 +195,16 @@ io.on('connection', client => {
       io.to(room.name).emit('public', { message, username, color });
       return;
     }
-    const { id: idTo, color: colorTo, username: userTo } = clients[to];
     const { id: idFrom, color: colorFrom } = clients[name];
-    io.to(idTo).emit('private', { message, username: username, pm: 'receive', color: colorFrom }); // Receiver gets sender's color/name
-    io.to(idFrom).emit('private', { message, username: userTo, pm: 'send', color: colorTo }); // Sender receives other's color
-  })
+
+    if (clients[to]) {
+      const { id: idTo, color: colorTo, username: userTo } = clients[to];
+      io.to(idTo).emit('private', { message, username: username, pm: 'receive', color: colorFrom }); // Receiver gets sender's color/name
+      io.to(idFrom).emit('private', { message, username: userTo, pm: 'send', color: colorTo }); // Sender receives other's color
+      return;
+    }
+    io.to(idFrom).emit('system', { system: 'left', username: to, room: rooms[room.name], color: '#fff' });
+  });
 
   client.on('retrieveHostYoutubeTime', (req) => {
     const hostName = rooms[req.room.name].host;
