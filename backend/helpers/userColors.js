@@ -13,7 +13,8 @@ const random_color = function () {
     'rgb(200,140,255)',
     'rgb(255,0,212)',
     'rgb(110,175,255)',
-    'rgb(255,147,147)'
+    'rgb(255,147,147)',
+    '#ae1392'
   ];
   return colors[floor(rnd() * colors.length)];
 };
