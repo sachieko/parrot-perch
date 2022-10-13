@@ -1,6 +1,7 @@
 
 import { useContext, useEffect, useRef, useState } from 'react';
 import { roomContext } from '../../providers/RoomProvider';
+import './snake.scss' 
 
 function Snake() {
   const { socket, room } = useContext(roomContext);
@@ -8,7 +9,12 @@ function Snake() {
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        socket.emit('key', { key: e.key });
+      }
+    });
     socket.on('snakeGame', (res) => {
       if (!canvasRef.current) {
         return;
@@ -22,47 +28,34 @@ function Snake() {
     setClicked(true);
   }
 
-  const handleKeyDown = (e) => {
-    if (e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40) {
-      e.preventDefault();
-      console.log('here;');
-      console.log('code', e.keyCode);
-      socket.emit('key', { key: e.keyCode });
-    }
-  }
-
   const draw = (players, apples) => {
     const ctx = canvasRef.current.getContext('2d');
-    const BB = canvasRef.current.getBoundingClientRect();
-    console.log(BB.left, BB.top);
     const cellSize = 400 / 40;
     ctx.fillStyle = "#555";
     ctx.fillRect(0, 0, 400, 400);
     players.forEach((p) => {
       // players
       ctx.fillStyle = "#4286f4";
-      ctx.fillRect(p.x * cellSize - BB.left, p.y * cellSize - BB.top, cellSize, cellSize);
+      ctx.fillRect(p.x * cellSize, p.y * cellSize, cellSize, cellSize);
 
       // tails
       p.tail.forEach((t) => {
-        console.log('tail');
-        ctx.fillRect(t.x * cellSize - BB.left, t.y * cellSize - BB.top, cellSize, cellSize);
+        ctx.fillRect(t.x * cellSize, t.y * cellSize, cellSize, cellSize);
       });
     });
     apples.forEach((a) => {
       ctx.fillStyle = "#ff0000";
-      ctx.fillRect(a.x * cellSize - BB.left, a.y * cellSize - BB.top, cellSize, cellSize);
+      ctx.fillRect(a.x * cellSize, a.y * cellSize, cellSize, cellSize);
     });
   }
 
   return (
-    <div>
-      {!clicked && <button onClick={play}>Play</button>}
+    <div width={'100%'} style={{ textAlign: 'center' }} >
+      {!clicked && <div><button style={{ color: 'black' }} onClick={play}>Play</button></div>}
       <canvas
         ref={canvasRef}
         width='400px'
-        height='400px'
-        onClick={(e) => console.log(e.clientX, e.clientY)}></canvas>
+        height='400px'></canvas>
     </div>
 
   );

@@ -259,9 +259,8 @@ io.on('connection', client => {
       dir: 'right',
       gridSize: 40,
       snakes: snakeGames[roomName].players,
-      apples: []
+      apples: snakeGames[roomName].apples
     }, {}));
-    console.log(snakeGames[roomName].apples);
     for(const a of snakeGames[roomName].apples){
       a.snakes.push(player);
     }

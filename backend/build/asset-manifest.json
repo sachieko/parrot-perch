@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.9596cd33.css",
+    "main.js": "/static/js/main.10050d9b.js",
+    "static/media/parrot-perch-logo.png": "/static/media/parrot-perch-logo.9a51f5a08fbf1d794fa4.png",
+    "index.html": "/index.html",
+    "main.9596cd33.css.map": "/static/css/main.9596cd33.css.map",
+    "main.10050d9b.js.map": "/static/js/main.10050d9b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9596cd33.css",
+    "static/js/main.10050d9b.js"
+  ]
+}

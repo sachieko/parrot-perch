@@ -5,10 +5,10 @@ const _ = require('lodash');
 
 // Key maps
 const KEYS = {
-  up: 38,
-  right: 39,
-  down: 40,
-  left: 37
+  up: 'ArrowUp',
+  right: 'ArrowRight',
+  down: 'ArrowDown',
+  left: 'ArrowLeft'
 };
 
 /*
@@ -98,7 +98,6 @@ class Snake {
     });
     // With apples
     this.apples.forEach((a) => {
-      console.log('this one', a.x, this.x, a.y, this.y);
       if(a.x === this.x && a.y === this.y) {
         this._addPoint(1);
         this._addTail();

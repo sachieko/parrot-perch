@@ -10,10 +10,10 @@ import Snake from './Snake';
 function View() {
   const { room } = useContext(roomContext);
   const [widgetSwitches, setWidgetSwitches] = useState(
-    [{ name: 'Twitch', selected: false },
-    { name: 'Youtube', selected: false },
-    { name: 'Chat', selected: false },
-    { name: 'Whiteboard', selected: false },
+    [{ name: 'Twitch', selected: true },
+    { name: 'Youtube', selected: true },
+    { name: 'Chat', selected: true },
+    { name: 'Whiteboard', selected: true },
     { name: 'Snake', selected: true }]);
 
   const selectSwitch = (i) => {
@@ -49,8 +49,6 @@ function View() {
 
   return (
     <>
-
-      {widgetSwitches[4].selected && <Snake />}
       <div className='header-container'>
         <h3 className='room-header'>Room Name: {room.name} </h3>
       </div>
@@ -63,6 +61,9 @@ function View() {
       <div className='widget-container'>
         {widgetSwitches[0].selected && <Twitch />}
         {<Youtube selected={widgetSwitches[1].selected} />}
+      </div>
+      <div className='snake-game'>
+        {widgetSwitches[4].selected && <Snake />}
       </div>
       {widgetSwitches[2].selected && <Chat />}
     </>
