@@ -255,6 +255,9 @@ io.on('connection', client => {
   client.on('play', (req) => {
     const roomName = req.room.name;
     const id = snakeGames[roomName].autoId;
+    if (player){
+      return;
+    }
     player = new Snake(_.assign({
       id,
       dir: 'right',
@@ -267,6 +270,13 @@ io.on('connection', client => {
     }
     snakeGames[roomName].players.push(player);
     snakeGames[roomName].autoId = id + 1;
+  });
+
+  client.on('kill', (req) => {
+    if (roomName && player){
+      _.remove(snakeGames[roomName].players, player);
+      player = null;
+    }
   });
 
   client.on('key', (req) => {
