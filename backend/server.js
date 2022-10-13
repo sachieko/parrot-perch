@@ -129,6 +129,7 @@ io.on('connection', client => {
     style: 'capital'
   })} Parrot`;
   let player;
+  let roomName;
 
   const color = random_color();
   // console.log('Client Connected!', name, ':', client.id);
@@ -147,7 +148,7 @@ io.on('connection', client => {
     room.name = room.name.toLowerCase().trim(); // case insensitive rooms
 
     client.join(room.name);
-
+    roomName = room.name;
     if (!rooms[room.name]) {
       rooms[room.name] = room; // new room
       rooms[room.name].password = hashedPassword;
@@ -275,6 +276,9 @@ io.on('connection', client => {
   });
 
   client.on('disconnect', () => {
+    if (roomName){
+      _.remove(snakeGames[roomName].players, player);
+    }
     // console.log('Client Disconnected', name, ':', client.id);
     clients[name].rooms.forEach(roomname => {
       rooms[roomname].users = rooms[roomname].users.filter(user => user.name !== name);
