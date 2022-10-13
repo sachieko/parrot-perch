@@ -7,6 +7,14 @@ const { uniqueNamesGenerator, adjectives } = require('unique-names-generator');
 const { random_color } = require('./helpers/userColors');
 const axios = require('axios');
 const bcrypt = require('bcrypt');
+const _ = require('lodash');
+
+const Snake = require('./snake');
+const Apple = require('./apple');
+
+const path = require('path');
+
+app.use(express.static(path.resolve(__dirname, '../frontend/build')));
 
 // twitch search route
 app.get('/api/twitch_search', (req, res) => {
@@ -87,8 +95,15 @@ app.get('/api/youtube_search', (req, res) => {
   axios.get(searchURL).then(response => {
     res.send(response.data);
   })
+  .catch((e) => {
+    console.log('oops');
+    //console.log(e);
+  })
 })
 
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../frontend/build', 'index.html'));
+});
 
 const http = app.listen(process.env.PORT, () => {
   console.log(`Server running at port: ${process.env.PORT}`);
@@ -115,7 +130,7 @@ const rooms = {};
 //  } 
 // }
 
-
+const snakeGames = {};
 
 io.on('connection', client => {
   const name = `${uniqueNamesGenerator({
@@ -123,6 +138,8 @@ io.on('connection', client => {
     separator: ' ',
     style: 'capital'
   })} Parrot`;
+  let player;
+  let roomName;
 
   const color = random_color();
   // console.log('Client Connected!', name, ':', client.id);
@@ -141,12 +158,25 @@ io.on('connection', client => {
     room.name = room.name.toLowerCase().trim(); // case insensitive rooms
 
     client.join(room.name);
-
+    roomName = room.name;
     if (!rooms[room.name]) {
       rooms[room.name] = room; // new room
       rooms[room.name].password = hashedPassword;
       rooms[room.name].users = []; // new user array
       rooms[room.name].host = name;
+      snakeGames[room.name] = {
+        autoId: 0,
+        GRID_SIZE: 40,
+        players: [],
+        apples: [],
+      }
+      for (var i = 0; i < 3; i++) {
+        snakeGames[room.name].apples.push(new Apple({
+          gridSize: 40,
+          snakes: [],
+          apples: snakeGames[room.name].apples
+        }));
+      }
     }
 
     // password check
@@ -232,7 +262,43 @@ io.on('connection', client => {
     client.emit('broadcastErase', { path: [] });
   });
 
+  client.on('play', (req) => {
+    const roomName = req.room.name;
+    const id = snakeGames[roomName].autoId;
+    if (player){
+      return;
+    }
+    player = new Snake(_.assign({
+      id,
+      dir: 'right',
+      gridSize: 40,
+      snakes: snakeGames[roomName].players,
+      apples: snakeGames[roomName].apples
+    }, {}));
+    for(const a of snakeGames[roomName].apples){
+      a.snakes.push(player);
+    }
+    snakeGames[roomName].players.push(player);
+    snakeGames[roomName].autoId = id + 1;
+  });
+
+  client.on('kill', (req) => {
+    if (roomName && player){
+      _.remove(snakeGames[roomName].players, player);
+      player = null;
+    }
+  });
+
+  client.on('key', (req) => {
+    if (player) {
+      player.changeDirection(req.key);
+    }
+  });
+
   client.on('disconnect', () => {
+    if (roomName){
+      _.remove(snakeGames[roomName].players, player);
+    }
     // console.log('Client Disconnected', name, ':', client.id);
     clients[name].rooms.forEach(roomname => {
       rooms[roomname].users = rooms[roomname].users.filter(user => user.name !== name);
@@ -250,3 +316,26 @@ io.on('connection', client => {
     delete clients[name];
   });
 });
+
+// Main loop
+setInterval(() => {
+  for (const g in snakeGames) {
+    snakeGames[g].players.forEach((p) => {
+      p.move();
+    });
+    io.to(g).emit('snakeGame', {
+      players: snakeGames[g].players.map((p) => ({
+        x: p.x,
+        y: p.y,
+        id: p.id,
+        nickname: p.nickname,
+        points: p.points,
+        tail: p.tail
+      })),
+      apples: snakeGames[g].apples.map((a) => ({
+        x: a.x,
+        y: a.y
+      }))
+    });
+  }
+}, 100);

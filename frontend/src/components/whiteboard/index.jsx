@@ -30,10 +30,6 @@ function Whiteboard(props) {
     socket.on('broadcastErase', (res) => {
       setIncomingPath(res.path);
     });
-    return () => {
-      socket.off('broadcastPath');
-      socket.off('broadcastErase');
-    }
   }, [socket]);
 
   useEffect(() => {

@@ -5,7 +5,7 @@ import Youtube from './apis/Youtube';
 import Twitch from './apis/Twitch';
 import Chat from './Chat';
 import Whiteboard from './whiteboard';
-
+import Snake from './Snake';
 
 function View() {
   const { room } = useContext(roomContext);
@@ -13,7 +13,8 @@ function View() {
     [{ name: 'Twitch', selected: true },
     { name: 'Youtube', selected: true },
     { name: 'Chat', selected: true },
-    { name: 'Whiteboard', selected: true }]);
+    { name: 'Whiteboard', selected: true },
+    { name: 'Snake', selected: true }]);
 
   const selectSwitch = (i) => {
     setWidgetSwitches((oldSwitches) => {
@@ -52,16 +53,19 @@ function View() {
         <h3 className='room-header'>Room Name: {room.name} </h3>
       </div>
       <div className='canvas-container'>
-      {<Whiteboard selected={widgetSwitches[3].selected}/>}
+        {<Whiteboard selected={widgetSwitches[3].selected} />}
       </div>
-        <div id="nav-toggle">
-          {showSwitches}
-        </div>
+      <div id="nav-toggle">
+        {showSwitches}
+      </div>
       <div className='widget-container'>
         {widgetSwitches[0].selected && <Twitch />}
-        {<Youtube selected={widgetSwitches[1].selected}/>}
+        {<Youtube selected={widgetSwitches[1].selected} />}
       </div>
-        {widgetSwitches[2].selected && <Chat />}
+      <div className='snake-container'>
+        {widgetSwitches[4].selected && <Snake />}
+      </div>
+      {widgetSwitches[2].selected && <Chat />}
     </>
   );
 };
