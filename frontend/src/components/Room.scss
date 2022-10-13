@@ -149,6 +149,7 @@
   .widget-container {
     flex-direction: row;
     margin-bottom: 20vh;
+    width: 80%;
   }
 
   .twitch-widget {
@@ -160,7 +161,7 @@
 
   .youtube-widget {
     display: flex;
-    flex-grow: 1;
+    flex-grow: 1.4;
     min-width: 0;
   }
 
