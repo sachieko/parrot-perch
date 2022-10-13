@@ -50,8 +50,8 @@ function Snake() {
   }
 
   return (
-    <div width={'100%'} style={{ textAlign: 'center' }} >
-      {!clicked && <div><button style={{ color: 'black' }} onClick={play}>Play</button></div>}
+    <div className='snake-canvas'>
+      {!clicked && <div><button onClick={play}>Play</button></div>}
       <canvas
         ref={canvasRef}
         width='400px'

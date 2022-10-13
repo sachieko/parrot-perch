@@ -62,7 +62,7 @@ function View() {
         {widgetSwitches[0].selected && <Twitch />}
         {<Youtube selected={widgetSwitches[1].selected} />}
       </div>
-      <div className='snake-game'>
+      <div className='snake-container'>
         {widgetSwitches[4].selected && <Snake />}
       </div>
       {widgetSwitches[2].selected && <Chat />}

@@ -1,8 +1,11 @@
-.snake-game {
+.snake-container {
   display: flex;
-  width: 100vw;
-  justify-content: center;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
+  .snake-canvas {
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    button {
+     width: 100%;
+    }
+  }
 }

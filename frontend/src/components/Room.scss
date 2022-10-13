@@ -92,6 +92,14 @@
     }
   }
 
+  [for|="button-Snake"] {
+    background-color: $snake-toggle-color;
+
+    &.selected {
+      background-color: $app-input-bg-color;
+    }
+  }
+
   .mb-2 {
     margin-top: 0.5em;
     margin-left: 1em;
@@ -139,6 +147,9 @@
     width: 80vw;
   }
 
+  .snake-container {
+    width: 80vw;
+  }
 
   .room-header {
     padding-right: 20vw;
