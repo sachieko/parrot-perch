@@ -9,6 +9,6 @@ function ChangeChannel (props) {
       </form>
     </div>
   )
-}
+};
 
 export default ChangeChannel;

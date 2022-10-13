@@ -3,7 +3,6 @@
 
 * {
   box-sizing: border-box;
-  @include custom-scrollbar;
 }
 
 body {
@@ -14,18 +13,21 @@ body {
 #root {
   background-color: $app-bg-color;
   color: $app-text-color;
+  height: 100vh;
 }
 
 .parrot-perch {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 65vh;
   overflow-y: scroll;
   overflow-x: hidden;
+
+  @include custom-scrollbar;
 }
 
 .nav {
-  height: 10vh;
+  height: 8em;
   background-color: $app-bg-color;
   display: flex;
   justify-content: center;
@@ -37,7 +39,7 @@ body {
   }
 }
 
-.logo-image {
+.nav-link .logo-image {
   height: 4rem;
   width: 6rem;
 }
@@ -53,6 +55,7 @@ body {
 
 #app-header {
   font-family: $app-logo-font-family;
+  font-size: 2.5em;
   background: $app-header-background;
   background: $app-header-background-web;
   background: $app-header-background-moz;
@@ -62,24 +65,26 @@ body {
 .header-container {
   background-color: $app-header-background-color;
 }
-.room-header {
-  display: flex;
-  width: 100vw;
-  justify-content: center;
-  border: $app-header-border;
-  border-left: 0;
-  border-right: 0;
-  padding: 0.5rem;
-  background: $app-room-text-header-background;
-  background: $app-room-text-header-background-web;
-  background: $app-room-text-header-background-moz;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-/* Tablet Styles */
+/* Tablet CSS Styles */
 @media only screen and (min-width: 768px) {
-
-.room-header {
-  padding-right: 20vw;
+  #app-header {
+    font-size: 4em;
+  }
+  .parrot-perch {
+    height: 100vh;
+  }
+  .nav-link .logo-image {
+    height: 5em;
+    width: 8em;
+  }
 }
+/* Desktop CSS Styles */
+@media only screen and (min-width: 1080px) {
+  #app-header {
+    font-size: 5em;
+  }
+  .nav-link .logo-image {
+    height: 6em;
+    width: 12em;
+  }
 }

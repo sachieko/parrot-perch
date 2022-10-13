@@ -41,6 +41,6 @@ function Twitch() {
       )}
     </div>
   )
-}
+};
 
 export default Twitch;
