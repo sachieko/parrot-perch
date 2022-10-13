@@ -12,6 +12,9 @@ const _ = require('lodash');
 const Snake = require('./snake');
 const Apple = require('./apple');
 
+const path = require('path');
+
+app.use(express.static(path.resolve(__dirname, '../frontend/build')));
 
 // twitch search route
 app.get('/api/twitch_search', (req, res) => {
@@ -92,8 +95,15 @@ app.get('/api/youtube_search', (req, res) => {
   axios.get(searchURL).then(response => {
     res.send(response.data);
   })
+  .catch((e) => {
+    console.log('oops');
+    //console.log(e);
+  })
 })
 
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../frontend/build', 'index.html'));
+});
 
 const http = app.listen(process.env.PORT, () => {
   console.log(`Server running at port: ${process.env.PORT}`);

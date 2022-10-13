@@ -7,7 +7,7 @@ import MinimizeToggle from './MinimizeToggle';
 
 function Twitch() {
   const { room } = useContext(roomContext);
-  const hostURL = 'localhost' // Update this when deployed
+  const hostURL = 'parrot-perch.herokuapp.com' // Update this when deployed
   const [viewChat, setViewChat] = useState(true);
 
   const minimize = (e) => {
