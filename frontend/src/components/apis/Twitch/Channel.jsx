@@ -13,4 +13,4 @@ export default function Channel(props) {
       </div>
     </article>
   );
-}
+};
