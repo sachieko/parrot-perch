@@ -15,6 +15,6 @@ function Join (props) {
       { props.alert === 'bad password' && <Alert message={`That room's commandeered with a password which you need to board, matey!`} color='red'/>}
     </form>
   )
-}
+};
 
 export default Join;

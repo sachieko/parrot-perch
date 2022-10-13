@@ -191,8 +191,8 @@ io.on('connection', client => {
 
     if (clients[to]) {
       const { id: idTo, color: colorTo, username: userTo } = clients[to];
-      io.to(idTo).emit('private', { message, username: username, pm: 'receive', color: colorFrom }); // Receiver gets sender's color/name
       io.to(idFrom).emit('private', { message, username: userTo, pm: 'send', color: colorTo }); // Sender receives other's color
+      io.to(idTo).emit('private', { message, username: username, pm: 'receive', color: colorFrom }); // Receiver gets sender's color/name
       return;
     }
     io.to(idFrom).emit('system', { system: 'left', username: to, room: rooms[room.name], color: '#fff' });
