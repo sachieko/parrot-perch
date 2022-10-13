@@ -9,6 +9,7 @@ import Snake from './Snake';
 
 function View() {
   const { room } = useContext(roomContext);
+  const [snakeHasRendered, setSnakeHasRendered] = useState(false);
   const [widgetSwitches, setWidgetSwitches] = useState(
     [{ name: 'Twitch', selected: true },
     { name: 'Youtube', selected: true },
@@ -63,7 +64,9 @@ function View() {
         {<Youtube selected={widgetSwitches[1].selected} />}
       </div>
       <div className='snake-container'>
-        {widgetSwitches[4].selected && <Snake />}
+        {widgetSwitches[4].selected && <Snake 
+        hasRendered={snakeHasRendered} 
+        setHasRendered={setSnakeHasRendered}/>}
       </div>
       {widgetSwitches[2].selected && <Chat />}
     </>

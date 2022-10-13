@@ -3,9 +3,8 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { roomContext } from '../../providers/RoomProvider';
 import './snake.scss' 
 
-function Snake() {
+function Snake(props) {
   const { socket, room } = useContext(roomContext);
-  const [clicked, setClicked] = useState(false);
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -25,7 +24,7 @@ function Snake() {
 
   const play = (e) => {
     socket.emit('play', { room });
-    setClicked(true);
+    props.setHasRendered(true);
   }
 
   const draw = (players, apples) => {
@@ -51,7 +50,7 @@ function Snake() {
 
   return (
     <div className='snake-canvas'>
-      {!clicked && <div><button onClick={play}>Play</button></div>}
+      {!props.hasRendered && <div><button onClick={play}>Play</button></div>}
       <canvas
         ref={canvasRef}
         width='400px'
