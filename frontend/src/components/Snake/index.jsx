@@ -1,5 +1,5 @@
 
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { roomContext } from '../../providers/RoomProvider';
 import './snake.scss' 
 
