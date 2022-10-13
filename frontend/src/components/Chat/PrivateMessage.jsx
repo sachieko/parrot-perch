@@ -9,8 +9,8 @@ const PrivateMessage = (props) => {
         <span className='chat-username-item'>{`[PM from `}
           <span className='chat-username-item' style={{ color }}>{username}</span>
           {`]:`}
-        <span className='message-item'>{message}</span>
         </span>
+        <span className='message-item'>{message}</span>
     </div>
     )}
     {pm === 'send' && (
@@ -19,7 +19,7 @@ const PrivateMessage = (props) => {
           <span className='chat-username-item' style={{ color }}>{username}</span>
           {`]:`}
         </span>
-        <span className='message-item'>{message}</span>
+          <span className='message-item'>{message}</span>
     </div>
     )}
     </>
