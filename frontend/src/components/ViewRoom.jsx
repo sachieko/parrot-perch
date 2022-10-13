@@ -5,15 +5,16 @@ import Youtube from './apis/Youtube';
 import Twitch from './apis/Twitch';
 import Chat from './Chat';
 import Whiteboard from './whiteboard';
-
+import Snake from './Snake';
 
 function View() {
   const { room } = useContext(roomContext);
   const [widgetSwitches, setWidgetSwitches] = useState(
-    [{ name: 'Twitch', selected: true },
-    { name: 'Youtube', selected: true },
-    { name: 'Chat', selected: true },
-    { name: 'Whiteboard', selected: true }]);
+    [{ name: 'Twitch', selected: false },
+    { name: 'Youtube', selected: false },
+    { name: 'Chat', selected: false },
+    { name: 'Whiteboard', selected: false },
+    { name: 'Snake', selected: true }]);
 
   const selectSwitch = (i) => {
     setWidgetSwitches((oldSwitches) => {
@@ -48,20 +49,22 @@ function View() {
 
   return (
     <>
+
+      {widgetSwitches[4].selected && <Snake />}
       <div className='header-container'>
         <h3 className='room-header'>Room Name: {room.name} </h3>
       </div>
       <div className='canvas-container'>
-      {<Whiteboard selected={widgetSwitches[3].selected}/>}
+        {<Whiteboard selected={widgetSwitches[3].selected} />}
       </div>
-        <div id="nav-toggle">
-          {showSwitches}
-        </div>
+      <div id="nav-toggle">
+        {showSwitches}
+      </div>
       <div className='widget-container'>
         {widgetSwitches[0].selected && <Twitch />}
-        {<Youtube selected={widgetSwitches[1].selected}/>}
+        {<Youtube selected={widgetSwitches[1].selected} />}
       </div>
-        {widgetSwitches[2].selected && <Chat />}
+      {widgetSwitches[2].selected && <Chat />}
     </>
   );
 };

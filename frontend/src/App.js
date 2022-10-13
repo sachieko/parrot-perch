@@ -9,7 +9,6 @@ const App = function () {
   return (
     <div className="parrot-perch">
       <RoomProvider>
-        <NavBar />
         <Room />
       </RoomProvider>
     </div>
