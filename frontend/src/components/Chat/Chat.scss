@@ -24,8 +24,6 @@
   .user-list-item {
     background-color: $chat-background-color;
   }
-
-  @include custom-scrollbar;
   
   #message-list {
     display: flex;
@@ -41,6 +39,8 @@
     color: $chat-message-color;
     background-color: $chat-background-color;
     padding-left: 0.5rem;
+
+    @include custom-scrollbar;
   }
   .chat-list-item {
     padding-bottom: 0.2rem;
