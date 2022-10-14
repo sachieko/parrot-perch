@@ -37,7 +37,8 @@ Mobile View:
 Tablet View:
 ![Tablet View](https://i.imgur.com/W1L4lLe.png)
 
-## My Stake: While developing this app, I created the chat functionality with websockets along with the styles for all components of the chat, as well as designing the CSS styles for the widget layouts and general layout of the rooms. I also created the logic and alert for letting users know when their chosen room name already exists with a password that they will need to get in. I also created the context provider to manage all the state required to run rooms.
+## My Stake:
+While developing this app, I created the chat functionality with websockets along with the styles for all components of the chat, as well as designing the CSS styles for the widget layouts and general layout of the rooms. I also created the logic and alert for letting users know when their chosen room name already exists with a password that they will need to get in. I also created the context provider to manage all the state required to run rooms.
 
 ## Future Development: 
 These are all nice things to have but likely on pause while I work on other projects.
