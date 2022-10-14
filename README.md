@@ -20,21 +20,28 @@ Our app also uses:
 
 ## Images
 Front Page: Users can create rooms with or without a password, an alert will show if they are missing a password for a room that exists. Rooms are automatically purged when no users are in them.
+
 ![Front Page](https://i.imgur.com/2L3oeHp.png)
 
 Alert: When a room already exists but has a password, instead of joining the room a user will see an alert they need to know the password.
+
 ![Alert](https://i.imgur.com/VbnACrw.png)
 
 Room View: This is what a room on desktop looks like when you're inside. Our chat is on the right, and the videos will take up the screen width up to but not including chat if space is available.
+
 ![Room View](https://i.imgur.com/xGWc4wm.png)
+
 ![Multi-video view](https://i.imgur.com/rg6XOV7.png)
+
 ![Snake Game](https://i.imgur.com/iTzu1mz.png)
 
 ### Responsive Styles
 Mobile View:
+
 ![Mobile View](https://i.imgur.com/dfrF5rf.png)
 
 Tablet View:
+
 ![Tablet View](https://i.imgur.com/W1L4lLe.png)
 
 ## My Stake:
